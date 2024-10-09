@@ -7,6 +7,7 @@ import CheckboxOutline from "../../src/assets/_checkbox.png";
 import CheckboxBlack from "../../src/assets/_checkbox_black.png";
 import eyeOn from "../../src/assets/icons_pw_on.png";
 import eyeOff from "../../src/assets/icons_pw_off.png";
+import { useNavigate } from "react-router-dom";
 
 interface PasswordState {
     value: string;
@@ -27,6 +28,7 @@ interface CheckboxState {
 }
 
 const Join = () => {
+    const navigate = useNavigate();
     const defaultValues = {
         defaultValues: {
             name: "",
@@ -38,7 +40,7 @@ const Join = () => {
     const {
         register,
         handleSubmit,
-
+        setError,
         formState: { errors }
     } = useForm<FormValues>(defaultValues);
 
@@ -58,6 +60,8 @@ const Join = () => {
         marketing: false
     });
 
+    const [termsError, setTermsError] = useState("");
+
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 
     const handleToggle = (
@@ -74,6 +78,7 @@ const Join = () => {
 
     const handleCheckboxToggle = (name: keyof CheckboxState) => {
         setCheckboxes((prev) => ({ ...prev, [name]: !prev[name] }));
+        setTermsError("");
     };
 
     const handleAllCheckboxes = () => {
@@ -83,6 +88,7 @@ const Join = () => {
             privacy: !allChecked,
             marketing: !allChecked
         });
+        setTermsError("");
     };
 
     const checkboxLabels = {
@@ -92,13 +98,27 @@ const Join = () => {
     };
 
     const onSubmit = async (data: FormValues) => {
+        if (!checkboxes.age || !checkboxes.privacy || !checkboxes.marketing) {
+            setTermsError("이용약관에 동의해주세요");
+            return;
+        }
+
         const { email, password, name } = data;
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
             );
+            navigate("/complete");
         } catch (e) {
+            if (axios.isAxiosError(e) && e.response) {
+                if (e.response.status === 409) {
+                    setError("email", {
+                        type: "manual",
+                        message: "이미 사용 중인 이메일입니다."
+                    });
+                }
+            }
             if (e instanceof Error) throw new Error(e.message);
         }
     };
@@ -164,7 +184,7 @@ const Join = () => {
                         <input
                             placeholder="abc@email.com"
                             className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
-                                errors.name
+                                errors.email
                                     ? "border-[#FF4242]"
                                     : "border-black"
                             }`}
@@ -241,7 +261,7 @@ const Join = () => {
                             {...register("confirmPassword", {
                                 required: true,
                                 validate: (value) =>
-                                    value === passwordState.value ||
+                                    value !== passwordState.value ||
                                     "비밀번호가 일치하지 않습니다."
                             })}
                         />
@@ -304,6 +324,9 @@ const Join = () => {
                             }
                         />
                     ))}
+                    {termsError && (
+                        <p className="text-red-500 text-sm">{termsError}</p>
+                    )}
                 </div>
                 <button
                     className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
