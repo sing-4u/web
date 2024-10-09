@@ -8,6 +8,7 @@ import CheckboxBlack from "../../src/assets/_checkbox_black.png";
 import eyeOn from "../../src/assets/icons_pw_on.png";
 import eyeOff from "../../src/assets/icons_pw_off.png";
 import { useNavigate } from "react-router-dom";
+import getInputErrorClassName from "../utils/className";
 
 interface PasswordState {
     value: string;
@@ -81,6 +82,9 @@ const Join = () => {
         setTermsError("");
     };
 
+    const handleEyeIconToggle = (state: PasswordState) =>
+        state.type === "password" ? eyeOff : eyeOn;
+
     const handleAllCheckboxes = () => {
         const allChecked = Object.values(checkboxes).every((v) => v);
         setCheckboxes({
@@ -109,13 +113,14 @@ const Join = () => {
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
             );
-            navigate("/complete");
+            navigate("/complete-join");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
                     setError("email", {
                         type: "manual",
-                        message: "이미 사용 중인 이메일입니다."
+                        message:
+                            "이미 가입된 이메일 주소입니다. 다른 이메일 주소를 입력해 주세요."
                     });
                 }
             }
@@ -146,7 +151,7 @@ const Join = () => {
                         </label>
                         <input
                             {...register("name", {
-                                required: true,
+                                required: "닉네임을 입력해주세요.",
                                 maxLength: {
                                     value: 50,
                                     message: "최대 50자까지 입력 가능합니다"
@@ -160,11 +165,7 @@ const Join = () => {
                                     message: "이름을 다시 확인해주세요."
                                 }
                             })}
-                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
-                                errors.name
-                                    ? "border-[#FF4242]"
-                                    : "border-black"
-                            }`}
+                            className={getInputErrorClassName(errors.name)}
                             placeholder="닉네임"
                         />
 
@@ -183,13 +184,9 @@ const Join = () => {
                         </label>
                         <input
                             placeholder="abc@email.com"
-                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
-                                errors.email
-                                    ? "border-[#FF4242]"
-                                    : "border-black"
-                            }`}
+                            className={getInputErrorClassName(errors.email)}
                             {...register("email", {
-                                required: true,
+                                required: "이메일을 입력해주세요",
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                     message: "올바른 이메일 형식이 아닙니다."
@@ -212,17 +209,13 @@ const Join = () => {
                         <input
                             type={passwordState.type}
                             placeholder="비밀번호"
-                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
-                                errors.password
-                                    ? "border-[#FF4242]"
-                                    : "border-black"
-                            }`}
+                            className={getInputErrorClassName(errors.password)}
                             {...register("password", {
-                                required: true,
+                                required: "비밀번호를 입력해주세요",
                                 pattern: {
                                     value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                     message:
-                                        "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                        "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
                                 }
                             })}
                         />
@@ -232,11 +225,7 @@ const Join = () => {
 
                         <span className="flex justify-end items-center">
                             <img
-                                src={
-                                    passwordState.type === "password"
-                                        ? eyeOff
-                                        : eyeOn
-                                }
+                                src={handleEyeIconToggle(passwordState)}
                                 alt="Toggle Confirm Password Visibility"
                                 className="absolute inset-y-12 end-3 cursor-pointer"
                                 onClick={() => handleToggle(setPasswordState)}
@@ -253,13 +242,11 @@ const Join = () => {
                         <input
                             type={confirmState.type}
                             placeholder="비밀번호 확인"
-                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
+                            className={getInputErrorClassName(
                                 errors.confirmPassword
-                                    ? "border-[#FF4242]"
-                                    : "border-black"
-                            }`}
+                            )}
                             {...register("confirmPassword", {
-                                required: true,
+                                required: "비밀번호 확인을 해주세요",
                                 validate: (value) =>
                                     value !== passwordState.value ||
                                     "비밀번호가 일치하지 않습니다."
@@ -274,11 +261,7 @@ const Join = () => {
                             : null}
                         <span className="flex justify-end items-center">
                             <img
-                                src={
-                                    confirmState.type === "password"
-                                        ? eyeOff
-                                        : eyeOn
-                                }
+                                src={handleEyeIconToggle(confirmState)}
                                 alt="Toggle Password Visibility"
                                 className="absolute inset-y-12 end-3 cursor-pointer"
                                 onClick={() => handleToggle(setConfirmState)}

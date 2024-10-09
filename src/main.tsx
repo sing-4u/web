@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Join from "./pages/Join.tsx";
 import Home from "./Home.tsx";
+import CompleteJoin from "./pages/CompleteJoin.tsx";
 
 const queryClient = new QueryClient();
 
@@ -17,6 +18,10 @@ const router = createBrowserRouter([
     {
         path: "join",
         element: <Join />
+    },
+    {
+        path: "complete-join",
+        element: <CompleteJoin />
     }
 ]);
 
