@@ -1,17 +1,16 @@
 import { Dispatch, SetStateAction, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import Icon from "react-icons-kit";
-import { eyeOff } from "react-icons-kit/feather/eyeOff";
-import { eye } from "react-icons-kit/feather/eye";
-import { IoIosCheckbox, IoIosCheckboxOutline } from "react-icons/io";
+import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import GoogleBtn from "../../src/assets/btn.png";
 import axios from "axios";
+import CheckboxOutline from "../../src/assets/_checkbox.png";
+import CheckboxBlack from "../../src/assets/_checkbox_black.png";
+import eyeOn from "../../src/assets/icons_pw_on.png";
+import eyeOff from "../../src/assets/icons_pw_off.png";
 
 interface PasswordState {
     value: string;
     type: "password" | "text";
-    icon: typeof eyeOff | typeof eye;
 }
 
 interface FormValues {
@@ -39,18 +38,17 @@ const Join = () => {
     const {
         register,
         handleSubmit,
-        control,
+
         formState: { errors }
     } = useForm<FormValues>(defaultValues);
 
     const [passwordState, setPasswordState] = useState<PasswordState>({
         type: "password",
-        icon: eyeOff,
         value: ""
     });
     const [confirmState, setConfirmState] = useState<PasswordState>({
         type: "password",
-        icon: eyeOff,
+
         value: ""
     });
 
@@ -69,8 +67,7 @@ const Join = () => {
             const isCurrentPassword = prevState.type === "password";
             return {
                 ...prevState,
-                type: isCurrentPassword ? "text" : "password",
-                icon: isCurrentPassword ? eye : eyeOff
+                type: isCurrentPassword ? "text" : "password"
             };
         });
     };
@@ -116,75 +113,92 @@ const Join = () => {
                     alt="Google Sign Up"
                     className="w-full cursor-pointer transition-transform duration-300"
                 />
+                <div className="space-x-2 mt-4 flex items-center">
+                    <span className="w-full border-b"></span>
+                </div>
                 <div className="space-y-4">
                     <div className="flex flex-col">
-                        <label htmlFor="name" className="text-left">
+                        <label
+                            htmlFor="name"
+                            className="text-left font-Pretendard mb-2"
+                        >
                             닉네임
                         </label>
-                        <Controller
-                            name="name"
-                            control={control}
-                            rules={{
-                                required: "닉네임을 입력하세요",
-                                minLength: {
-                                    value: 1,
-                                    message: "닉네임은 최소 1글자입니다"
-                                },
+                        <input
+                            {...register("name", {
+                                required: true,
                                 maxLength: {
                                     value: 50,
-                                    message: "닉네임은 최대 50글자입니다"
+                                    message: "최대 50자까지 입력 가능합니다"
+                                },
+                                minLength: {
+                                    value: 1,
+                                    message: "최소 1자 이상 입력해야합니다"
                                 },
                                 pattern: {
                                     value: /^[가-힣a-zA-Z0-9\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{1,50}$/,
-                                    message:
-                                        "닉네임은 한글, 영문, 숫자, 특수문자로 구성되어야 합니다"
+                                    message: "이름을 다시 확인해주세요."
                                 }
-                            }}
-                            render={({ field }) => (
-                                <input
-                                    {...field}
-                                    placeholder="닉네임"
-                                    type="text"
-                                    className="border border-slate-300 rounded-[10px] py-[14px] px-[18px]"
-                                />
-                            )}
+                            })}
+                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
+                                errors.name
+                                    ? "border-[#FF4242]"
+                                    : "border-black"
+                            }`}
+                            placeholder="닉네임"
                         />
-                        {errors.name && (
+
+                        {errors ? (
                             <span className="text-red-500">
                                 {errors?.name?.message}
                             </span>
-                        )}
+                        ) : null}
                     </div>
                     <div className="flex flex-col">
-                        <label htmlFor="email" className="text-left">
+                        <label
+                            htmlFor="email"
+                            className="text-left font-Pretendard mb-2"
+                        >
                             이메일
                         </label>
                         <input
                             placeholder="abc@email.com"
-                            className="border border-slate-300 rounded-[10px] py-[14px] px-[18px]"
+                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
+                                errors.name
+                                    ? "border-[#FF4242]"
+                                    : "border-black"
+                            }`}
                             {...register("email", {
-                                required: "필수 응답 항목입니다.",
+                                required: true,
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "이메일 형식이 아닙니다."
+                                    message: "올바른 이메일 형식이 아닙니다."
                                 }
                             })}
                         />
-                        {errors.email && (
+                        {errors ? (
                             <span className="text-red-500">
                                 {errors?.email?.message}
                             </span>
-                        )}
+                        ) : null}
                     </div>
                     <div className="relative flex flex-col">
-                        <label htmlFor="password" className="text-left">
+                        <label
+                            htmlFor="password"
+                            className="text-left font-Pretendard mb-2"
+                        >
                             비밀번호
                         </label>
                         <input
+                            type={passwordState.type}
                             placeholder="비밀번호"
-                            className="border border-slate-300 rounded-[10px] py-[14px] px-[18px]"
+                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
+                                errors.password
+                                    ? "border-[#FF4242]"
+                                    : "border-black"
+                            }`}
                             {...register("password", {
-                                required: "필수 응답 항목입니다.",
+                                required: true,
                                 pattern: {
                                     value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                     message:
@@ -197,63 +211,89 @@ const Join = () => {
                         </span>
 
                         <span className="flex justify-end items-center">
-                            <Icon
-                                className="absolute inset-y-10 end-0 px-2.5 flex items-center z-20 hover:text-gray-600 cursor-pointer"
-                                icon={passwordState.icon}
+                            <img
+                                src={
+                                    passwordState.type === "password"
+                                        ? eyeOff
+                                        : eyeOn
+                                }
+                                alt="Toggle Confirm Password Visibility"
+                                className="absolute inset-y-12 end-3 cursor-pointer"
                                 onClick={() => handleToggle(setPasswordState)}
                             />
                         </span>
                     </div>
                     <div className="relative flex flex-col">
-                        <label htmlFor="confirmPassword" className="text-left">
+                        <label
+                            htmlFor="confirmPassword"
+                            className="text-left font-Pretendard mb-2"
+                        >
                             비밀번호 확인
                         </label>
                         <input
+                            type={confirmState.type}
                             placeholder="비밀번호 확인"
-                            className="border border-slate-300 rounded-[10px] py-[14px] px-[18px]"
+                            className={`border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard ${
+                                errors.confirmPassword
+                                    ? "border-[#FF4242]"
+                                    : "border-black"
+                            }`}
                             {...register("confirmPassword", {
-                                required: "필수 응답 항목입니다.",
-                                pattern: {
-                                    value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                    message:
-                                        "비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다"
-                                }
+                                required: true,
+                                validate: (value) =>
+                                    value === passwordState.value ||
+                                    "비밀번호가 일치하지 않습니다."
                             })}
                         />
-                        {errors.confirmPassword && (
-                            <span className="text-red-500">
-                                {errors?.confirmPassword?.message}
-                            </span>
-                        )}
+                        {errors
+                            ? errors.confirmPassword && (
+                                  <span className="text-red-500">
+                                      {errors?.confirmPassword?.message}
+                                  </span>
+                              )
+                            : null}
                         <span className="flex justify-end items-center">
-                            <Icon
-                                className="absolute inset-y-10 end-0 px-2.5 flex items-center z-20 hover:text-gray-600 cursor-pointer"
-                                icon={confirmState.icon}
+                            <img
+                                src={
+                                    confirmState.type === "password"
+                                        ? eyeOff
+                                        : eyeOn
+                                }
+                                alt="Toggle Password Visibility"
+                                className="absolute inset-y-12 end-3 cursor-pointer"
                                 onClick={() => handleToggle(setConfirmState)}
                             />
                         </span>
                     </div>
                 </div>
                 <div>
-                    <span className="flex justify-start mb-4">약관동의</span>
+                    <span className="flex justify-start mb-4 font-Pretendard">
+                        약관동의
+                    </span>
                     <div
                         className="flex items-center space-x-2 cursor-pointer"
                         onClick={handleAllCheckboxes}
                     >
                         {isAllChecked ? (
-                            <IoIosCheckbox size="24" />
+                            <img src={CheckboxBlack} alt="" className="mr-1" />
                         ) : (
-                            <IoIosCheckboxOutline size="24" />
+                            <img
+                                src={CheckboxOutline}
+                                alt=""
+                                className="mr-1"
+                            />
                         )}
-                        <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                            전체동의
-                        </label>
+                        <div className="flex w-screen justify-start">
+                            <label className="text-sm font-medium font-Pretendard leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                전체동의
+                            </label>
+                        </div>
                     </div>
                     <div className="space-x-2 mt-4 flex items-center">
                         <span className="w-full border-b" />
                     </div>
                 </div>
-                <div className="space-y-2">
+                <div className="space-y-2 font-Pretendard">
                     {Object.entries(checkboxLabels).map(([key, label]) => (
                         <Checkbox
                             key={key}
@@ -266,7 +306,7 @@ const Join = () => {
                     ))}
                 </div>
                 <button
-                    className="w-[328px] bg-black text-white rounded-[10px] h-[52px]"
+                    className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
                     type="submit"
                 >
                     회원가입
