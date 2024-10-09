@@ -1,6 +1,6 @@
-import { BiChevronRight } from "react-icons/bi";
 import CheckboxOutline from "../../src/assets/_checkbox.png";
 import CheckboxBlack from "../../src/assets/_checkbox_black.png";
+import ChevronRight from "../../src/assets/icons-chevron_right.png";
 
 interface CheckboxProps {
     label: string;
@@ -23,7 +23,7 @@ const Checkbox = ({ label, isChecked, onToggle }: CheckboxProps) => (
                 {label}
             </label>
         </div>
-        <BiChevronRight className="w-32 h-5" />
+        <img src={ChevronRight} alt="chevron" className="w-5 h-5" />
     </div>
 );
 
