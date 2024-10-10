@@ -24,8 +24,8 @@ interface FormValues {
 
 interface CheckboxState {
     age: boolean;
+    terms: boolean;
     privacy: boolean;
-    marketing: boolean;
 }
 
 const Join = () => {
@@ -57,8 +57,8 @@ const Join = () => {
 
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
         age: false,
-        privacy: false,
-        marketing: false
+        terms: false,
+        privacy: false
     });
 
     const [termsError, setTermsError] = useState("");
@@ -100,26 +100,35 @@ const Join = () => {
         });
 
         window.location.href = `${oauth2Endpoint}?${params.toString()}`;
+
+        const queryParams = new URLSearchParams(window.location.search);
+        const code = queryParams.get("code");
+
+        await axios.post(`${import.meta.env.VITE_API_URL}/auth/login/social`, {
+            provider: "GOOGLE",
+            providerCode: code
+        });
+        navigate("/complete-join");
     };
 
     const handleAllCheckboxes = () => {
         const allChecked = Object.values(checkboxes).every((v) => v);
         setCheckboxes({
             age: !allChecked,
-            privacy: !allChecked,
-            marketing: !allChecked
+            terms: !allChecked,
+            privacy: !allChecked
         });
         setTermsError("");
     };
 
     const checkboxLabels = {
         age: "[필수] 만 14세 이상입니다",
-        privacy: "[필수] 이용약관에 동의합니다",
-        marketing: "[필수] 개인정보 처리방침에 동의합니다"
+        terms: "[필수] 이용약관에 동의합니다",
+        privacy: "[선택] 개인정보 처리방침에 동의합니다"
     };
 
     const onSubmit = async (data: FormValues) => {
-        if (!checkboxes.age || !checkboxes.privacy || !checkboxes.marketing) {
+        if (!checkboxes.age || !checkboxes.privacy || !checkboxes.terms) {
             setTermsError("이용약관에 동의해주세요");
             return;
         }
