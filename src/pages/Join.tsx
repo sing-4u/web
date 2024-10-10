@@ -85,6 +85,23 @@ const Join = () => {
     const handleEyeIconToggle = (state: PasswordState) =>
         state.type === "password" ? eyeOff : eyeOn;
 
+    const handleGoogleClick = async () => {
+        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+
+        const params = new URLSearchParams({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+            response_type: "code",
+            scope: [
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email"
+            ].join(" "),
+            include_granted_scopes: "true"
+        });
+
+        window.location.href = `${oauth2Endpoint}?${params.toString()}`;
+    };
+
     const handleAllCheckboxes = () => {
         const allChecked = Object.values(checkboxes).every((v) => v);
         setCheckboxes({
@@ -130,13 +147,14 @@ const Join = () => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full max-w-md mx-auto p-6 space-y-6 h-full">
+            <div className="w-full max-w-md mx-auto p-6 space-y-4">
                 <div className="flex">로고</div>
                 <div className="text-2xl font-bold text-center">회원가입</div>
                 <img
                     src={GoogleBtn}
                     alt="Google Sign Up"
                     className="w-full cursor-pointer transition-transform duration-300"
+                    onClick={handleGoogleClick}
                 />
                 <div className="space-x-2 mt-4 flex items-center">
                     <span className="w-full border-b"></span>
