@@ -3,8 +3,8 @@ import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import GoogleBtn from "../../src/assets/btn.png";
 import axios from "axios";
-import CheckboxOutline from "../../src/assets/_checkbox.png";
-import CheckboxBlack from "../../src/assets/_checkbox_black.png";
+import CheckboxOutline from "../../src/assets/_checkbox_outline.png";
+import CheckboxBlack from "../../src/assets/_checkbox.png";
 import eyeOn from "../../src/assets/icons_pw_on.png";
 import eyeOff from "../../src/assets/icons_pw_off.png";
 import { useNavigate } from "react-router-dom";
@@ -304,15 +304,11 @@ const Join = () => {
                         className="flex items-center space-x-2 cursor-pointer"
                         onClick={handleAllCheckboxes}
                     >
-                        {isAllChecked ? (
-                            <img src={CheckboxBlack} alt="" className="mr-1" />
-                        ) : (
-                            <img
-                                src={CheckboxOutline}
-                                alt=""
-                                className="mr-1"
-                            />
-                        )}
+                        <img
+                            src={isAllChecked ? CheckboxBlack : CheckboxOutline}
+                            alt=""
+                            className="mr-1"
+                        />
                         <div className="flex w-screen justify-start">
                             <label className="text-sm font-medium font-Pretendard leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                                 전체동의
