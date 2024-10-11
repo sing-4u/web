@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 env.d.ts
 .env
+fonts
+public/web
