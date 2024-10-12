@@ -52,6 +52,14 @@ const Login = () => {
           error: "존재하지 않는 유저입니다.",
           accessToken: null,
         });
+        alert("존재하지 않는 유저입니다.");
+      } else {
+        setLoginState({
+          loading: false,
+          error: "로그인에 실패했습니다.",
+          accessToken: null,
+        });
+        alert("로그인에 실패했습니다.");
       }
     }
   };
@@ -121,6 +129,7 @@ const Login = () => {
           </div>
           <div className="absolute w-[327px] h-[52px] top-[293px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
             <button
+              type="button"
               onClick={initiateGoogleLogin}
               className="w-full h-full flex items-center justify-center font-bold text-[14px] leading-[16.71px] cursor-pointer"
             >
