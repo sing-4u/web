@@ -7,12 +7,13 @@ const NewPassword = () => {
                 title="새 비밀번호 설정"
                 text1="새 비밀번호"
                 text2="새 비밀번호 확인"
+                type="password"
             />
             <button
                 className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
                 type="submit"
             >
-                다음
+                비밀번호 변경하기
             </button>
         </div>
     );

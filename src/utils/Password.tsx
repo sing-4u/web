@@ -4,9 +4,10 @@ interface PasswordProps {
     title: string;
     text1: string;
     text2: string;
+    type: "email" | "password";
 }
 
-const Password = ({ title, text1, text2 }: PasswordProps) => {
+const Password = ({ title, text1, text2, type }: PasswordProps) => {
     return (
         <>
             <div className="flex">로고</div>
@@ -20,6 +21,7 @@ const Password = ({ title, text1, text2 }: PasswordProps) => {
                         {text1}
                     </label>
                     <input
+                        type={type}
                         placeholder="abc@email.com"
                         className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
                     />
@@ -32,6 +34,7 @@ const Password = ({ title, text1, text2 }: PasswordProps) => {
                         {text2}
                     </label>
                     <input
+                        type={type}
                         placeholder="비밀번호"
                         className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
                     />
