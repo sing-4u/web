@@ -333,7 +333,7 @@ const Join = () => {
                                 {...register("confirmPassword", {
                                     required: "비밀번호 확인을 해주세요",
                                     validate: (value) =>
-                                        value !== passwordState.value ||
+                                        value !== passwordState.value &&
                                         "비밀번호가 일치하지 않습니다."
                                 })}
                             />
