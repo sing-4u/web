@@ -16,7 +16,6 @@ const Checkbox = ({
     onToggle,
     onChevronClick
 }: CheckboxProps) => {
-    console.log(isChecked);
     const handleCheckboxClick = (e: MouseEvent) => {
         e.stopPropagation();
         onToggle();
