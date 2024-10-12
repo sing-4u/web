@@ -8,6 +8,9 @@ import Join from "./pages/Join.tsx";
 import Home from "./Home.tsx";
 import CompleteJoin from "./pages/CompleteJoin.tsx";
 
+import FindPassword from "./pages/findPassword.tsx";
+import NewPassword from "./pages/NewPassword.tsx";
+
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -22,6 +25,14 @@ const router = createBrowserRouter([
     {
         path: "complete-join",
         element: <CompleteJoin />
+    },
+    {
+        path: "find-password",
+        element: <FindPassword />
+    },
+    {
+        path: "new-password",
+        element: <NewPassword />
     }
 ]);
 
