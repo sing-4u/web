@@ -1,0 +1,34 @@
+import { useState } from "react";
+import eyeOn from "../../src/assets/icons_pw_on.png";
+import eyeOff from "../../src/assets/icons_pw_off.png";
+
+interface PasswordState {
+    value: string;
+    type: "password" | "text";
+}
+
+const usePasswordToggle = () => {
+    const [passwordState, setPasswordState] = useState<PasswordState>({
+        type: "password",
+        value: ""
+    });
+
+    const handleToggle = () => {
+        setPasswordState((prevState) => ({
+            ...prevState,
+            type: prevState.type === "password" ? "text" : "password"
+        }));
+    };
+
+    const handleEyeIconToggle = () =>
+        passwordState.type === "password" ? eyeOff : eyeOn;
+
+    return {
+        passwordState,
+
+        handleToggle,
+        handleEyeIconToggle
+    };
+};
+
+export default usePasswordToggle;
