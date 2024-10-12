@@ -50,8 +50,14 @@ const Join = () => {
         register,
         handleSubmit,
         setError,
+        watch,
         formState: { errors }
-    } = useForm<FormValues>(defaultValues);
+    } = useForm<FormValues>({
+        ...defaultValues,
+        mode: "onChange"
+    });
+
+    const watchPassword = watch("password");
 
     const [loginState, setLoginState] = useState<LoginState>({
         loading: false,
@@ -333,7 +339,7 @@ const Join = () => {
                                 {...register("confirmPassword", {
                                     required: "비밀번호 확인을 해주세요",
                                     validate: (value) =>
-                                        value !== passwordState.value &&
+                                        value === watchPassword ||
                                         "비밀번호가 일치하지 않습니다."
                                 })}
                             />
