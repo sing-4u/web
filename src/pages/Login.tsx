@@ -91,9 +91,6 @@ const Login = () => {
             placeholder="비밀번호"
           />
         </div>
-        {loginstate.error && (
-          <div className="text-red-500">{loginstate.error}</div>
-        )}
         <div className="flex justify-center">
           <button
             className="absolute w-[327px] h-[52px] top-[558px] left-[24px] border bg-black text-white rounded-[10px]"
