@@ -1,19 +1,14 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import GoogleBtn from "../../src/assets/btn.png";
 import axios from "axios";
 import CheckboxOutline from "../../src/assets/_checkbox.png";
 import CheckboxBlack from "../../src/assets/_checkbox_black.png";
-import eyeOn from "../../src/assets/icons_pw_on.png";
-import eyeOff from "../../src/assets/icons_pw_off.png";
 import { useNavigate } from "react-router-dom";
-import getInputErrorClassName from "../utils/className";
 
-interface PasswordState {
-    value: string;
-    type: "password" | "text";
-}
+import getInputErrorClassName from "../utils/className";
+import usePasswordToggle from "../hooks/usePasswordToggle";
 
 interface FormValues {
     name: string;
@@ -45,45 +40,32 @@ const Join = () => {
         formState: { errors }
     } = useForm<FormValues>(defaultValues);
 
-    const [passwordState, setPasswordState] = useState<PasswordState>({
-        type: "password",
-        value: ""
-    });
-    const [confirmState, setConfirmState] = useState<PasswordState>({
-        type: "password",
-
-        value: ""
-    });
-
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
         age: false,
         terms: false,
         privacy: false
     });
 
+    const {
+        passwordState: password,
+        handleToggle,
+        handleEyeIconToggle
+    } = usePasswordToggle();
+
+    const {
+        passwordState: confirmPassword,
+        handleToggle: handleConfirmToggle,
+        handleEyeIconToggle: handleConfirmEyeIconToggle
+    } = usePasswordToggle();
+
     const [termsError, setTermsError] = useState("");
 
     const isAllChecked = Object.values(checkboxes).every((box) => box);
-
-    const handleToggle = (
-        setState: Dispatch<SetStateAction<PasswordState>>
-    ) => {
-        setState((prevState) => {
-            const isCurrentPassword = prevState.type === "password";
-            return {
-                ...prevState,
-                type: isCurrentPassword ? "text" : "password"
-            };
-        });
-    };
 
     const handleCheckboxToggle = (name: keyof CheckboxState) => {
         setCheckboxes((prev) => ({ ...prev, [name]: !prev[name] }));
         setTermsError("");
     };
-
-    const handleEyeIconToggle = (state: PasswordState) =>
-        state.type === "password" ? eyeOff : eyeOn;
 
     const handleGoogleClick = async () => {
         const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -234,8 +216,8 @@ const Join = () => {
                             비밀번호
                         </label>
                         <input
-                            type={passwordState.type}
-                            placeholder="비밀번호"
+                            type={password.type}
+                            placeholder="비밀번호 확인"
                             className={getInputErrorClassName(errors.password)}
                             {...register("password", {
                                 required: "비밀번호를 입력해주세요",
@@ -246,16 +228,19 @@ const Join = () => {
                                 }
                             })}
                         />
-                        <span className="text-red-500">
-                            {errors?.password?.message}
-                        </span>
-
+                        {errors
+                            ? errors.password && (
+                                  <span className="text-red-500">
+                                      {errors?.password?.message}
+                                  </span>
+                              )
+                            : null}
                         <span className="flex justify-end items-center">
                             <img
-                                src={handleEyeIconToggle(passwordState)}
-                                alt="Toggle Confirm Password Visibility"
+                                src={handleEyeIconToggle()}
+                                alt="Toggle Password Visibility"
                                 className="absolute inset-y-12 end-3 cursor-pointer"
-                                onClick={() => handleToggle(setPasswordState)}
+                                onClick={handleToggle}
                             />
                         </span>
                     </div>
@@ -267,7 +252,7 @@ const Join = () => {
                             비밀번호 확인
                         </label>
                         <input
-                            type={confirmState.type}
+                            type={confirmPassword.type}
                             placeholder="비밀번호 확인"
                             className={getInputErrorClassName(
                                 errors.confirmPassword
@@ -275,7 +260,7 @@ const Join = () => {
                             {...register("confirmPassword", {
                                 required: "비밀번호 확인을 해주세요",
                                 validate: (value) =>
-                                    value !== passwordState.value ||
+                                    value !== password.value ||
                                     "비밀번호가 일치하지 않습니다."
                             })}
                         />
@@ -288,10 +273,10 @@ const Join = () => {
                             : null}
                         <span className="flex justify-end items-center">
                             <img
-                                src={handleEyeIconToggle(confirmState)}
+                                src={handleConfirmEyeIconToggle()}
                                 alt="Toggle Password Visibility"
                                 className="absolute inset-y-12 end-3 cursor-pointer"
-                                onClick={() => handleToggle(setConfirmState)}
+                                onClick={handleConfirmToggle}
                             />
                         </span>
                     </div>
