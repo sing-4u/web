@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import GoogleBtn from "../../src/assets/btn.png";
@@ -7,12 +7,19 @@ import CheckboxOutline from "../../src/assets/_checkbox_outline.png";
 import CheckboxBlack from "../../src/assets/_checkbox.png";
 import eyeOn from "../../src/assets/icons_pw_on.png";
 import eyeOff from "../../src/assets/icons_pw_off.png";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import getInputErrorClassName from "../utils/className";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 interface PasswordState {
     value: string;
     type: "password" | "text";
+}
+
+interface LoginState {
+    loading: boolean;
+    error: string | null;
+    accessToken: string | null;
 }
 
 interface FormValues {
@@ -29,6 +36,7 @@ interface CheckboxState {
 }
 
 const Join = () => {
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const navigate = useNavigate();
     const defaultValues = {
         defaultValues: {
@@ -44,6 +52,15 @@ const Join = () => {
         setError,
         formState: { errors }
     } = useForm<FormValues>(defaultValues);
+
+    const [loginState, setLoginState] = useState<LoginState>({
+        loading: false,
+        error: null,
+        accessToken: null
+    });
+
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
 
     const [passwordState, setPasswordState] = useState<PasswordState>({
         type: "password",
@@ -87,7 +104,6 @@ const Join = () => {
 
     const handleGoogleClick = async () => {
         const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-
         const params = new URLSearchParams({
             client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
             redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
@@ -98,18 +114,44 @@ const Join = () => {
             ].join(" "),
             include_granted_scopes: "true"
         });
-
         window.location.href = `${oauth2Endpoint}?${params.toString()}`;
-
-        const queryParams = new URLSearchParams(window.location.search);
-        const code = queryParams.get("code");
-
-        await axios.post(`${import.meta.env.VITE_API_URL}/auth/login/social`, {
-            provider: "GOOGLE",
-            providerCode: code
-        });
-        navigate("/complete-join");
     };
+
+    const storeToken = (accessToken: string, refreshToken: string) => {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        setLoginState({ loading: false, error: null, accessToken });
+    };
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const providerCode = urlParams.get("code");
+        if (providerCode) {
+            const processGoogleLogin = async () => {
+                try {
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_API_URL}/auth/login/social`,
+                        {
+                            provider: "GOOGLE",
+                            providerCode
+                        }
+                    );
+                    const { accessToken, refreshToken } = response.data;
+                    storeToken(accessToken, refreshToken);
+                    navigate(from, { replace: true });
+                } catch (error) {
+                    if (error) {
+                        setLoginState({
+                            loading: false,
+                            error: "Google 로그인에 실패했습니다.",
+                            accessToken: null
+                        });
+                    }
+                }
+            };
+            processGoogleLogin();
+        }
+    }, [navigate, from]);
 
     const handleAllCheckboxes = () => {
         const allChecked = Object.values(checkboxes).every((v) => v);
@@ -127,11 +169,15 @@ const Join = () => {
         privacy: "[선택] 개인정보 처리방침에 동의합니다"
     };
 
-    const onSubmit = async (data: FormValues) => {
+    const isCheckedTerm = (checkboxes: CheckboxState) => {
         if (!checkboxes.age || !checkboxes.privacy || !checkboxes.terms) {
             setTermsError("이용약관에 동의해주세요");
             return;
         }
+    };
+
+    const onSubmit = async (data: FormValues) => {
+        isCheckedTerm(checkboxes);
 
         const { email, password, name } = data;
         try {
@@ -140,6 +186,10 @@ const Join = () => {
                 { email, password, name }
             );
             navigate("/complete-join");
+            await axios.post(
+                `${import.meta.env.VITE_API_URL}/auth/login/email`,
+                { email, password }
+            );
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
@@ -155,193 +205,212 @@ const Join = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full max-w-md mx-auto p-6 space-y-4">
-                <div className="flex">로고</div>
-                <div className="text-2xl font-bold text-center">회원가입</div>
-                <img
-                    src={GoogleBtn}
-                    alt="Google Sign Up"
-                    className="w-full cursor-pointer transition-transform duration-300"
-                    onClick={handleGoogleClick}
-                />
-                <div className="space-x-2 mt-4 flex items-center">
-                    <span className="w-full border-b"></span>
-                </div>
-                <div className="space-y-4">
-                    <div className="flex flex-col">
-                        <label
-                            htmlFor="name"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            닉네임
-                        </label>
-                        <input
-                            {...register("name", {
-                                required: "닉네임을 입력해주세요.",
-                                maxLength: {
-                                    value: 50,
-                                    message: "최대 50자까지 입력 가능합니다"
-                                },
-                                minLength: {
-                                    value: 1,
-                                    message: "최소 1자 이상 입력해야합니다"
-                                },
-                                pattern: {
-                                    value: /^[가-힣a-zA-Z0-9\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{1,50}$/,
-                                    message: "이름을 다시 확인해주세요."
-                                }
-                            })}
-                            className={getInputErrorClassName(errors.name)}
-                            placeholder="닉네임"
-                        />
-
-                        {errors ? (
-                            <span className="text-red-500">
-                                {errors?.name?.message}
-                            </span>
-                        ) : null}
+        <GoogleOAuthProvider clientId={googleClientId}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="w-full max-w-md mx-auto p-6 space-y-4">
+                    <div className="flex">로고</div>
+                    <div className="text-2xl font-bold text-center">
+                        회원가입
                     </div>
-                    <div className="flex flex-col">
-                        <label
-                            htmlFor="email"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            이메일
-                        </label>
-                        <input
-                            placeholder="abc@email.com"
-                            className={getInputErrorClassName(errors.email)}
-                            {...register("email", {
-                                required: "이메일을 입력해주세요",
-                                pattern: {
-                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "올바른 이메일 형식이 아닙니다."
-                                }
-                            })}
-                        />
-                        {errors ? (
-                            <span className="text-red-500">
-                                {errors?.email?.message}
-                            </span>
-                        ) : null}
+                    <img
+                        src={GoogleBtn}
+                        alt="Google Sign Up"
+                        className="w-full cursor-pointer transition-transform duration-300"
+                        onClick={handleGoogleClick}
+                    />
+                    <div className="space-x-2 mt-4 flex items-center">
+                        <span className="w-full border-b"></span>
                     </div>
-                    <div className="relative flex flex-col">
-                        <label
-                            htmlFor="password"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            비밀번호
-                        </label>
-                        <input
-                            type={passwordState.type}
-                            placeholder="비밀번호"
-                            className={getInputErrorClassName(errors.password)}
-                            {...register("password", {
-                                required: "비밀번호를 입력해주세요",
-                                pattern: {
-                                    value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                    message:
-                                        "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
-                                }
-                            })}
-                        />
-                        <span className="text-red-500">
-                            {errors?.password?.message}
-                        </span>
-
-                        <span className="flex justify-end items-center">
-                            <img
-                                src={handleEyeIconToggle(passwordState)}
-                                alt="Toggle Confirm Password Visibility"
-                                className="absolute inset-y-12 end-3 cursor-pointer"
-                                onClick={() => handleToggle(setPasswordState)}
-                            />
-                        </span>
-                    </div>
-                    <div className="relative flex flex-col">
-                        <label
-                            htmlFor="confirmPassword"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            비밀번호 확인
-                        </label>
-                        <input
-                            type={confirmState.type}
-                            placeholder="비밀번호 확인"
-                            className={getInputErrorClassName(
-                                errors.confirmPassword
-                            )}
-                            {...register("confirmPassword", {
-                                required: "비밀번호 확인을 해주세요",
-                                validate: (value) =>
-                                    value !== passwordState.value ||
-                                    "비밀번호가 일치하지 않습니다."
-                            })}
-                        />
-                        {errors
-                            ? errors.confirmPassword && (
-                                  <span className="text-red-500">
-                                      {errors?.confirmPassword?.message}
-                                  </span>
-                              )
-                            : null}
-                        <span className="flex justify-end items-center">
-                            <img
-                                src={handleEyeIconToggle(confirmState)}
-                                alt="Toggle Password Visibility"
-                                className="absolute inset-y-12 end-3 cursor-pointer"
-                                onClick={() => handleToggle(setConfirmState)}
-                            />
-                        </span>
-                    </div>
-                </div>
-                <div>
-                    <span className="flex justify-start mb-4 font-Pretendard">
-                        약관동의
-                    </span>
-                    <div
-                        className="flex items-center space-x-2 cursor-pointer"
-                        onClick={handleAllCheckboxes}
-                    >
-                        <img
-                            src={isAllChecked ? CheckboxBlack : CheckboxOutline}
-                            alt=""
-                            className="mr-1"
-                        />
-                        <div className="flex w-screen justify-start">
-                            <label className="text-sm font-medium font-Pretendard leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                전체동의
+                    <div className="space-y-4">
+                        <div className="flex flex-col">
+                            <label
+                                htmlFor="name"
+                                className="text-left font-Pretendard mb-2"
+                            >
+                                닉네임
                             </label>
+                            <input
+                                {...register("name", {
+                                    required: "닉네임을 입력해주세요.",
+                                    maxLength: {
+                                        value: 50,
+                                        message: "최대 50자까지 입력 가능합니다"
+                                    },
+                                    minLength: {
+                                        value: 1,
+                                        message: "최소 1자 이상 입력해야합니다"
+                                    },
+                                    pattern: {
+                                        value: /^[가-힣a-zA-Z0-9\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{1,50}$/,
+                                        message: "이름을 다시 확인해주세요."
+                                    }
+                                })}
+                                className={getInputErrorClassName(errors.name)}
+                                placeholder="닉네임"
+                            />
+
+                            {errors ? (
+                                <span className="text-red-500">
+                                    {errors?.name?.message}
+                                </span>
+                            ) : null}
+                        </div>
+                        <div className="flex flex-col">
+                            <label
+                                htmlFor="email"
+                                className="text-left font-Pretendard mb-2"
+                            >
+                                이메일
+                            </label>
+                            <input
+                                placeholder="abc@email.com"
+                                className={getInputErrorClassName(errors.email)}
+                                {...register("email", {
+                                    required: "이메일을 입력해주세요",
+                                    pattern: {
+                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message:
+                                            "올바른 이메일 형식이 아닙니다."
+                                    }
+                                })}
+                            />
+                            {errors ? (
+                                <span className="text-red-500">
+                                    {errors?.email?.message}
+                                </span>
+                            ) : null}
+                        </div>
+                        <div className="relative flex flex-col">
+                            <label
+                                htmlFor="password"
+                                className="text-left font-Pretendard mb-2"
+                            >
+                                비밀번호
+                            </label>
+                            <input
+                                type={passwordState.type}
+                                placeholder="비밀번호"
+                                className={getInputErrorClassName(
+                                    errors.password
+                                )}
+                                {...register("password", {
+                                    required: "비밀번호를 입력해주세요",
+                                    pattern: {
+                                        value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                                        message:
+                                            "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                    }
+                                })}
+                            />
+                            <span className="text-red-500">
+                                {errors?.password?.message}
+                            </span>
+
+                            <span className="flex justify-end items-center">
+                                <img
+                                    src={handleEyeIconToggle(passwordState)}
+                                    alt="Toggle Confirm Password Visibility"
+                                    className="absolute inset-y-12 end-3 cursor-pointer"
+                                    onClick={() =>
+                                        handleToggle(setPasswordState)
+                                    }
+                                />
+                            </span>
+                        </div>
+                        <div className="relative flex flex-col">
+                            <label
+                                htmlFor="confirmPassword"
+                                className="text-left font-Pretendard mb-2"
+                            >
+                                비밀번호 확인
+                            </label>
+                            <input
+                                type={confirmState.type}
+                                placeholder="비밀번호 확인"
+                                className={getInputErrorClassName(
+                                    errors.confirmPassword
+                                )}
+                                {...register("confirmPassword", {
+                                    required: "비밀번호 확인을 해주세요",
+                                    validate: (value) =>
+                                        value !== passwordState.value ||
+                                        "비밀번호가 일치하지 않습니다."
+                                })}
+                            />
+                            {errors
+                                ? errors.confirmPassword && (
+                                      <span className="text-red-500">
+                                          {errors?.confirmPassword?.message}
+                                      </span>
+                                  )
+                                : null}
+                            <span className="flex justify-end items-center">
+                                <img
+                                    src={handleEyeIconToggle(confirmState)}
+                                    alt="Toggle Password Visibility"
+                                    className="absolute inset-y-12 end-3 cursor-pointer"
+                                    onClick={() =>
+                                        handleToggle(setConfirmState)
+                                    }
+                                />
+                            </span>
                         </div>
                     </div>
-                    <div className="space-x-2 mt-4 flex items-center">
-                        <span className="w-full border-b" />
+                    <div>
+                        <span className="flex justify-start mb-4 font-Pretendard">
+                            약관동의
+                        </span>
+                        <div
+                            className="flex items-center space-x-2 cursor-pointer"
+                            onClick={handleAllCheckboxes}
+                        >
+                            <img
+                                src={
+                                    isAllChecked
+                                        ? CheckboxBlack
+                                        : CheckboxOutline
+                                }
+                                alt=""
+                                className="mr-1"
+                            />
+                            <div className="flex w-screen justify-start">
+                                <label className="text-sm font-medium font-Pretendard leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                                    전체동의
+                                </label>
+                            </div>
+                        </div>
+                        <div className="space-x-2 mt-4 flex items-center">
+                            <span className="w-full border-b" />
+                        </div>
                     </div>
+                    <div className="space-y-2 font-Pretendard">
+                        {Object.entries(checkboxLabels).map(([key, label]) => (
+                            <Checkbox
+                                key={key}
+                                label={label}
+                                isChecked={
+                                    checkboxes[key as keyof CheckboxState]
+                                }
+                                onToggle={() =>
+                                    handleCheckboxToggle(
+                                        key as keyof CheckboxState
+                                    )
+                                }
+                            />
+                        ))}
+                        {termsError && (
+                            <p className="text-red-500 text-sm">{termsError}</p>
+                        )}
+                    </div>
+                    <button
+                        className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
+                        type="submit"
+                    >
+                        {loginState.loading ? "회원가입 중" : "회원가입"}
+                    </button>
                 </div>
-                <div className="space-y-2 font-Pretendard">
-                    {Object.entries(checkboxLabels).map(([key, label]) => (
-                        <Checkbox
-                            key={key}
-                            label={label}
-                            isChecked={checkboxes[key as keyof CheckboxState]}
-                            onToggle={() =>
-                                handleCheckboxToggle(key as keyof CheckboxState)
-                            }
-                        />
-                    ))}
-                    {termsError && (
-                        <p className="text-red-500 text-sm">{termsError}</p>
-                    )}
-                </div>
-                <button
-                    className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
-                    type="submit"
-                >
-                    회원가입
-                </button>
-            </div>
-        </form>
+            </form>
+        </GoogleOAuthProvider>
     );
 };
 
