@@ -1,14 +1,12 @@
 import eyeOff from "../../src/assets/icons_pw_off.png";
 
-const Password = ({
-    title,
-    text1,
-    text2
-}: {
+interface PasswordProps {
     title: string;
     text1: string;
     text2: string;
-}) => {
+}
+
+const Password = ({ title, text1, text2 }: PasswordProps) => {
     return (
         <>
             <div className="flex">로고</div>
