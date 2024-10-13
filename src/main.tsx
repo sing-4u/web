@@ -1,12 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import App from "./App.tsx";
+import App from "./App";
 import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Join from "./pages/Join.tsx";
-import Home from "./Home.tsx";
-import CompleteJoin from "./pages/CompleteJoin.tsx";
+import Login from "./pages/Login";
+import Home from "./Home";
+import Join from "./pages/Join";
 
 const queryClient = new QueryClient();
 
@@ -16,20 +16,20 @@ const router = createBrowserRouter([
         element: <Home />
     },
     {
-        path: "join",
-        element: <Join />
+        path: "/login",
+        element: <Login />
     },
     {
-        path: "complete-join",
-        element: <CompleteJoin />
+        path: "/join",
+        element: <Join />
     }
 ]);
 
 createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
-            <RouterProvider router={router} />
             <App />
+            <RouterProvider router={router} />
         </QueryClientProvider>
     </StrictMode>
 );
