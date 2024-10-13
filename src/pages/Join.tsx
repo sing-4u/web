@@ -52,10 +52,7 @@ const Join = () => {
         setError,
         watch,
         formState: { errors }
-    } = useForm<FormValues>({
-        ...defaultValues,
-        mode: "onChange"
-    });
+    } = useForm<FormValues>(defaultValues);
 
     const watchPassword = watch("password");
 
@@ -240,11 +237,12 @@ const Join = () => {
                                     required: "닉네임을 입력해주세요.",
                                     maxLength: {
                                         value: 50,
-                                        message: "최대 50자까지 입력 가능합니다"
+                                        message:
+                                            "최대 50자까지 입력 가능합니다."
                                     },
                                     minLength: {
                                         value: 1,
-                                        message: "최소 1자 이상 입력해야합니다"
+                                        message: "최소 1자 이상 입력해야합니다."
                                     },
                                     pattern: {
                                         value: /^[가-힣a-zA-Z0-9\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{1,50}$/,
@@ -255,11 +253,11 @@ const Join = () => {
                                 placeholder="닉네임"
                             />
 
-                            {errors ? (
-                                <span className="text-red-500">
-                                    {errors?.name?.message}
-                                </span>
-                            ) : null}
+                            {errors.name && (
+                                <p className="text-red-500">
+                                    {errors.name.message}
+                                </p>
+                            )}
                         </div>
                         <div className="flex flex-col">
                             <label
@@ -280,11 +278,11 @@ const Join = () => {
                                     }
                                 })}
                             />
-                            {errors ? (
-                                <span className="text-red-500">
+                            {errors.email && (
+                                <p className="text-red-500">
                                     {errors?.email?.message}
-                                </span>
-                            ) : null}
+                                </p>
+                            )}
                         </div>
                         <div className="relative flex flex-col">
                             <label
@@ -308,9 +306,11 @@ const Join = () => {
                                     }
                                 })}
                             />
-                            <span className="text-red-500">
-                                {errors?.password?.message}
-                            </span>
+                            {errors.password && (
+                                <p className="text-red-500">
+                                    {errors?.password?.message}
+                                </p>
+                            )}
 
                             <span className="flex justify-end items-center">
                                 <img
@@ -343,13 +343,11 @@ const Join = () => {
                                         "비밀번호가 일치하지 않습니다."
                                 })}
                             />
-                            {errors
-                                ? errors.confirmPassword && (
-                                      <span className="text-red-500">
-                                          {errors?.confirmPassword?.message}
-                                      </span>
-                                  )
-                                : null}
+                            {errors.confirmPassword && (
+                                <p className="text-red-500">
+                                    {errors?.confirmPassword?.message}
+                                </p>
+                            )}
                             <span className="flex justify-end items-center">
                                 <img
                                     src={handleEyeIconToggle(confirmState)}
