@@ -1,10 +1,5 @@
 import axios from "axios";
 
-interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
 export const getAccessToken = (): string | null => {
   return localStorage.getItem("accessToken");
 };
@@ -23,7 +18,7 @@ export const authAxios = axios.create({
 
 export const checkAuth = async (): Promise<boolean> => {
   try {
-    const response = await authAxios.get("/auth/test");
+    const response = await authAxios.get(`/auth/test`);
     return response.status === 200;
   } catch (error) {
     return false;

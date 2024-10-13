@@ -1,8 +1,11 @@
 import { useForm } from "react-hook-form";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { checkAuth } from "../utils/Auth";
+import GoogleLoginButton from "./GoogleLoginButton";
 
 interface LoginFormValue {
   email: string;
@@ -12,108 +15,70 @@ interface LoginFormValue {
 interface LoginState {
   loading: boolean;
   error: string | null;
-  accessToken: string | null;
 }
 
 const Login = () => {
   const { register, handleSubmit } = useForm<LoginFormValue>();
-  const [loginstate, setLoginState] = useState<LoginState>({
+  const [loginState, setLoginState] = useState<LoginState>({
     loading: false,
     error: null,
-    accessToken: null,
   });
 
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
 
-  const FetchLogin = async (email: string, password: string) => {
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/auth/login/email`,
-      { email, password }
-    );
-    return response.data;
-  };
-
-  const onSubmit = async (data: LoginFormValue) => {
-    setLoginState({ loading: true, error: null, accessToken: null });
-
-    try {
-      const response = await FetchLogin(data.email, data.password);
-      const { accessToken, refreshToken } = response;
+  const loginMutation = useMutation({
+    mutationFn: async (data: LoginFormValue) => {
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/auth/login/email`,
+        data
+      );
+      return response.data;
+    },
+    onSuccess: (data) => {
+      const { accessToken, refreshToken } = data;
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-      setLoginState({ loading: false, error: null, accessToken });
       navigate(from, { replace: true });
-    } catch (error) {
+    },
+    onError: (error: any) => {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         setLoginState({
           loading: false,
           error: "존재하지 않는 유저입니다.",
-          accessToken: null,
         });
-        alert("존재하지 않는 유저입니다.");
       } else {
         setLoginState({
           loading: false,
-          error: "로그인에 실패했습니다.",
-          accessToken: null,
+          error: "로그인 실패 아이디 또는 비밀번호를 확인해주세요.",
         });
-        alert("로그인에 실패했습니다.");
       }
-    }
+    },
+  });
+
+  const onGoogleLoginSuccess = (accessToken: string, refreshToken: string) => {
+    localStorage.setItem("accessToken", accessToken);
+    localStorage.setItem("refreshToken", refreshToken);
+    navigate(from, { replace: true });
   };
 
-  const initiateGoogleLogin = async () => {
-    const googleAuthEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-
-    const queryParams = new URLSearchParams({
-      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-      redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-      response_type: "code",
-      scope: [
-        "https://www.googleapis.com/auth/userinfo.profile",
-        "https://www.googleapis.com/auth/userinfo.email",
-      ].join(" "),
-      include_granted_scopes: "true",
+  const onGoogleLoginError = (error: string) => {
+    setLoginState({
+      loading: false,
+      error: error,
     });
-
-    window.location.href = `${googleAuthEndpoint}?${queryParams.toString()}`;
   };
 
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const authCode = urlParams.get("code");
+  const { data: isAuthenticated } = useQuery({
+    queryFn: checkAuth,
+    queryKey: ["checkAuth"],
+  });
 
-    if (authCode) {
-      const processGoogleLogin = async () => {
-        try {
-          const response = await axios.post(
-            `${import.meta.env.VITE_API_URL}/auth/login/social`,
-            {
-              provider: "GOOGLE",
-              providerCode: authCode,
-            }
-          );
-          console.log(response);
-          const { accessToken, refreshToken } = response.data;
-          localStorage.setItem("accessToken", accessToken);
-          localStorage.setItem("refreshToken", refreshToken);
-          setLoginState({ loading: false, error: null, accessToken });
-          navigate(from, { replace: true });
-        } catch (error) {
-          setLoginState({
-            loading: false,
-            error: "Google 로그인에 실패했습니다.",
-            accessToken: null,
-          });
-        }
-      };
-
-      processGoogleLogin();
-    }
-  }, [navigate, from]);
-
+  const onSubmit = (data: LoginFormValue) => {
+    setLoginState({ loading: true, error: null });
+    loginMutation.mutate(data);
+  };
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -128,13 +93,10 @@ const Login = () => {
             <span className="w-full border-b"></span>
           </div>
           <div className="absolute w-[327px] h-[52px] top-[293px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
-            <button
-              type="button"
-              onClick={initiateGoogleLogin}
-              className="w-full h-full flex items-center justify-center font-bold text-[14px] leading-[16.71px] cursor-pointer"
-            >
-              Google로 계속하기
-            </button>
+            <GoogleLoginButton
+              onSuccess={onGoogleLoginSuccess}
+              onError={onGoogleLoginError}
+            />
           </div>
           <div className="absolute w-[250px] h-[12px] top-[372px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
@@ -158,11 +120,16 @@ const Login = () => {
             <button
               className="absolute w-[327px] h-[52px] top-[558px] left-[24px] border bg-black text-white rounded-[10px]"
               type="submit"
-              disabled={loginstate.loading}
+              disabled={loginState.loading}
             >
-              {loginstate.loading ? "로그인 중..." : "로그인"}
+              {loginState.loading ? "로그인 중..." : "로그인"}
             </button>
           </div>
+          {loginState.error && (
+            <div className="absolute top-[240px] text-red-500 text-center mt-4">
+              {loginState.error}
+            </div>
+          )}
           <div className="flex flex-col items-center w-[245px] h-[24px] top-[615px] left-[65px] absolute">
             <div className="flex items-center space-x-4">
               <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
