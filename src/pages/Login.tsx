@@ -1,11 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../utils/Auth";
-import GoogleLoginButton from "./GoogleLoginButton";
 
 interface LoginFormValue {
   email: string;
@@ -56,19 +55,53 @@ const Login = () => {
       }
     },
   });
+  ///TODO: 구글 소셜 로그인 제외 로그인 구현, 추후 수정예정
+  const initiateGoogleLogin = async () => {
+    const googleAuthEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
 
-  const onGoogleLoginSuccess = (accessToken: string, refreshToken: string) => {
-    localStorage.setItem("accessToken", accessToken);
-    localStorage.setItem("refreshToken", refreshToken);
-    navigate(from, { replace: true });
-  };
-
-  const onGoogleLoginError = (error: string) => {
-    setLoginState({
-      loading: false,
-      error: error,
+    const queryParams = new URLSearchParams({
+      client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+      redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+      response_type: "code",
+      scope: [
+        "https://www.googleapis.com/auth/userinfo.profile",
+        "https://www.googleapis.com/auth/userinfo.email",
+      ].join(" "),
+      include_granted_scopes: "true",
     });
+
+    window.location.href = `${googleAuthEndpoint}?${queryParams.toString()}`;
   };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const authCode = urlParams.get("code");
+
+    const processGoogleLogin = async (authCode: string) => {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/auth/login/social`,
+          {
+            provider: "GOOGLE",
+            providerCode: authCode,
+          }
+        );
+        const { accessToken, refreshToken } = response.data;
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        navigate(from, { replace: true });
+      } catch (error) {
+        setLoginState({
+          loading: false,
+          error: "Google 로그인에 실패했습니다.",
+        });
+      }
+    };
+
+    if (!authCode) {
+      console.log("NO AUTH CODE");
+    }
+  }, [location.search, navigate, from]);
 
   const { data: isAuthenticated } = useQuery({
     queryFn: checkAuth,
@@ -79,6 +112,7 @@ const Login = () => {
     setLoginState({ loading: true, error: null });
     loginMutation.mutate(data);
   };
+
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -93,10 +127,13 @@ const Login = () => {
             <span className="w-full border-b"></span>
           </div>
           <div className="absolute w-[327px] h-[52px] top-[293px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
-            <GoogleLoginButton
-              onSuccess={onGoogleLoginSuccess}
-              onError={onGoogleLoginError}
-            />
+            <button
+              type="button"
+              onClick={initiateGoogleLogin}
+              className="w-full h-full flex items-center justify-center font-bold text-[14px] leading-[16.71px] cursor-pointer"
+            >
+              Google로 계속하기
+            </button>
           </div>
           <div className="absolute w-[250px] h-[12px] top-[372px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
