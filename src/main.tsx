@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from "./Home";
 import Join from "./pages/Join";
+import CompleteJoin from "./pages/CompleteJoin";
 
 const queryClient = new QueryClient();
 
@@ -22,6 +23,10 @@ const router = createBrowserRouter([
     {
         path: "/join",
         element: <Join />
+    },
+    {
+        path: "/complete-join",
+        element: <CompleteJoin />
     }
 ]);
 
