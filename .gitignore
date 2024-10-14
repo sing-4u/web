@@ -25,4 +25,5 @@ dist-ssr
 env.d.ts
 .env
 fonts
-public/web
+# Ignore public/web only
+/public/web/

@@ -169,7 +169,10 @@ const Login = () => {
           )}
           <div className="flex flex-col items-center w-[245px] h-[24px] top-[615px] left-[65px] absolute">
             <div className="flex items-center space-x-4">
-              <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
+              <div
+                className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer"
+                onClick={() => navigate("/Join")}
+              >
                 회원가입
               </div>
               <div className="h-[14px] border border-customGray opacity-30"></div>
