@@ -5,6 +5,7 @@ import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../utils/Auth";
+import GoogleIcon from "../components/GoogleIcon";
 
 interface LoginFormValue {
   email: string;
@@ -132,7 +133,8 @@ const Login = () => {
               onClick={initiateGoogleLogin}
               className="w-full h-full flex items-center justify-center font-bold text-[14px] leading-[16.71px] cursor-pointer"
             >
-              Google로 계속하기
+              <GoogleIcon />
+              <span className="ml-2">Google로 계속하기</span>{" "}
             </button>
           </div>
           <div className="absolute w-[250px] h-[12px] top-[372px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
