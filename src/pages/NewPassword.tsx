@@ -1,21 +1,153 @@
-import Password from "../utils/Password";
+import axios from "axios";
+import { ToastContainer } from "../components/ToastContainer";
+import { useToast } from "../hooks/useToast";
+import { useForm } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import usePasswordToggle from "../hooks/usePasswordToggle";
+
+interface PasswordProps {
+    newPassword: string;
+    confirmPassword?: string;
+}
 
 const NewPassword = () => {
+    const { state: token } = useLocation();
+    const { showToast, toasts } = useToast();
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm<PasswordProps>({
+        defaultValues: {
+            newPassword: "",
+            confirmPassword: ""
+        }
+    });
+
+    const {
+        passwordState: password,
+        handleToggle,
+        handleEyeIconToggle
+    } = usePasswordToggle();
+
+    const {
+        passwordState: confirmPassword,
+        handleToggle: handleConfirmToggle,
+        handleEyeIconToggle: handleConfirmEyeIconToggle
+    } = usePasswordToggle();
+
+    const onSubmit = async (data: PasswordProps) => {
+        const { newPassword } = data;
+        try {
+            await axios.patch(
+                `${import.meta.env.VITE_API_URL}/auth/password`,
+                { newPassword },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+            showToast("success", "비밀번호가 변경되었습니다.");
+        } catch (error) {
+            if (error instanceof Error) throw new Error(error.message);
+        }
+    };
+
     return (
-        <div className="w-full max-w-md mx-auto p-6 space-y-4">
-            <Password
-                title="새 비밀번호 설정"
-                text1="새 비밀번호"
-                text2="새 비밀번호 확인"
-                type="password"
-            />
-            <button
-                className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
-                type="submit"
-            >
-                비밀번호 변경하기
-            </button>
-        </div>
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full max-w-md mx-auto p-6 space-y-4"
+        >
+            <div className="w-full max-w-md mx-auto p-6 space-y-4">
+                <div className="flex">로고</div>
+                <div className="text-2xl font-bold text-center">
+                    비밀번호 찾기
+                </div>
+
+                <div className="relative flex flex-col">
+                    <label
+                        htmlFor="newPassword"
+                        className="text-left font-Pretendard mb-2"
+                    >
+                        새 비밀번호
+                    </label>
+                    <input
+                        type={password.type}
+                        id="newPassword"
+                        placeholder="새 비밀번호"
+                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
+                        {...register("newPassword", {
+                            required: "비밀번호를 입력해주세요",
+                            pattern: {
+                                value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                                message:
+                                    "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                            }
+                        })}
+                    />
+                    {errors.newPassword ? (
+                        <span className="text-red-500 text-sm">
+                            {errors.newPassword.message}
+                        </span>
+                    ) : null}
+                    <span className="flex justify-end items-center">
+                        <img
+                            src={handleEyeIconToggle()}
+                            alt="Toggle Password Visibility"
+                            className="absolute inset-y-12 end-3 cursor-pointer"
+                            onClick={handleToggle}
+                        />
+                    </span>
+                </div>
+                <div className="relative flex flex-col">
+                    <label
+                        htmlFor="confirmPassword"
+                        className="text-left font-Pretendard mb-2"
+                    >
+                        새 비밀번호 확인
+                    </label>
+                    <input
+                        id="code"
+                        type={confirmPassword.type}
+                        placeholder="새 비밀번호 확인"
+                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
+                        {...register("confirmPassword", {
+                            required: "비밀번호를 입력해주세요",
+                            pattern: {
+                                value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                                message:
+                                    "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                            }
+                        })}
+                    />
+                    {errors.confirmPassword ? (
+                        <span className="text-red-500 text-sm">
+                            {errors.confirmPassword.message}
+                        </span>
+                    ) : null}
+
+                    <span className="flex justify-end items-center">
+                        <img
+                            src={handleConfirmEyeIconToggle()}
+                            alt="Toggle Password Visibility"
+                            className="absolute inset-y-12 end-3 cursor-pointer"
+                            onClick={handleConfirmToggle}
+                        />
+                    </span>
+                </div>
+
+                <button
+                    className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
+                    type="submit"
+                >
+                    비밀번호 변경하기
+                </button>
+                <ToastContainer toasts={toasts} />
+            </div>
+        </form>
     );
 };
 

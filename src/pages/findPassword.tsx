@@ -3,6 +3,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "../components/ToastContainer";
 import { useToast } from "../hooks/useToast";
+import { useState } from "react";
 
 interface FormValue {
     email: string;
@@ -12,6 +13,8 @@ interface FormValue {
 const FindPassword = () => {
     const navigate = useNavigate();
     const { showToast, toasts } = useToast();
+    const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
+        useState(false);
     const {
         register,
         handleSubmit,
@@ -35,24 +38,24 @@ const FindPassword = () => {
                 }
             );
             showToast("success", "인증 번호가 전송되었습니다.");
+            setIsAuthenticationCodeRequested(true);
         } catch (error) {
-            console.error("인증 코드 전송 실패:", error);
-            // 에러 처리 (예: 사용자에게 에러 메시지 표시)
+            if (error instanceof Error) throw new Error(error.message);
         }
     };
 
     const onSubmit: SubmitHandler<FormValue> = async (data) => {
         const { email, code } = data;
-        console.log("Form submitted", data);
         try {
-            await axios.post(
+            const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/verify-email-code`,
                 {
                     email,
                     code
                 }
             );
-            navigate("/new-password");
+            const { data: accessToken } = res;
+            navigate("/new-password", { state: accessToken });
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
         }
@@ -85,7 +88,7 @@ const FindPassword = () => {
                                 message: "올바른 이메일 주소를 입력해주세요"
                             }
                         })}
-                        placeholder="abc@email.com"
+                        placeholder="가입한 이메일 주소"
                         className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
                     />
                     {errors.email && (
@@ -95,10 +98,14 @@ const FindPassword = () => {
                     )}
                     <button
                         type="button"
-                        className="absolute inset-y-12 end-3 cursor-pointer text-sm underline"
+                        className="absolute inset-y-12 end-3 cursor-pointer text-sm "
                         onClick={handleAuthenticationCodeClick}
                     >
-                        인증번호 요청
+                        <span className="text-customGray hover:text-gray-400">
+                            {isAuthenticationCodeRequested
+                                ? "재요청"
+                                : "인증번호 요청"}
+                        </span>
                     </button>
                 </div>
                 <div className="relative flex flex-col">
