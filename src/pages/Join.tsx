@@ -1,15 +1,17 @@
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
-import GoogleBtn from "../../src/assets/btn.png";
+import GoogleBtn from "../../src/assets/btn_google.svg";
 import axios from "axios";
-import CheckboxOutline from "../../src/assets/_checkbox_outline.png";
-import CheckboxBlack from "../../src/assets/_checkbox.png";
-import eyeOn from "../../src/assets/icons_pw_on.png";
-import eyeOff from "../../src/assets/icons_pw_off.png";
+import CheckboxOutline from "../../src/assets/_checkbox.svg";
+import CheckboxBlack from "../../src/assets/_checkbox.svg";
+import eyeOn from "../../src/assets/icons_pw_on.svg";
+import eyeOff from "../../src/assets/icons_pw_off.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import getInputErrorClassName from "../utils/className";
-import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import { useToast } from "../hooks/useToast";
+import { ToastContainer } from "../components/ToastContainer";
 
 interface PasswordState {
     value: string;
@@ -36,7 +38,6 @@ interface CheckboxState {
 }
 
 const Join = () => {
-    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
     const navigate = useNavigate();
     const defaultValues = {
         defaultValues: {
@@ -61,6 +62,8 @@ const Join = () => {
         error: null,
         accessToken: null
     });
+
+    const { showToast, toasts } = useToast();
 
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -105,19 +108,20 @@ const Join = () => {
     const handleEyeIconToggle = (state: PasswordState) =>
         state.type === "password" ? eyeOff : eyeOn;
 
-    const handleGoogleClick = async () => {
-        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-        const params = new URLSearchParams({
-            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-            response_type: "code",
-            scope: [
-                "https://www.googleapis.com/auth/userinfo.profile",
-                "https://www.googleapis.com/auth/userinfo.email"
-            ].join(" "),
-            include_granted_scopes: "true"
-        });
-        window.location.href = `${oauth2Endpoint}?${params.toString()}`;
+    const handleGoogleClick = async (res) => {
+        console.log(res.credential);
+        // const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+        // const params = new URLSearchParams({
+        //     client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+        //     redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+        //     response_type: "code",
+        //     scope: [
+        //         "https://www.googleapis.com/auth/userinfo.profile",
+        //         "https://www.googleapis.com/auth/userinfo.email"
+        //     ].join(" "),
+        //     include_granted_scopes: "true"
+        // });
+        // window.location.href = `${oauth2Endpoint}?${params.toString()}`;
     };
 
     const storeToken = (accessToken: string, refreshToken: string) => {
@@ -179,6 +183,8 @@ const Join = () => {
         }
     };
 
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
     const onSubmit = async (data: FormValues) => {
         isCheckedTerm(checkboxes);
 
@@ -188,11 +194,13 @@ const Join = () => {
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
             );
-            navigate("/complete-join");
+
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/login/email`,
                 { email, password }
             );
+            // navigate("/");
+            showToast("success", "회원가입이 완료되었습니다.");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
@@ -209,6 +217,12 @@ const Join = () => {
 
     return (
         <GoogleOAuthProvider clientId={googleClientId}>
+            <GoogleLogin
+                onSuccess={handleGoogleClick}
+                onError={() => {
+                    console.log("failed");
+                }}
+            />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="w-full max-w-md mx-auto p-6 space-y-4">
                     <div className="flex">로고</div>
@@ -414,6 +428,7 @@ const Join = () => {
                     </button>
                 </div>
             </form>
+            <ToastContainer toasts={toasts} />
         </GoogleOAuthProvider>
     );
 };

@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
-import CheckboxOutline from "../../src/assets/_checkbox.png";
-import CheckedBox from "../../src/assets/_checkbox_outline.png";
-import ChevronRight from "../../src/assets/icons-chevron_right.png";
+import CheckboxOutline from "../../src/assets/_checkbox.svg";
+import CheckedBox from "../../src/assets/_checkbox_black.svg";
+import ChevronRight from "../../src/assets/icons_chevron_right_m.svg";
 
 interface CheckboxProps {
     label: string;
