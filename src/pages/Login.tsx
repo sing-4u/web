@@ -55,7 +55,7 @@ const Login = () => {
       }
     },
   });
-  ///TODO: 구글 소셜 로그인 제외 로그인 구현, 추후 수정예정
+  ///TODO: 구글 소셜 로그인 미구현 추후 수정예정
   const initiateGoogleLogin = async () => {
     const googleAuthEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
 
@@ -171,10 +171,6 @@ const Login = () => {
             <div className="flex items-center space-x-4">
               <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
                 회원가입
-              </div>
-              <div className="h-[14px] border border-customGray opacity-30"></div>
-              <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
-                계정 찾기
               </div>
               <div className="h-[14px] border border-customGray opacity-30"></div>
               <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
