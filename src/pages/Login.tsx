@@ -60,7 +60,7 @@ const Login = () => {
       } else {
         setLoginState({
           loading: false,
-          error: "로그인에 실패. 다시 시도해주세요.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       }
     },
@@ -207,7 +207,7 @@ const Login = () => {
             </button>
           </div>
           {loginState.error && (
-            <div className="absolute top-[240px] text-red-500 text-center mt-4">
+            <div className="absolute w-[176px] top-[240px] left-[100px] text-red-500 text-center mt-4 font-medium text-[12px] leading-[14.32px]">
               {loginState.error}
             </div>
           )}
