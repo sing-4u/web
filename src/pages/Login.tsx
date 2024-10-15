@@ -5,6 +5,7 @@ import axios from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../utils/Auth";
+import GoogleIcon from "../components/GoogleIcon";
 
 interface LoginFormValue {
   email: string;
@@ -55,7 +56,7 @@ const Login = () => {
       }
     },
   });
-  ///TODO: 구글 소셜 로그인 제외 로그인 구현, 추후 수정예정
+  ///TODO: 구글 소셜 로그인 미구현 추후 수정예정
   const initiateGoogleLogin = async () => {
     const googleAuthEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
 
@@ -132,7 +133,8 @@ const Login = () => {
               onClick={initiateGoogleLogin}
               className="w-full h-full flex items-center justify-center font-bold text-[14px] leading-[16.71px] cursor-pointer"
             >
-              Google로 계속하기
+              <GoogleIcon />
+              <span className="ml-2">Google로 계속하기</span>{" "}
             </button>
           </div>
           <div className="absolute w-[250px] h-[12px] top-[372px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
@@ -169,12 +171,11 @@ const Login = () => {
           )}
           <div className="flex flex-col items-center w-[245px] h-[24px] top-[615px] left-[65px] absolute">
             <div className="flex items-center space-x-4">
-              <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
+              <div
+                className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer"
+                onClick={() => navigate("/Join")}
+              >
                 회원가입
-              </div>
-              <div className="h-[14px] border border-customGray opacity-30"></div>
-              <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
-                계정 찾기
               </div>
               <div className="h-[14px] border border-customGray opacity-30"></div>
               <div className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer">
