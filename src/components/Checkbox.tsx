@@ -1,7 +1,7 @@
 import { MouseEvent } from "react";
-import CheckboxOutline from "../../src/assets/_checkbox.png";
-import CheckedBox from "../../src/assets/_checkbox_outline.png";
-import ChevronRight from "../../src/assets/icons-chevron_right.png";
+import CheckboxOutline from "../../src/assets/_checkbox_outline.svg";
+import CheckedBox from "../../src/assets/_checkbox_black.svg";
+import ChevronRight from "../../src/assets/icons_chevron_right_m.svg";
 
 interface CheckboxProps {
     label: string;
@@ -20,7 +20,7 @@ const Checkbox = ({
         e.stopPropagation();
         onToggle();
     };
-
+    console.log(isChecked, "isChecked");
     const handleChevronClick = (e: MouseEvent) => {
         e.stopPropagation();
         if (onChevronClick) {
@@ -35,7 +35,7 @@ const Checkbox = ({
                 onClick={handleCheckboxClick}
             >
                 <img
-                    src={isChecked ? CheckboxOutline : CheckedBox}
+                    src={isChecked ? CheckedBox : CheckboxOutline}
                     alt=""
                     className="mr-1"
                 />
