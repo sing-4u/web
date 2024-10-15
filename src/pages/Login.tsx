@@ -156,7 +156,7 @@ const Login = () => {
               }`}
             >
               <input
-                className={`w-[327px] h-[52px] border ${
+                className={`w-[327px] h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                   errors.email ? "border-red-500" : "border-customGray"
                 } 
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] 
@@ -179,7 +179,7 @@ const Login = () => {
               }`}
             >
               <input
-                className={`w-full h-[52px] border ${
+                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                   errors.password ? "border-red-500" : "border-customGray"
                 } 
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] 
