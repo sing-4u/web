@@ -18,7 +18,11 @@ interface LoginState {
 }
 
 const Login = () => {
-  const { register, handleSubmit } = useForm<LoginFormValue>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormValue>();
   const [loginState, setLoginState] = useState<LoginState>({
     loading: false,
     error: null,
@@ -48,10 +52,15 @@ const Login = () => {
           loading: false,
           error: "존재하지 않는 유저입니다.",
         });
+      } else if (error.response?.status === 401) {
+        setLoginState({
+          loading: false,
+          error: "비밀번호가 일치하지 않습니다.",
+        });
       } else {
         setLoginState({
           loading: false,
-          error: "로그인 실패 아이디 또는 비밀번호를 확인해주세요.",
+          error: "로그인에 실패. 다시 시도해주세요.",
         });
       }
     },
@@ -140,24 +149,57 @@ const Login = () => {
           <div className="absolute w-[250px] h-[12px] top-[372px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
           </div>
-          <div className="flex flex-col">
-            <input
-              className="absolute w-[327px] h-[52px] top-[432px] left-[24px] border border-customGray rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[24px]"
-              {...register("email", { required: "이메일을 입력해주세요" })}
-              maxLength={20}
-              type="text"
-              placeholder="이메일 주소"
-            />
-            <input
-              className="absolute w-[327px] h-[52px] top-[490px] left-[24px] border border-customGray rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[24px]"
-              {...register("password", { required: "비밀번호를 입력해주세요" })}
-              type="password"
-              placeholder="비밀번호"
-            />
+          <div className="flex flex-col space-y-4 ">
+            <div
+              className={`relative w-[327px] top-[365px]  ${
+                errors.email ? "mb-4" : "mb-0"
+              }`}
+            >
+              <input
+                className={`w-[327px] h-[52px] border ${
+                  errors.email ? "border-red-500" : "border-customGray"
+                } 
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] 
+                  placeholder:pt-[14px] pl-[24px]`}
+                {...register("email", { required: "이메일을 입력해주세요" })}
+                maxLength={20}
+                type="text"
+                placeholder="이메일 주소"
+              />
+              {errors.email && (
+                <span className="text-red-500 text-[12px] leading-[14.32px] absolute top-[56px] left-0">
+                  {errors.email.message}
+                </span>
+              )}
+            </div>
+
+            <div
+              className={`relative w-[327px] top-[360px] ${
+                errors.password ? "mb-4" : "mb-0"
+              }`}
+            >
+              <input
+                className={`w-full h-[52px] border ${
+                  errors.password ? "border-red-500" : "border-customGray"
+                } 
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] 
+                  placeholder:pt-[14px] pl-[24px]`}
+                {...register("password", {
+                  required: "비밀번호를 입력해주세요",
+                })}
+                type="password"
+                placeholder="비밀번호"
+              />
+              {errors.password && (
+                <span className="text-red-500 text-[12px] leading-[14.32px] absolute top-[56px] left-0">
+                  {errors.password.message}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex justify-center">
             <button
-              className="absolute w-[327px] h-[52px] top-[558px] left-[24px] border bg-black text-white rounded-[10px]"
+              className="absolute w-[327px] h-[52px] top-[600px] left-[24px] border bg-black text-white rounded-[10px]"
               type="submit"
               disabled={loginState.loading}
             >
@@ -170,7 +212,7 @@ const Login = () => {
             </div>
           )}
           <div className="flex flex-col items-center w-[245px] h-[24px] top-[615px] left-[65px] absolute">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-4 mt-6">
               <div
                 className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer"
                 onClick={() => navigate("/Join")}
