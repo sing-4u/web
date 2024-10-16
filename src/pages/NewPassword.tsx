@@ -4,6 +4,7 @@ import { useToast } from "../hooks/useToast";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import usePasswordToggle from "../hooks/usePasswordToggle";
+import getInputErrorClassName from "../utils/className";
 
 interface PasswordProps {
     newPassword: string;
@@ -84,7 +85,7 @@ const NewPassword = () => {
                         type={newPassword.type}
                         id="newPassword"
                         placeholder="새 비밀번호"
-                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
+                        className={getInputErrorClassName(errors.newPassword)}
                         {...register("newPassword", {
                             required: "비밀번호를 입력해주세요",
                             pattern: {
@@ -119,10 +120,11 @@ const NewPassword = () => {
                         id="confirmPassword"
                         type={confirmPassword.type}
                         placeholder="새 비밀번호 확인"
-                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
+                        className={getInputErrorClassName(
+                            errors.confirmPassword
+                        )}
                         {...register("confirmPassword", {
                             required: "비밀번호를 입력해주세요",
-
                             validate: (value) =>
                                 value === watch("newPassword") ||
                                 "비밀번호가 일치하지 않습니다."
