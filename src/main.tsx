@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
@@ -12,29 +11,26 @@ import CompleteJoin from "./pages/CompleteJoin";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Home />
-    },
-    {
-        path: "/login",
-        element: <Login />
-    },
-    {
-        path: "/join",
-        element: <Join />
-    },
-    {
-        path: "/complete-join",
-        element: <CompleteJoin />
-    }
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/join",
+    element: <Join />,
+  },
+  {
+    path: "/complete-join",
+    element: <CompleteJoin />,
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <StrictMode>
-        <QueryClientProvider client={queryClient}>
-            <App />
-            <RouterProvider router={router} />
-        </QueryClientProvider>
-    </StrictMode>
+  <QueryClientProvider client={queryClient}>
+    <RouterProvider router={router} />
+  </QueryClientProvider>
 );
