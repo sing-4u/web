@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
 import ImgProfileS from "./ImgProfileS";
+import { useNavigate, Route } from "react-router-dom";
 
 interface UserData {
   id: string;
@@ -13,7 +14,13 @@ interface UserData {
 }
 
 const Navbar = () => {
-  const { data, isLoading, error } = useQuery<UserData>({
+  const navigate = useNavigate();
+
+  const {
+    data: userData,
+    isLoading,
+    error,
+  } = useQuery<UserData>({
     queryKey: ["user"],
     queryFn: async () => {
       try {
@@ -25,24 +32,57 @@ const Navbar = () => {
             },
           }
         );
+        console.log(response.data);
         return response.data;
       } catch (error) {
-        throw new Error("유저 정보 가져오기 실패");
+        if (axios.isAxiosError(error)) {
+          if (error.response?.status === 400) {
+            throw new Error("유효성 검사 실패");
+          } else if (error.response?.status === 401) {
+            throw new Error("인증 실패");
+          }
+        }
+        throw error;
       }
     },
   });
 
+  const isLoggedIn = !!userData;
+  const profileImage =
+    typeof userData?.image === "string" ? userData.image : undefined;
+
   return (
-    <div className="w-full max-w-md mx-auto p-6 space-y-4">
-      <div className="flex justify-between items-center w-[375px] h-[60px] top-[44px] border-b-[0.5px] pt-[12px] pr-[24px] pl-[24px] pb-[24px]">
+    <div className="w-full max-w-[376px] mx-auto py-3 px-6 space-y-4">
+      <div className="flex justify-between items-center w-full h-[60px] border-b-[0.5px] border-b-gray-300 pt-[12px] pr-0 pl-0 pb-[24px]">
         <div className="w-[80px] h-[30px]">Logo</div>
-        <div className="flex items-center w-[127px] h-[36px] gap-3">
-          <button className="flex w-[79px] h-[30px] border rounded-[5px] py-3 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-black text-white">
-            신청곡 관리
-          </button>
-          <div className="w-[36px] h-[36px] rounded-full border overflow-hidden">
-            <ImgProfileS />
-          </div>
+        <div className="flex items-center gap-3">
+          {isLoggedIn ? (
+            <>
+              <button className="flex w-[79px] h-[30px] border rounded-[5px] py-3 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-black text-white">
+                신청곡 관리
+              </button>
+              <div className="w-[36px] h-[36px] rounded-full border overflow-hidden">
+                {profileImage ? (
+                  <img
+                    src={profileImage}
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <ImgProfileS />
+                )}
+              </div>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                navigate("/Login");
+              }}
+              className="flex w-[56px] h-[30px] border rounded-[5px] py-3 px-2 font-bold text-[12px] leading-[14.32px] gap-2 justify-center items-center bg-black text-white ml-auto"
+            >
+              로그인
+            </button>
+          )}
         </div>
       </div>
     </div>
