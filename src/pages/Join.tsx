@@ -37,7 +37,8 @@ const Join = () => {
         register,
         handleSubmit,
         setError,
-        formState: { errors }
+        formState: { errors },
+        watch
     } = useForm<FormValues>(defaultValues);
 
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
@@ -260,7 +261,7 @@ const Join = () => {
                             {...register("confirmPassword", {
                                 required: "비밀번호 확인을 해주세요",
                                 validate: (value) =>
-                                    value !== password.value ||
+                                    value === watch("password") ||
                                     "비밀번호가 일치하지 않습니다."
                             })}
                         />

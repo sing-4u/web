@@ -18,7 +18,8 @@ const NewPassword = () => {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        watch
     } = useForm<PasswordProps>({
         defaultValues: {
             newPassword: "",
@@ -27,7 +28,7 @@ const NewPassword = () => {
     });
 
     const {
-        passwordState: password,
+        passwordState: newPassword,
         handleToggle,
         handleEyeIconToggle
     } = usePasswordToggle();
@@ -80,7 +81,7 @@ const NewPassword = () => {
                         새 비밀번호
                     </label>
                     <input
-                        type={password.type}
+                        type={newPassword.type}
                         id="newPassword"
                         placeholder="새 비밀번호"
                         className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
@@ -115,17 +116,16 @@ const NewPassword = () => {
                         새 비밀번호 확인
                     </label>
                     <input
-                        id="code"
+                        id="confirmPassword"
                         type={confirmPassword.type}
                         placeholder="새 비밀번호 확인"
                         className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
                         {...register("confirmPassword", {
                             required: "비밀번호를 입력해주세요",
-                            pattern: {
-                                value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                message:
-                                    "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
-                            }
+
+                            validate: (value) =>
+                                value === watch("newPassword") ||
+                                "비밀번호가 일치하지 않습니다."
                         })}
                     />
                     {errors.confirmPassword ? (
