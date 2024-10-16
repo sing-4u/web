@@ -65,7 +65,7 @@ const Login = () => {
       }
     },
   });
-  ///TODO: 구글 소셜 로그인 미구현 추후 수정예정
+
   const initiateGoogleLogin = async () => {
     const googleAuthEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
 
@@ -86,7 +86,7 @@ const Login = () => {
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const authCode = urlParams.get("code");
-
+    console.log(window.location.href);
     const processGoogleLogin = async (authCode: string) => {
       try {
         const response = await axios.post(
@@ -107,8 +107,9 @@ const Login = () => {
         });
       }
     };
-
-    if (!authCode) {
+    if (authCode) {
+      processGoogleLogin(authCode);
+    } else if (!authCode) {
       console.log("NO AUTH CODE");
     }
   }, [location.search, navigate, from]);
