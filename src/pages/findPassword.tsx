@@ -58,6 +58,10 @@ const FindPassword = () => {
             navigate("/new-password", { state: accessToken });
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
+            // 401 에러 처리
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                showToast("error", "인증 번호가 일치하지 않습니다.");
+            }
         }
     };
 

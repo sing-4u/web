@@ -8,8 +8,8 @@ import Join from "./pages/Join.tsx";
 import Home from "./Home.tsx";
 import CompleteJoin from "./pages/CompleteJoin.tsx";
 
-import FindPassword from "./pages/findPassword.tsx";
 import NewPassword from "./pages/NewPassword.tsx";
+import FindPassword from "./pages/findPassword.tsx";
 
 const queryClient = new QueryClient();
 

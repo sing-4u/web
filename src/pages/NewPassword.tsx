@@ -11,7 +11,8 @@ interface PasswordProps {
 }
 
 const NewPassword = () => {
-    const { state: token } = useLocation();
+    const { state } = useLocation();
+    const { accessToken } = state;
     const { showToast, toasts } = useToast();
 
     const {
@@ -46,13 +47,17 @@ const NewPassword = () => {
                 {
                     headers: {
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${accessToken}`
                     }
                 }
             );
             showToast("success", "비밀번호가 변경되었습니다.");
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
+            // 401 에러 처리
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                showToast("error", "비밀번호 변경에 실패했습니다.");
+            }
         }
     };
 
