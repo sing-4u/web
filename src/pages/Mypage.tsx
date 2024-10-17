@@ -16,7 +16,8 @@ const Mypage = () => {
     "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
   const inputClass =
     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
-
+  const changeButtonClass =
+    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
   return (
     <div className="min-h-screen flex flex-col items-center">
       <Navbar />
@@ -56,18 +57,28 @@ const Mypage = () => {
             <label htmlFor="email" className={inputLabelClass}>
               이메일
             </label>
-            <input
-              type="email"
-              id="email"
-              value={userData?.email || ""}
-              className={inputClass}
-            />
+            <div className="relative flex items-center">
+              <input
+                type="email"
+                id="email"
+                value={userData?.email || ""}
+                className={inputClass}
+              />
+              <button type="button" className={changeButtonClass}>
+                변경
+              </button>
+            </div>
           </div>
           <div className="flex flex-col gap-y-2">
             <label htmlFor="password" className={inputLabelClass}>
               비밀번호
             </label>
-            <input type="password" id="password" className={inputClass} />
+            <div className="relative flex justify-center items-center">
+              <input type="password" id="password" className={inputClass} />
+              <button type="button" className={changeButtonClass}>
+                변경
+              </button>
+            </div>
             <div className="flex justify-center w-full mt-6">
               <button className="w-[328px] h-[52px] rounded-[10px] py-3.5 px-[18px] font-bold text-[14px] leading-[16.71px] bg-gray-200 text-customGray">
                 로그아웃
