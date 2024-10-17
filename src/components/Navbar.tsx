@@ -3,7 +3,7 @@ import axios from "axios";
 import React from "react";
 import ImgProfileS from "./ImgProfileS";
 import { useNavigate, Route } from "react-router-dom";
-
+import useUserData from "../hooks/useUserData";
 interface UserData {
   id: string;
   name: string;
@@ -16,44 +16,15 @@ interface UserData {
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const {
-    data: userData,
-    isLoading,
-    error,
-  } = useQuery<UserData>({
-    queryKey: ["user"],
-    queryFn: async () => {
-      try {
-        const response = await axios.get<UserData>(
-          `${import.meta.env.VITE_API_URL}/users/me`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        console.log(response.data);
-        return response.data;
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response?.status === 400) {
-            throw new Error("유효성 검사 실패");
-          } else if (error.response?.status === 401) {
-            throw new Error("인증 실패");
-          }
-        }
-        throw error;
-      }
-    },
-  });
+  const { data: userData, isLoading, error } = useUserData();
 
   const isLoggedIn = !!userData;
   const profileImage =
     typeof userData?.image === "string" ? userData.image : undefined;
 
   return (
-    <div className="w-full max-w-[376px] mx-auto py-3 px-6 space-y-4">
-      <div className="flex justify-between items-center w-full h-[60px] border-b-[0.5px] border-b-gray-300 pt-[12px] pr-0 pl-0 pb-[24px]">
+    <div className="w-full max-w-[376px] mx-auto py-3 space-y-4">
+      <div className="flex justify-between items-center w-full h-[60px] border-b-[0.5px] border-inputBorderColor px-6">
         <div className="w-[80px] h-[30px]">Logo</div>
         <div className="flex items-center gap-3">
           {isLoggedIn ? (
