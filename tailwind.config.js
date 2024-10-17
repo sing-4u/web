@@ -10,8 +10,10 @@ export default {
         customGray: "#888888",
         inputBorderColor: "#E1E1E1",
         inputTextColor: "#AAAAAA",
+        buttonColor: "#F5F5F5",
       },
     },
   },
+  variants: {},
   plugins: [],
 };
