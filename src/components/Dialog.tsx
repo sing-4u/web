@@ -1,4 +1,11 @@
-const Dialog = ({ isOpen, onClose, title, children }) => {
+interface DialogProps {
+    isOpen: boolean;
+    onClose: () => void;
+    title: string;
+    children?: React.ReactNode;
+}
+
+const Dialog = ({ isOpen, onClose, title, children }: DialogProps) => {
     if (!isOpen) return null;
 
     return (
