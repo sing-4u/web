@@ -1,35 +1,33 @@
 import SearchIcon from "../src/assets/ic_Search.svg";
 import Card from "../src/assets/card.svg";
-import SmallProfile from "../src/assets/profile_S.svg";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
     const handleLogin = () => {
         setIsLoggedIn(!isLoggedIn);
     };
 
-    const handleLogout = () => {
-        setIsLoggedIn(false);
+    // const handleLogout = () => {
+    //     setIsLoggedIn(false);
+    // };
+
+    // const handleArtistClick = (index) => {
+    //     if (isLoggedIn) {
+    //         console.log(`Navigate to artist ${index + 1}`);
+    //         // Navigation would be handled here in a real app
+    //     } else {
+    //         handleLogin();
+    //     }
+    // };
+
+    const handleMypageClick = () => {
+        navigate("/mypage");
     };
 
-    const handleArtistClick = (index) => {
-        if (isLoggedIn) {
-            console.log(`Navigate to artist ${index + 1}`);
-            // Navigation would be handled here in a real app
-        } else {
-            handleLogin();
-        }
-    };
-
-    // const artists = [
-    //     { name: "Luna Nova", image: "/path/to/luna_nova_image.jpg" },
-    //     { name: "Solstice Heart", image: "/path/to/solstice_heart_image.jpg" },
-    //     { name: "Liora Zepphyr", image: "/path/to/liora_zepphyr_image.jpg" },
-    //     { name: "Luna Nova", image: "/path/to/luna_nova_image.jpg" },
-    //     { name: "Solstice Heart", image: "/path/to/solstice_heart_image.jpg" },
-    //     { name: "Liora Zepphyr", image: "/path/to/liora_zepphyr_image.jpg" }
-    // ];
     return (
         <div className="w-full max-w-md mx-auto p-6 space-y-4">
             <div className="flex justify-between">
@@ -42,7 +40,8 @@ export default function Home() {
                         </button>
                         <img
                             src={Card}
-                            className="w-8 h-8 bg-gray-200 rounded-full"
+                            className="w-8 h-8 bg-gray-200 rounded-full cursor-pointer"
+                            onClick={handleMypageClick}
                         />
                     </div>
                 ) : (
@@ -67,16 +66,6 @@ export default function Home() {
                 />
             </div>
             <div className="grid grid-cols-2 gap-4">
-                {/* <img src={Card} className="w-full h-auto" />
-                <img src={Card} className="w-full h-auto" />
-                <img src={Card} className="w-full h-auto" />
-                <img src={Card} className="w-full h-auto" />
-                <img src={Card} className="w-full h-auto" />
-                <img src={Card} className="w-full h-auto" />
-                <img src={Card} className="w-full h-auto" /> */}
-                {/* [...Array{10}].map((_,index))
-                ` */}
-                {/* Card를 여러개 배치 */}
                 {Array(10)
                     .fill(0)
                     .map((_, index) => (
