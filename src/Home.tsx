@@ -3,7 +3,24 @@ import Card from "../src/assets/card.svg";
 import SmallProfile from "../src/assets/profile_S.svg";
 
 export default function Home() {
-    const isLoggedIn = true;
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const handleLogin = () => {
+        setIsLoggedIn(!isLoggedIn);
+    };
+
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+    };
+
+    const handleArtistClick = (index) => {
+        if (isLoggedIn) {
+            console.log(`Navigate to artist ${index + 1}`);
+            // Navigation would be handled here in a real app
+        } else {
+            handleLogin();
+        }
+    };
 
     // const artists = [
     //     { name: "Luna Nova", image: "/path/to/luna_nova_image.jpg" },
@@ -29,7 +46,10 @@ export default function Home() {
                         />
                     </div>
                 ) : (
-                    <button className="bg-black text-white text-sm py-1 px-3 rounded-md">
+                    <button
+                        className="bg-black text-white text-sm py-1 px-3 rounded-md"
+                        onClick={handleLogin}
+                    >
                         로그인
                     </button>
                 )}
