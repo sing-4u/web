@@ -1,16 +1,43 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
 import ImgProfileL from "../components/ImgProfileL";
 import CameraImg from "../components/CameraImg";
 import ChevronRightSmall from "../components/ChevronRightSmall";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 const Mypage = () => {
   const { data: userData } = useUserData();
+  const [nickname, setNickname] = useState(userData?.name || "");
+  const [isEditingName, setIsEditingName] = useState(false);
+  const [profileImage, setProfileImage] = useState<File | null>(null);
 
-  const profileImage =
-    typeof userData?.image === "string" ? userData.image : undefined;
+  useEffect(() => {
+    if (userData?.name) {
+      setNickname(userData.name);
+    }
+  }, [userData]);
+
+  const handleNameChange = async () => {
+    if (isEditingName) {
+      try {
+        await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/me/name`,
+          { name: nickname },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        console.log("닉네임이 변경되었습니다.");
+        setIsEditingName(false);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
 
   const inputLabelClass =
     "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
@@ -18,6 +45,7 @@ const Mypage = () => {
     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
   const changeButtonClass =
     "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
+
   return (
     <div className="min-h-screen flex flex-col items-center">
       <Navbar />
@@ -27,7 +55,7 @@ const Mypage = () => {
             <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
               {profileImage ? (
                 <img
-                  src={profileImage}
+                  src={URL.createObjectURL(profileImage)}
                   alt="Profile"
                   className="w-full h-full object-cover rounded-full "
                 />
@@ -46,17 +74,30 @@ const Mypage = () => {
             <label htmlFor="nickname" className={inputLabelClass}>
               닉네임
             </label>
-          </div>
-          <div className="relative flex items-center">
-            <input
-              type="text"
-              id="nickname"
-              value={userData?.name || ""}
-              className={inputClass}
-            />
-            <button type="button" className={changeButtonClass}>
-              수정
-            </button>
+            <div className="relative flex items-center">
+              <input
+                type="email"
+                id="nickname"
+                value={nickname}
+                onChange={(e) => setNickname(e.target.value)}
+                disabled={!isEditingName}
+                className={inputClass}
+              />
+              <button
+                type="button"
+                className={changeButtonClass}
+                onClick={() => {
+                  if (isEditingName) {
+                    handleNameChange();
+                  } else {
+                    setNickname("");
+                    setIsEditingName(true);
+                  }
+                }}
+              >
+                {isEditingName ? "완료" : "수정"}
+              </button>
+            </div>
           </div>
           <div className="flex flex-col gap-y-2">
             <label htmlFor="email" className={inputLabelClass}>
