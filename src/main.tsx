@@ -8,6 +8,8 @@ import Login from "./pages/Login";
 import Home from "./Home";
 import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
+import FindPassword from "./pages/FindPassword";
+import NewPassword from "./pages/NewPassword";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,14 @@ const router = createBrowserRouter([
     {
         path: "/complete-join",
         element: <CompleteJoin />
+    },
+    {
+        path: "find-password",
+        element: <FindPassword />
+    },
+    {
+        path: "new-password",
+        element: <NewPassword />
     }
 ]);
 
