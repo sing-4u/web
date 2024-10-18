@@ -46,12 +46,17 @@ const Mypage = () => {
             <label htmlFor="nickname" className={inputLabelClass}>
               닉네임
             </label>
+          </div>
+          <div className="relative flex items-center">
             <input
               type="text"
               id="nickname"
               value={userData?.name || ""}
               className={inputClass}
             />
+            <button type="button" className={changeButtonClass}>
+              수정
+            </button>
           </div>
           <div className="flex flex-col gap-y-2">
             <label htmlFor="email" className={inputLabelClass}>
