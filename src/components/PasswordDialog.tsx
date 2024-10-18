@@ -83,7 +83,7 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                         </label>
                         <div className="mt-1 relative rounded-md shadow-sm">
                             <input
-                                {...register("password", {
+                                {...register("oldPassword", {
                                     required: "비밀번호를 입력해주세요",
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
@@ -119,7 +119,7 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                         <div className="mt-1 relative rounded-md shadow-sm">
                             <input
                                 {...register("newPassword", {
-                                    required: "비��번호를 입력해주세요",
+                                    required: "비밀번호를 입력해주세요",
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:
