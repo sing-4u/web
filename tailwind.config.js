@@ -1,12 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
-    theme: {
-        extend: {
-            fontFamily: {
-                Pretendard: ["Pretendard"]
-            }
-        }
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    extend: {
+      fontFamily: {
+        pretendard: ["Pretendard"],
+      },
+      colors: {
+        customGray: "#888888",
+      },
     },
-    plugins: []
+  },
+  plugins: [],
 };
