@@ -1,19 +1,93 @@
-import { useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
 import ImgProfileL from "../components/ImgProfileL";
 import CameraImg from "../components/CameraImg";
 import ChevronRightSmall from "../components/ChevronRightSmall";
 import Footer from "../components/Footer";
-import PasswordDialog from "../components/PasswordDialog";
 import axios from "axios";
+import { logout } from "../utils/Auth";
+import { useNavigate } from "react-router-dom";
+import PasswordDialog from "../components/PasswordDialog";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
+    const [nickname, setNickname] = useState(userData?.name || "");
+    const [isEditingName, setIsEditingName] = useState(false);
+    const [profileImage, setProfileImage] = useState<string | File | null>(
+        userData?.image || null
+    );
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+    const navigate = useNavigate();
+
     const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-    const profileImage =
-        typeof userData?.image === "string" ? userData.image : undefined;
+    const handleLogout = () => {
+        logout();
+        navigate("/");
+    };
+
+    useEffect(() => {
+        if (userData?.name) {
+            setNickname(userData.name);
+        }
+        if (userData?.image) {
+            setProfileImage(userData.image);
+        }
+    }, [userData]);
+
+    const handleNameChange = async () => {
+        if (isEditingName) {
+            try {
+                await axios.patch(
+                    `${import.meta.env.VITE_API_URL}/users/me/name`,
+                    { name: nickname },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                            )}`
+                        }
+                    }
+                );
+                setIsEditingName(false);
+            } catch (error) {
+                setErrorMessage(
+                    "닉네임 변경에 실패했습니다. 다시 시도해주세요."
+                );
+            }
+        }
+    };
+
+    const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            const formData = new FormData();
+            formData.append("image", file);
+
+            try {
+                await axios.patch(
+                    `${import.meta.env.VITE_API_URL}/users/me/image`,
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            Authorization: `Bearer ${localStorage.getItem(
+                                "accessToken"
+                            )}`
+                        }
+                    }
+                );
+                setProfileImage(URL.createObjectURL(file));
+                setErrorMessage(null);
+            } catch (error) {
+                setErrorMessage(
+                    "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
+                );
+            }
+        }
+    };
 
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
@@ -22,31 +96,34 @@ const Mypage = () => {
     const changeButtonClass =
         "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
 
-    const handlePasswordChange = () => {};
-
-    const handleDeleteImage = async () => {
-        const image = userData?.image;
-        if (image !== null) {
-            await axios.patch(`${import.meta.env}/users/me/image`, {
-                image
-            });
-        }
-    };
-
     return (
         <div className="min-h-screen flex flex-col items-center">
-            <Navbar />
+            <Navbar profileImage={profileImage} />
             <form className="flex flex-col items-center w-full max-w-md mt-2 flex-grow">
                 <div className="flex flex-col w-[328px] h-[413px] gap-y-6">
                     <div className="relative flex flex-col w-full justify-center items-center">
-                        <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
+                        <div
+                            className="relative w-[90px] h-[90px] cursor-pointer mt-3"
+                            onClick={() =>
+                                document
+                                    .getElementById("profileImageInput")
+                                    ?.click()
+                            }
+                        >
                             {profileImage ? (
-                                <img
-                                    src={profileImage}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover rounded-full "
-                                    onClick={handleDeleteImage}
-                                />
+                                typeof profileImage === "string" ? (
+                                    <img
+                                        src={profileImage}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover rounded-full "
+                                    />
+                                ) : (
+                                    <img
+                                        src={URL.createObjectURL(profileImage)}
+                                        alt="Profile"
+                                        className="w-full h-full object-cover rounded-full "
+                                    />
+                                )
                             ) : (
                                 <ImgProfileL />
                             )}
@@ -54,20 +131,50 @@ const Mypage = () => {
                                 <CameraImg />
                             </div>
                         </div>
+                        <input
+                            type="file"
+                            id="profileImageInput"
+                            accept="image/*"
+                            onChange={handleImageChange}
+                            className="hidden"
+                        />
                         <div className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
                             이미지삭제
                         </div>
                     </div>
+                    {errorMessage && (
+                        <div className="text-red-500 text-sm mt-2">
+                            {errorMessage}
+                        </div>
+                    )}
                     <div className="flex flex-col gap-y-2">
                         <label htmlFor="nickname" className={inputLabelClass}>
                             닉네임
                         </label>
-                        <input
-                            type="text"
-                            id="nickname"
-                            value={userData?.name || ""}
-                            className={inputClass}
-                        />
+                        <div className="relative flex items-center">
+                            <input
+                                type="text"
+                                id="nickname"
+                                value={nickname}
+                                onChange={(e) => setNickname(e.target.value)}
+                                disabled={!isEditingName}
+                                className={inputClass}
+                            />
+                            <button
+                                type="button"
+                                className={changeButtonClass}
+                                onClick={() => {
+                                    if (isEditingName) {
+                                        handleNameChange();
+                                    } else {
+                                        setNickname("");
+                                        setIsEditingName(true);
+                                    }
+                                }}
+                            >
+                                {isEditingName ? "완료" : "수정"}
+                            </button>
+                        </div>
                     </div>
                     <div className="flex flex-col gap-y-2">
                         <label htmlFor="email" className={inputLabelClass}>
@@ -79,12 +186,9 @@ const Mypage = () => {
                                 id="email"
                                 value={userData?.email || ""}
                                 className={inputClass}
+                                disabled
                             />
-                            <button
-                                type="button"
-                                className={changeButtonClass}
-                                onClick={handlePasswordChange}
-                            >
+                            <button type="button" className={changeButtonClass}>
                                 변경
                             </button>
                         </div>
@@ -98,17 +202,17 @@ const Mypage = () => {
                                 type="password"
                                 id="password"
                                 className={inputClass}
-                            />
-                            <button
                                 onClick={() => setIsDialogOpen(true)}
-                                type="button"
-                                className={changeButtonClass}
-                            >
+                            />
+                            <button type="button" className={changeButtonClass}>
                                 변경
                             </button>
                         </div>
                         <div className="flex justify-center w-full mt-6">
-                            <button className="w-[328px] h-[52px] rounded-[10px] py-3.5 px-[18px] font-bold text-[14px] leading-[16.71px] bg-gray-200 text-customGray">
+                            <button
+                                onClick={handleLogout}
+                                className="w-[328px] h-[52px] rounded-[10px] py-3.5 px-[18px] font-bold text-[14px] leading-[16.71px] bg-gray-200 text-customGray"
+                            >
                                 로그아웃
                             </button>
                         </div>
