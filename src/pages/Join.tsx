@@ -122,7 +122,8 @@ const Join = () => {
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
             );
-            navigate("/complete-join");
+            navigate("/");
+            // TODO : 비로그인 상태에서 특정 페이지(ex. /list) 에 있었을 때 로그인 이후에도 특정 페이지 그대로 있게 하기
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
