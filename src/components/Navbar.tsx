@@ -4,6 +4,7 @@ import React from "react";
 import ImgProfileS from "./ImgProfileS";
 import { useNavigate, Route } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
+
 interface UserData {
   id: string;
   name: string;
@@ -13,13 +14,17 @@ interface UserData {
   provider: "EMAIL" | string;
 }
 
-const Navbar = () => {
+interface NavbarProps {
+  profileImage?: string | File | null; //
+}
+
+const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
   const navigate = useNavigate();
 
   const { data: userData, isLoading, error } = useUserData();
 
   const isLoggedIn = !!userData;
-  const profileImage =
+  const defaultProfileImage =
     typeof userData?.image === "string" ? userData.image : undefined;
 
   return (
@@ -33,9 +38,13 @@ const Navbar = () => {
                 신청곡 관리
               </button>
               <div className="w-[36px] h-[36px] rounded-full border overflow-hidden">
-                {profileImage ? (
+                {profileImage || defaultProfileImage ? (
                   <img
-                    src={profileImage}
+                    src={
+                      typeof profileImage === "string"
+                        ? profileImage
+                        : defaultProfileImage
+                    }
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />
