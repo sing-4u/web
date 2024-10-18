@@ -1,6 +1,6 @@
 import { useState } from "react";
-import eyeOn from "../../src/assets/icons_pw_on.png";
-import eyeOff from "../../src/assets/icons_pw_off.png";
+import eyeOn from "../../src/assets/icons_pw_on.svg";
+import eyeOff from "../../src/assets/icons_pw_off.svg";
 
 interface PasswordState {
     value: string;
