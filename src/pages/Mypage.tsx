@@ -204,7 +204,11 @@ const Mypage = () => {
                                 className={inputClass}
                                 onClick={() => setIsDialogOpen(true)}
                             />
-                            <button type="button" className={changeButtonClass}>
+                            <button
+                                onClick={() => setIsDialogOpen(true)}
+                                type="button"
+                                className={changeButtonClass}
+                            >
                                 변경
                             </button>
                         </div>
