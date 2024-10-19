@@ -8,7 +8,8 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
-import PasswordDialog from "../components/PasswordDialog";
+import PasswordDialog from "../components/Dialog/PasswordDialog";
+import EmailDialog from "../components/Dialog/EmailDialog";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -21,7 +22,8 @@ const Mypage = () => {
 
     const navigate = useNavigate();
 
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
+    const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
 
     const handleLogout = () => {
         logout();
@@ -53,9 +55,14 @@ const Mypage = () => {
                 );
                 setIsEditingName(false);
             } catch (error) {
-                setErrorMessage(
-                    "닉네임 변경에 실패했습니다. 다시 시도해주세요."
-                );
+                // setErrorMessage(
+                //     "닉네임 변경에 실패했습니다. 다시 시도해주세요."
+                // );
+                if (error instanceof Error) {
+                    setErrorMessage(
+                        "닉네임 변경에 실패했습니다. 다시 시도해주세요."
+                    );
+                }
             }
         }
     };
@@ -82,9 +89,14 @@ const Mypage = () => {
                 setProfileImage(URL.createObjectURL(file));
                 setErrorMessage(null);
             } catch (error) {
-                setErrorMessage(
-                    "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
-                );
+                // setErrorMessage(
+                //     "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
+                // );
+                if (error instanceof Error) {
+                    setErrorMessage(
+                        "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
+                    );
+                }
             }
         }
     };
@@ -188,7 +200,11 @@ const Mypage = () => {
                                 className={inputClass}
                                 disabled
                             />
-                            <button type="button" className={changeButtonClass}>
+                            <button
+                                onClick={() => setIsEmailDialogOpen(true)}
+                                type="button"
+                                className={changeButtonClass}
+                            >
                                 변경
                             </button>
                         </div>
@@ -202,10 +218,9 @@ const Mypage = () => {
                                 type="password"
                                 id="password"
                                 className={inputClass}
-                                onClick={() => setIsDialogOpen(true)}
                             />
                             <button
-                                onClick={() => setIsDialogOpen(true)}
+                                onClick={() => setIsPasswordDialogOpen(true)}
                                 type="button"
                                 className={changeButtonClass}
                             >
@@ -230,9 +245,13 @@ const Mypage = () => {
             <div className="">
                 <Footer />
             </div>
+            <EmailDialog
+                isOpen={isEmailDialogOpen}
+                onClose={() => setIsEmailDialogOpen(false)}
+            />
             <PasswordDialog
-                isOpen={isDialogOpen}
-                onClose={() => setIsDialogOpen(false)}
+                isOpen={isPasswordDialogOpen}
+                onClose={() => setIsPasswordDialogOpen(false)}
             />
         </div>
     );
