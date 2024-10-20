@@ -8,6 +8,8 @@ export default function Home() {
     const [loading, setLoading] = useState(false);
     const loaderRef = useRef(null);
 
+    const [isReceipted, setIsReceipted] = useState(true);
+
     const loadMoreItems = () => {
         setLoading(true);
         // TODO : 추후에 수정 필요
@@ -59,12 +61,21 @@ export default function Home() {
             </div>
             <div className="grid grid-cols-2 gap-4">
                 {items.map((_, index) => (
-                    <div key={index} className="flex flex-col justify-center">
-                        <img
-                            src={Card}
-                            alt={`Card ${index + 1}`}
-                            className="w-full h-auto hover:cursor-pointer"
-                        />
+                    <div key={index} className="flex flex-col">
+                        <div className="relative rounded-[20px] p-[5px] bg-gradient-to-br from-yellow-200 via-pink-200 to-blue-200 flex flex-col justify-center">
+                            <div className="relative">
+                                <img
+                                    src={Card}
+                                    alt={`Card ${index + 1}`}
+                                    className="w-full h-auto hover:cursor-pointer rounded-[16px]"
+                                />
+                                {isReceipted && (
+                                    <div className="absolute top-2 left-2 bg-yellow-300 text-xs font-bold py-1 px-2 rounded-md border border-black">
+                                        접수 중
+                                    </div>
+                                )}
+                            </div>
+                        </div>
                         <span className="mt-2 text-center font-bold">
                             아이유
                         </span>
