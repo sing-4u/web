@@ -174,15 +174,19 @@ const Join = () => {
         privacy: "[선택] 개인정보 처리방침에 동의합니다"
     };
 
-    const isCheckedTerm = (checkboxes: CheckboxState) => {
-        if (!checkboxes.age || !checkboxes.privacy || !checkboxes.terms) {
-            setTermsError("이용약관에 동의해주세요");
-            return;
+    const validateTerms = (): boolean => {
+        if (!checkboxes.age || !checkboxes.terms) {
+            setTermsError("필수 이용약관에 동의해주세요");
+            return false;
         }
+        setTermsError("");
+        return true;
     };
 
     const onSubmit = async (data: FormValues) => {
-        isCheckedTerm(checkboxes);
+        if (!validateTerms()) {
+            return;
+        }
 
         const { email, password, name } = data;
         try {
@@ -196,7 +200,6 @@ const Join = () => {
                 { email, password }
             );
             navigate("/");
-            // TODO : 추후에 주석 해제 예정
             // showToast("success", "회원가입이 완료되었습니다.");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
