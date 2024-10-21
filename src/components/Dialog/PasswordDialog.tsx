@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import Dialog, { DialogProps } from "./Dialog";
-import axios from "axios";
 import getInputErrorClassName from "../../utils/className";
+import { useEffect, useState } from "react";
+import axiosInstance from "../../utils/axiosInstance";
 
 const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
     // const methods = useForm({
@@ -16,7 +17,8 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
         register,
         handleSubmit,
         formState: { errors },
-        watch
+        watch,
+        reset
     } = useForm({
         defaultValues: {
             oldPassword: "",
@@ -24,6 +26,15 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
             confirmPassword: ""
         }
     });
+
+    useEffect(() => {
+        if (isOpen) {
+            reset();
+            setCompleteChangePassword(false);
+        }
+    }, [isOpen, reset]);
+
+    const [completChangePassword, setCompleteChangePassword] = useState(false);
 
     const watchPassword = watch("newPassword");
     const watchOldPassword = watch("oldPassword");
@@ -36,18 +47,12 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
         const { oldPassword, newPassword } = data;
 
         try {
-            await axios.patch(
-                `${import.meta.env.VITE_API_URL}/users/me/password`,
-                { oldPassword, newPassword },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                        )}`
-                    }
-                }
-            );
+            axiosInstance.patch("/users/me/password", {
+                oldPassword,
+                newPassword
+            });
             onClose();
+            setCompleteChangePassword(true);
         } catch {
             // error handling
         }
@@ -68,10 +73,7 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                                     value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                     message:
                                         "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
-                                },
-                                validate: (value) =>
-                                    value !== watchOldPassword ||
-                                    "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요."
+                                }
                             })}
                             type="password"
                             className={`mb-2 ${getInputErrorClassName(
@@ -98,7 +100,10 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                                     value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                     message:
                                         "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
-                                }
+                                },
+                                validate: (value) =>
+                                    value !== watchOldPassword ||
+                                    "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요."
                             })}
                             type="password"
                             className={`mb-2 ${getInputErrorClassName(
@@ -149,6 +154,8 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                 >
                     변경하기
                 </button>
+                {/* TODO : 추후에 다이얼로그 추가 예정 */}
+                {completChangePassword ? "비밀번호 변경 완료" : null}
             </form>
         </Dialog>
     );

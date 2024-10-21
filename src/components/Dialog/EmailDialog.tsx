@@ -1,14 +1,16 @@
 import { useForm } from "react-hook-form";
 import Dialog, { DialogProps } from "./Dialog";
-import axios from "axios";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
+import { useEffect } from "react";
+import axiosInstance from "../../utils/axiosInstance";
 
 const EmailDialog = ({ isOpen, onClose }: DialogProps) => {
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        reset
     } = useForm({
         defaultValues: {
             email: "",
@@ -17,21 +19,17 @@ const EmailDialog = ({ isOpen, onClose }: DialogProps) => {
         }
     });
 
+    useEffect(() => {
+        if (isOpen) {
+            reset();
+        }
+    }, [isOpen, reset]);
+
     const onSubmit = async (data: { email: string; password: string }) => {
         const { email, password } = data;
 
         try {
-            await axios.patch(
-                `${import.meta.env.VITE_API_URL}/users/me/email`,
-                { email, password },
-                {
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "accessToken"
-                        )}`
-                    }
-                }
-            );
+            axiosInstance.patch("/users/me/email", { email, password });
             onClose();
         } catch {
             // error handling
