@@ -56,8 +56,8 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
     return (
         <Dialog isOpen={isOpen} onClose={onClose} title="비밀번호 변경">
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="space-y-4">
-                    <label className="block text-sm font-medium text-gray-700">
+                <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
                         현재 비밀번호
                     </label>
                     <div className="flex flex-col">
@@ -74,20 +74,20 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                                     "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요."
                             })}
                             type="password"
-                            className={getInputErrorClassName(
+                            className={`mb-2 ${getInputErrorClassName(
                                 errors.oldPassword
-                            )}
+                            )}`}
                             placeholder="비밀번호를 입력해주세요."
                         />
-                        {errors.oldPassword && (
+                        {errors.oldPassword ? (
                             <p className="text-red-500">
                                 {errors.oldPassword.message}
                             </p>
-                        )}
+                        ) : null}
                     </div>
                 </div>
-                <div className="space-y-4">
-                    <label className="block text-sm font-medium text-gray-700">
+                <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
                         새 비밀번호
                     </label>
                     <div className="flex flex-col">
@@ -101,9 +101,9 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                                 }
                             })}
                             type="password"
-                            className={getInputErrorClassName(
+                            className={`mb-2 ${getInputErrorClassName(
                                 errors.newPassword
-                            )}
+                            )}`}
                             placeholder="새 비밀번호를 입력해주세요."
                         />
                         {errors.newPassword && (
@@ -113,8 +113,8 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                         )}
                     </div>
                 </div>
-                <div className="space-y-4">
-                    <label className="block text-sm font-medium text-gray-700">
+                <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
                         새 비밀번호 확인
                     </label>
                     <div className="flex flex-col">
@@ -131,9 +131,9 @@ const PasswordDialog = ({ isOpen, onClose }: DialogProps) => {
                                     "비밀번호가 일치하지 않습니다."
                             })}
                             type="password"
-                            className={getInputErrorClassName(
+                            className={`mb-2 ${getInputErrorClassName(
                                 errors.confirmPassword
-                            )}
+                            )}`}
                             placeholder="새 비밀번호를 다시 입력해주세요."
                         />
                         {errors.confirmPassword && (

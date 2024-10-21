@@ -43,8 +43,8 @@ const EmailDialog = ({ isOpen, onClose }: DialogProps) => {
     return (
         <Dialog isOpen={isOpen} onClose={onClose} title="이메일 변경">
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="space-y-4">
-                    <label className="block text-sm font-medium text-gray-700">
+                <div>
+                    <label className="mb-2 block text-sm font-medium text-gray-700">
                         이메일
                     </label>
 
@@ -58,19 +58,21 @@ const EmailDialog = ({ isOpen, onClose }: DialogProps) => {
                                 }
                             })}
                             type="email"
-                            className={getInputErrorClassName(errors.email)}
+                            className={`mb-2 ${getInputErrorClassName(
+                                errors.email
+                            )}`}
                             placeholder="이메일을 입력해주세요."
                         />
-                        {errors.email && (
+                        {errors.email ? (
                             <p className="text-red-500">
                                 {errors.email.message}
                             </p>
-                        )}
+                        ) : null}
                     </div>
                 </div>
 
-                <div className="space-y-4">
-                    <label className="block text-sm font-medium text-gray-700">
+                <div>
+                    <label className="my-2 block text-sm font-medium text-gray-700">
                         비밀번호
                     </label>
                     <div className="flex flex-col">
@@ -84,14 +86,16 @@ const EmailDialog = ({ isOpen, onClose }: DialogProps) => {
                                 }
                             })}
                             type={passwordState.type}
-                            className={getInputErrorClassName(errors.password)}
+                            className={`mb-2 ${getInputErrorClassName(
+                                errors.password
+                            )}`}
                             placeholder="비밀번호를 입력해주세요."
                         />
-                        {errors.password && (
+                        {errors.password ? (
                             <p className="text-red-500">
-                                {errors.password.message?.toString()}
+                                {errors.password.message}
                             </p>
-                        )}
+                        ) : null}
                         {passwordState.type === "password" && (
                             <div className="absolute inset-y-0 right-0 pr-3 flex items-center hover:cursor-pointer">
                                 <svg
