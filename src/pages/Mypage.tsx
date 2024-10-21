@@ -8,8 +8,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
-import PasswordDialog from "../components/Dialog/PasswordDialog";
-import EmailDialog from "../components/Dialog/EmailDialog";
+import MainDialog from "../components/MainDialog";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -245,13 +244,15 @@ const Mypage = () => {
             <div className="">
                 <Footer />
             </div>
-            <EmailDialog
+            <MainDialog
                 isOpen={isEmailDialogOpen}
                 onClose={() => setIsEmailDialogOpen(false)}
+                type={"email"}
             />
-            <PasswordDialog
+            <MainDialog
                 isOpen={isPasswordDialogOpen}
                 onClose={() => setIsPasswordDialogOpen(false)}
+                type={"password"}
             />
         </div>
     );
