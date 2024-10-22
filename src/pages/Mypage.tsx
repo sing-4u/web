@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
+import DeleteAccountModal from "../utils/DeleteAccountModal";
 
 const Mypage = () => {
   const { data: userData } = useUserData();
@@ -17,6 +18,8 @@ const Mypage = () => {
     userData?.image || null
   );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const navigate = useNavigate();
 
@@ -198,13 +201,19 @@ const Mypage = () => {
                 로그아웃
               </button>
             </div>
-            <div className="flex w-[327px] h-[17px] justify-start items-center font-normal text-[14px] leading-[16.71px] text-customGray mt-4 cursor-pointer">
+            <div
+              onClick={() => setIsModalOpen(true)}
+              className="flex w-[327px] h-[17px] justify-start items-center font-normal text-[14px] leading-[16.71px] text-customGray mt-4 cursor-pointer"
+            >
               탈퇴하기
               <ChevronRightSmall />
             </div>
           </div>
         </div>
       </form>
+      {isModalOpen && (
+        <DeleteAccountModal closeModal={() => setIsModalOpen(false)} />
+      )}
       <div className="">
         <Footer />
       </div>
