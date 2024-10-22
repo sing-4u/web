@@ -1,21 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
 import React from "react";
 import ImgProfileS from "./ImgProfileS";
 import { useNavigate, Route } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
 
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-  isOpened: true;
-  provider: "EMAIL" | string;
-}
-
 interface NavbarProps {
-  profileImage?: string | File | null; //
+  profileImage?: string | File | null;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {

@@ -83,6 +83,24 @@ const Mypage = () => {
     }
   };
 
+  const handleImageDelete = async () => {
+    try {
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/users/me/image`,
+        { image: null },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        }
+      );
+      setProfileImage(null);
+      setErrorMessage(null);
+    } catch (error) {
+      setErrorMessage("프로필 이미지 삭제에 실패했습니다. 다시 시도해주세요.");
+    }
+  };
+
   const inputLabelClass =
     "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
   const inputClass =
@@ -130,7 +148,10 @@ const Mypage = () => {
               onChange={handleImageChange}
               className="hidden"
             />
-            <div className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
+            <div
+              onClick={handleImageDelete}
+              className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray"
+            >
               이미지삭제
             </div>
           </div>
