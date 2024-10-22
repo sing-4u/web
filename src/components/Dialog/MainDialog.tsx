@@ -1,6 +1,6 @@
-import Dialog from "./Dialog/Dialog";
-import EmailDialogContent from "./Dialog/EmailDialog";
-import PasswordDialogContent from "./Dialog/PasswordDialog";
+import Dialog from "./Dialog";
+import EmailDialogContent from "./EmailDialog";
+import PasswordDialogContent from "./PasswordDialog";
 
 type DialogType = "email" | "password";
 
