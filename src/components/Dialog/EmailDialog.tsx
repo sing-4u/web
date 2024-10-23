@@ -2,9 +2,9 @@ import { useForm } from "react-hook-form";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import axiosInstance from "../../utils/axiosInstance";
-import { DialogContentProps } from "../../types";
+import { useDialog } from "../../hooks/useDialog";
 
-const EmailDialogContent = ({ onClose }: DialogContentProps) => {
+const EmailDialogContent = () => {
     const {
         register,
         handleSubmit,
@@ -17,12 +17,14 @@ const EmailDialogContent = ({ onClose }: DialogContentProps) => {
         }
     });
 
+    const { openDialog } = useDialog();
+
     const onSubmit = async (data: { email: string; password: string }) => {
         const { email, password } = data;
 
         try {
             axiosInstance.patch("/users/me/email", { email, password });
-            onClose();
+            openDialog("changeEmail");
         } catch {
             // error handling
         }
@@ -79,11 +81,7 @@ const EmailDialogContent = ({ onClose }: DialogContentProps) => {
                         )}`}
                         placeholder="비밀번호를 입력해주세요."
                     />
-                    {/* {errors.password ? (
-                        <p className="text-red-500">
-                            {errors.password.message}
-                        </p>
-                    ) : null} */}
+
                     <button
                         type="button"
                         className="absolute inset-y-0 right-0 pr-3 flex items-center"

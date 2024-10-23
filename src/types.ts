@@ -1,3 +1,4 @@
 export type DialogContentProps = {
-    onClose: () => void;
+    onClose?: () => void;
+    title: string;
 };

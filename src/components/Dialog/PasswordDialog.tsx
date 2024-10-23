@@ -1,12 +1,10 @@
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axiosInstance";
 import getInputErrorClassName from "../../utils/className";
-import { DialogContentProps } from "../../types";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
-import { useState } from "react";
-import MainDialog from "./MainDialog";
+import { useDialog } from "../../hooks/useDialog";
 
-const PasswordDialogContent = ({ onClose }: DialogContentProps) => {
+const PasswordDialogContent = () => {
     const {
         register,
         handleSubmit,
@@ -16,7 +14,7 @@ const PasswordDialogContent = ({ onClose }: DialogContentProps) => {
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
 
-    const [isChangePassword, setIsChangePassword] = useState(false);
+    const { openDialog } = useDialog();
 
     const watchPassword = watch("newPassword");
     const watchOldPassword = watch("oldPassword");
@@ -32,15 +30,10 @@ const PasswordDialogContent = ({ onClose }: DialogContentProps) => {
                 oldPassword,
                 newPassword
             });
-            handleSuccessChangePassword();
+            openDialog("changePasssword");
         } catch {
             // error handling
         }
-    };
-
-    const handleSuccessChangePassword = () => {
-        onClose();
-        setIsChangePassword(true);
     };
 
     const {
@@ -187,14 +180,6 @@ const PasswordDialogContent = ({ onClose }: DialogContentProps) => {
             >
                 변경하기
             </button>
-
-            {isChangePassword && (
-                <MainDialog
-                    isOpen={isChangePassword}
-                    onClose={() => setIsChangePassword(false)}
-                    type={"changePasssword"}
-                />
-            )}
         </form>
     );
 };

@@ -1,7 +1,8 @@
+import { DialogContentProps } from "../../types";
 import Dialog from "./Dialog";
 
-const SuccessChangePasswordDialogContent = () => {
-    return <Dialog>비밀번호 변경 완료</Dialog>;
+const SuccessChangePasswordDialogContent = ({ title }: DialogContentProps) => {
+    return <Dialog>{title}</Dialog>;
 };
 
 export default SuccessChangePasswordDialogContent;

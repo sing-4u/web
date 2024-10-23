@@ -8,6 +8,7 @@ import Home from "./Home";
 import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
 import Mypage from "./pages/Mypage";
+import { DialogProvider } from "./components/Dialog/DialogProvider";
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
@@ -34,8 +35,10 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <QueryClientProvider client={queryClient}>
-        <App />
-        <RouterProvider router={router} />
-    </QueryClientProvider>
+    <DialogProvider>
+        <QueryClientProvider client={queryClient}>
+            <App />
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    </DialogProvider>
 );

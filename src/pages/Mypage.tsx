@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
-import MainDialog from "../components/Dialog/MainDialog";
+import { useDialog } from "../hooks/useDialog";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -21,8 +21,7 @@ const Mypage = () => {
 
     const navigate = useNavigate();
 
-    const [isPasswordDialogOpen, setIsPasswordDialogOpen] = useState(false);
-    const [isEmailDialogOpen, setIsEmailDialogOpen] = useState(false);
+    const { openDialog } = useDialog();
 
     const handleLogout = () => {
         logout();
@@ -200,7 +199,7 @@ const Mypage = () => {
                                 disabled
                             />
                             <button
-                                onClick={() => setIsEmailDialogOpen(true)}
+                                onClick={() => openDialog("email")}
                                 type="button"
                                 className={changeButtonClass}
                             >
@@ -219,7 +218,7 @@ const Mypage = () => {
                                 className={inputClass}
                             />
                             <button
-                                onClick={() => setIsPasswordDialogOpen(true)}
+                                onClick={() => openDialog("password")}
                                 type="button"
                                 className={changeButtonClass}
                             >
@@ -244,16 +243,6 @@ const Mypage = () => {
             <div className="">
                 <Footer />
             </div>
-            <MainDialog
-                isOpen={isEmailDialogOpen}
-                onClose={() => setIsEmailDialogOpen(false)}
-                type={"email"}
-            />
-            <MainDialog
-                isOpen={isPasswordDialogOpen}
-                onClose={() => setIsPasswordDialogOpen(false)}
-                type={"password"}
-            />
         </div>
     );
 };
