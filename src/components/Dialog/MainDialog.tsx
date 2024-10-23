@@ -28,7 +28,6 @@ interface MainDialogProps {
     isOpen: boolean;
     onClose: () => void;
     type?: DialogType | null;
-    titles?: string;
 }
 
 const MainDialog = ({ isOpen, onClose, type }: MainDialogProps) => {
