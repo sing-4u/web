@@ -28,10 +28,11 @@ const EmailDialogContent = ({ onClose }: DialogContentProps) => {
         }
     };
 
-    const { passwordState, handleToggle } = usePasswordToggle();
+    const { passwordState, handleToggle, handleEyeIconToggle } =
+        usePasswordToggle();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                     이메일
@@ -62,7 +63,7 @@ const EmailDialogContent = ({ onClose }: DialogContentProps) => {
                 <label className="my-2 block text-sm font-medium text-gray-700">
                     비밀번호
                 </label>
-                <div className="flex flex-col relative">
+                <div className="relative">
                     <input
                         {...register("password", {
                             required: "비밀번호는 필수값입니다.",
@@ -73,35 +74,31 @@ const EmailDialogContent = ({ onClose }: DialogContentProps) => {
                             }
                         })}
                         type={passwordState.type}
-                        className={`mb-2 w-full ${getInputErrorClassName(
+                        className={`pr-10 w-full ${getInputErrorClassName(
                             errors.password
                         )}`}
                         placeholder="비밀번호를 입력해주세요."
                     />
-                    {errors.password ? (
+                    {/* {errors.password ? (
                         <p className="text-red-500">
                             {errors.password.message}
                         </p>
-                    ) : null}
-                    {passwordState.type === "password" && (
-                        <div className="absolute top-4 right-0 pr-3 flex items-center hover:cursor-pointer">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5 text-gray-400"
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                onClick={handleToggle}
-                            >
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path
-                                    fillRule="evenodd"
-                                    d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </div>
-                    )}
+                    ) : null} */}
+                    <button
+                        type="button"
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        onClick={handleToggle}
+                    >
+                        <img
+                            src={handleEyeIconToggle()}
+                            alt="toggle password visibility"
+                            className="h-5 w-5"
+                        />
+                    </button>
                 </div>
+                {errors.password ? (
+                    <p className="text-red-500">{errors.password.message}</p>
+                ) : null}
             </div>
 
             <button
