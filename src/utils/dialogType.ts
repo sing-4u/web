@@ -1,5 +1,5 @@
 export type DialogType =
     | "email"
     | "password"
-    | "changePasssword"
+    | "changePassword"
     | "changeEmail";

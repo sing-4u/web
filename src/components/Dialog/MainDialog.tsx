@@ -14,7 +14,7 @@ const dialogConfigs = {
         title: "비밀번호 변경",
         Content: PasswordDialogContent
     },
-    changePasssword: {
+    changePassword: {
         title: "비밀번호 변경이 완료되었습니다.",
         Content: SuccessChangePasswordDialogContent
     },
