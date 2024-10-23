@@ -1,8 +1,8 @@
 import { DialogContentProps } from "../../types";
 import Dialog from "./Dialog";
 
-const SuccessChangeEmailDialog = ({ title }: DialogContentProps) => {
+const SuccessChangeEmailDialogContent = ({ title }: DialogContentProps) => {
     return <Dialog>{title}</Dialog>;
 };
 
-export default SuccessChangeEmailDialog;
+export default SuccessChangeEmailDialogContent;

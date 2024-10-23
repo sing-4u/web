@@ -1,11 +1,17 @@
+import { DialogContentProps } from "../../types";
 import { DialogType } from "../../utils/dialogType";
 import Dialog from "./Dialog";
 import EmailDialogContent from "./EmailDialog";
 import PasswordDialogContent from "./PasswordDialog";
-import SuccessChangeEmailDialog from "./SuccessChangeEmailDialog";
+import SuccessChangeEmailDialogContent from "./SuccessChangeEmailDialog";
 import SuccessChangePasswordDialogContent from "./SuccessChangePasswordDialog";
 
-const dialogConfigs = {
+interface DialogConfigProps {
+    title: string;
+    Content: React.ComponentType<DialogContentProps>;
+}
+
+const dialogConfigs: Record<DialogType, DialogConfigProps> = {
     email: {
         title: "이메일 변경",
         Content: EmailDialogContent
@@ -15,12 +21,12 @@ const dialogConfigs = {
         Content: PasswordDialogContent
     },
     changePassword: {
-        title: "비밀번호 변경이 완료되었습니다.",
+        title: "비밀번호 변경 완료",
         Content: SuccessChangePasswordDialogContent
     },
     changeEmail: {
-        title: "이메일 변경이 완료되었습니다.",
-        Content: SuccessChangeEmailDialog
+        title: "이메일 변경 완료",
+        Content: SuccessChangeEmailDialogContent
     }
 };
 
