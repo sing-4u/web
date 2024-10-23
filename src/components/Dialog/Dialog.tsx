@@ -1,3 +1,5 @@
+import { useDialog } from "../../hooks/useDialog";
+
 export interface DialogProps {
     isOpen?: boolean;
     onClose?: () => void;
@@ -5,7 +7,8 @@ export interface DialogProps {
     children?: React.ReactNode;
 }
 
-const Dialog = ({ isOpen, onClose, title, children }: DialogProps) => {
+const Dialog = ({ isOpen, title, children }: DialogProps) => {
+    const { closeDialog } = useDialog();
     if (!isOpen) return null;
 
     return (
@@ -13,7 +16,7 @@ const Dialog = ({ isOpen, onClose, title, children }: DialogProps) => {
             <div className="bg-white p-6 rounded-lg w-[328px]">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-lg font-bold">{title}</h2>
-                    <button onClick={onClose} className="text-gray-500">
+                    <button onClick={closeDialog} className="text-gray-500">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-6 w-6"
