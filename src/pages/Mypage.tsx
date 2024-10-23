@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
-import MainDialog from "../components/MainDialog";
+import MainDialog from "../components/Dialog/MainDialog";
 
 const Mypage = () => {
     const { data: userData } = useUserData();

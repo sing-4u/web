@@ -1,8 +1,9 @@
 import Dialog from "./Dialog";
 import EmailDialogContent from "./EmailDialog";
 import PasswordDialogContent from "./PasswordDialog";
+import SuccessChangePasswordDialogContent from "./SuccessChangePasswordDialog";
 
-type DialogType = "email" | "password";
+type DialogType = "email" | "password" | "changePasssword";
 
 const dialogConfigs = {
     email: {
@@ -12,6 +13,10 @@ const dialogConfigs = {
     password: {
         title: "비밀번호 변경",
         Content: PasswordDialogContent
+    },
+    changePasssword: {
+        title: "비밀번호 변경이 완료되었습니다.",
+        Content: SuccessChangePasswordDialogContent
     }
 };
 
