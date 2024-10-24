@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
-import { useDialog } from "../hooks/useDialog";
+import DeleteAccountModal from "../utils/DeleteAccountModal";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -19,9 +19,9 @@ const Mypage = () => {
     );
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const navigate = useNavigate();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { openDialog } = useDialog();
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         logout();
@@ -86,16 +86,33 @@ const Mypage = () => {
                 );
                 setProfileImage(URL.createObjectURL(file));
                 setErrorMessage(null);
-            } catch (error) {
-                // setErrorMessage(
-                //     "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
-                // );
-                if (error instanceof Error) {
-                    setErrorMessage(
-                        "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
-                    );
-                }
+            } catch {
+                setErrorMessage(
+                    "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
+                );
             }
+        }
+    };
+
+    const handleImageDelete = async () => {
+        try {
+            await axios.patch(
+                `${import.meta.env.VITE_API_URL}/users/me/image`,
+                { image: null },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`
+                    }
+                }
+            );
+            setProfileImage(null);
+            setErrorMessage(null);
+        } catch {
+            setErrorMessage(
+                "프로필 이미지 삭제에 실패했습니다. 다시 시도해주세요."
+            );
         }
     };
 
@@ -148,7 +165,10 @@ const Mypage = () => {
                             onChange={handleImageChange}
                             className="hidden"
                         />
-                        <div className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
+                        <div
+                            onClick={handleImageDelete}
+                            className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray"
+                        >
                             이미지삭제
                         </div>
                     </div>
@@ -198,11 +218,7 @@ const Mypage = () => {
                                 className={inputClass}
                                 disabled
                             />
-                            <button
-                                onClick={() => openDialog("email")}
-                                type="button"
-                                className={changeButtonClass}
-                            >
+                            <button type="button" className={changeButtonClass}>
                                 변경
                             </button>
                         </div>
@@ -217,11 +233,7 @@ const Mypage = () => {
                                 id="password"
                                 className={inputClass}
                             />
-                            <button
-                                onClick={() => openDialog("password")}
-                                type="button"
-                                className={changeButtonClass}
-                            >
+                            <button type="button" className={changeButtonClass}>
                                 변경
                             </button>
                         </div>
@@ -233,13 +245,19 @@ const Mypage = () => {
                                 로그아웃
                             </button>
                         </div>
-                        <div className="flex w-[327px] h-[17px] justify-start items-center font-normal text-[14px] leading-[16.71px] text-customGray mt-4 cursor-pointer">
+                        <div
+                            onClick={() => setIsModalOpen(true)}
+                            className="flex w-[327px] h-[17px] justify-start items-center font-normal text-[14px] leading-[16.71px] text-customGray mt-4 cursor-pointer"
+                        >
                             탈퇴하기
                             <ChevronRightSmall />
                         </div>
                     </div>
                 </div>
             </form>
+            {isModalOpen && (
+                <DeleteAccountModal closeModal={() => setIsModalOpen(false)} />
+            )}
             <div className="">
                 <Footer />
             </div>
