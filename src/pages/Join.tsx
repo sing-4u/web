@@ -220,7 +220,7 @@ const Join = () => {
                 <div className="space-x-2 mt-4 flex items-center">
                     <span className="w-full border-b"></span>
                 </div>
-                <div className="space-y-4">
+                <section className="space-y-4">
                     <div className="flex flex-col">
                         <label
                             htmlFor="name"
@@ -347,8 +347,8 @@ const Join = () => {
                             />
                         </span>
                     </div>
-                </div>
-                <div>
+                </section>
+                <section>
                     <span className="flex justify-start mb-4 font-Pretendard">
                         약관동의
                     </span>
@@ -370,8 +370,8 @@ const Join = () => {
                     <div className="space-x-2 mt-4 flex items-center">
                         <span className="w-full border-b" />
                     </div>
-                </div>
-                <div className="space-y-2 font-Pretendard">
+                </section>
+                <section className="space-y-2 font-Pretendard">
                     {Object.entries(checkboxLabels).map(([key, label]) => (
                         <Checkbox
                             key={key}
@@ -385,7 +385,7 @@ const Join = () => {
                     {termsError && (
                         <p className="text-red-500 text-sm">{termsError}</p>
                     )}
-                </div>
+                </section>
                 <button
                     className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
                     type="submit"

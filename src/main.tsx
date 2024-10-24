@@ -7,8 +7,9 @@ import Login from "./pages/Login";
 import Home from "./Home";
 import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
-import FindPassword from "./pages/FindPassword";
+import { DialogProvider } from "./components/Dialog/DialogProvider";
 import NewPassword from "./pages/NewPassword";
+import FindPassword from "./pages/findPassword";
 
 const queryClient = new QueryClient();
 
@@ -40,8 +41,10 @@ const router = createBrowserRouter([
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <QueryClientProvider client={queryClient}>
-    <App />
-    <RouterProvider router={router} />
-  </QueryClientProvider>
+    <DialogProvider>
+        <QueryClientProvider client={queryClient}>
+            <App />
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    </DialogProvider>
 );
