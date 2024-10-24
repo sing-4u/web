@@ -11,6 +11,9 @@ import GoogleIcon from "../components/GoogleIcon";
 // import { ToastContainer } from "../components/ToastContainer";
 
 import usePasswordToggle from "../hooks/usePasswordToggle";
+import storeToken from "../utils/storeToken";
+import { useToast } from "../hooks/useToast";
+import { ToastContainer } from "../components/ToastContainer";
 
 interface LoginState {
     loading: boolean;
@@ -57,7 +60,7 @@ const Join = () => {
         accessToken: null
     });
 
-    // const { showToast, toasts } = useToast();
+    const { showToast, toasts } = useToast();
 
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -104,12 +107,6 @@ const Join = () => {
         window.location.href = `${oauth2Endpoint}?${params.toString()}`;
     };
 
-    const storeToken = (accessToken: string, refreshToken: string) => {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        setLoginState({ loading: false, error: null, accessToken });
-    };
-
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const providerCode = urlParams.get("code");
@@ -125,6 +122,7 @@ const Join = () => {
                     );
                     const { accessToken, refreshToken } = response.data;
                     storeToken(accessToken, refreshToken);
+                    setLoginState({ loading: false, error: null, accessToken });
                     navigate(from, { replace: true });
                 } catch (error) {
                     if (error) {
@@ -182,7 +180,7 @@ const Join = () => {
                 { email, password }
             );
             navigate("/");
-            // showToast("success", "회원가입이 완료되었습니다.");
+            showToast("success", "회원가입이 완료되었습니다.");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
@@ -202,13 +200,6 @@ const Join = () => {
             <div className="w-full max-w-md mx-auto p-6 space-y-4">
                 <div className="flex">로고</div>
                 <div className="text-2xl font-bold text-center">회원가입</div>
-                {/* <GoogleIcon />
-                <img
-                    src={GoogleBtn}
-                    alt="Google Sign Up"
-                    className="w-full cursor-pointer transition-transform duration-300"
-                    onClick={handleGoogleClick}
-                /> */}
                 <button
                     type="button"
                     onClick={handleGoogleClick}
@@ -393,6 +384,7 @@ const Join = () => {
                     {loginState.loading ? "회원가입 중" : "회원가입"}
                 </button>
             </div>
+            <ToastContainer toasts={toasts} />
         </form>
     );
 };
