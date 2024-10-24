@@ -11,7 +11,7 @@ import usePasswordToggle from "../hooks/usePasswordToggle";
 import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
-import { useAuthRedirect } from "../utils/Auth";
+import { useAuthRedirect } from "../hooks/useAuthRedirect";
 
 interface LoginState {
     loading: boolean;
