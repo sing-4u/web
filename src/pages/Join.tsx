@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import axios from "axios";
@@ -7,10 +7,11 @@ import CheckboxBlack from "../../src/assets/_checkbox.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import getInputErrorClassName from "../utils/className";
 import GoogleIcon from "../components/GoogleIcon";
-// import { useToast } from "../hooks/useToast";
-// import { ToastContainer } from "../components/ToastContainer";
-
 import usePasswordToggle from "../hooks/usePasswordToggle";
+import storeToken from "../utils/storeToken";
+import { useToast } from "../hooks/useToast";
+import { ToastContainer } from "../components/ToastContainer";
+import { useAuthRedirect } from "../hooks/useAuthRedirect";
 
 interface LoginState {
     loading: boolean;
@@ -22,7 +23,7 @@ interface FormValues {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
 }
 
 interface CheckboxState {
@@ -33,23 +34,10 @@ interface CheckboxState {
 
 const Join = () => {
     const navigate = useNavigate();
-    const defaultValues = {
-        defaultValues: {
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        }
-    };
-    const {
-        register,
-        handleSubmit,
-        setError,
-        watch,
-        formState: { errors }
-    } = useForm<FormValues>(defaultValues);
-
-    const watchPassword = watch("password");
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+    const { isLoading, isAuthenticated } = useAuthRedirect("/");
+    const { showToast, toasts } = useToast();
 
     const [loginState, setLoginState] = useState<LoginState>({
         loading: false,
@@ -57,16 +45,23 @@ const Join = () => {
         accessToken: null
     });
 
-    // const { showToast, toasts } = useToast();
-
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
-
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
         age: false,
         terms: false,
         privacy: false
     });
+
+    const [termsError, setTermsError] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        setError,
+        watch,
+        formState: { errors }
+    } = useForm<FormValues>();
+
+    const watchPassword = watch("password");
 
     const {
         passwordState: password,
@@ -80,7 +75,44 @@ const Join = () => {
         handleEyeIconToggle: handleConfirmEyeIconToggle
     } = usePasswordToggle();
 
-    const [termsError, setTermsError] = useState("");
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const providerCode = urlParams.get("code");
+        if (providerCode) {
+            const processGoogleLogin = async () => {
+                try {
+                    const response = await axios.post(
+                        `${import.meta.env.VITE_API_URL}/auth/login/social`,
+                        {
+                            provider: "GOOGLE",
+                            providerCode
+                        }
+                    );
+                    const { accessToken, refreshToken } = response.data;
+                    storeToken(accessToken, refreshToken);
+                    setLoginState({ loading: false, error: null, accessToken });
+                    navigate(from, { replace: true });
+                } catch (error) {
+                    if (error) {
+                        setLoginState({
+                            loading: false,
+                            error: "Google 로그인에 실패했습니다.",
+                            accessToken: null
+                        });
+                    }
+                }
+            };
+            processGoogleLogin();
+        }
+    }, [navigate, from]);
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isAuthenticated) {
+        return null;
+    }
 
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 
@@ -103,42 +135,6 @@ const Join = () => {
         });
         window.location.href = `${oauth2Endpoint}?${params.toString()}`;
     };
-
-    const storeToken = (accessToken: string, refreshToken: string) => {
-        localStorage.setItem("accessToken", accessToken);
-        localStorage.setItem("refreshToken", refreshToken);
-        setLoginState({ loading: false, error: null, accessToken });
-    };
-
-    useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const providerCode = urlParams.get("code");
-        if (providerCode) {
-            const processGoogleLogin = async () => {
-                try {
-                    const response = await axios.post(
-                        `${import.meta.env.VITE_API_URL}/auth/login/social`,
-                        {
-                            provider: "GOOGLE",
-                            providerCode
-                        }
-                    );
-                    const { accessToken, refreshToken } = response.data;
-                    storeToken(accessToken, refreshToken);
-                    navigate(from, { replace: true });
-                } catch (error) {
-                    if (error) {
-                        setLoginState({
-                            loading: false,
-                            error: "Google 로그인에 실패했습니다.",
-                            accessToken: null
-                        });
-                    }
-                }
-            };
-            processGoogleLogin();
-        }
-    }, [navigate, from]);
 
     const handleAllCheckboxes = () => {
         const allChecked = Object.values(checkboxes).every((v) => v);
@@ -165,24 +161,26 @@ const Join = () => {
         return true;
     };
 
-    const onSubmit = async (data: FormValues) => {
+    const onSubmit = async ({ email, password, name }: FormValues) => {
         if (!validateTerms()) {
             return;
         }
 
-        const { email, password, name } = data;
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
             );
 
-            await axios.post(
+            const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/login/email`,
                 { email, password }
             );
+            const { accessToken, refreshToken } = res.data;
+            storeToken(accessToken, refreshToken);
             navigate("/");
-            // showToast("success", "회원가입이 완료되었습니다.");
+
+            showToast("success", "회원가입이 완료되었습니다.");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
@@ -202,13 +200,6 @@ const Join = () => {
             <div className="w-full max-w-md mx-auto p-6 space-y-4">
                 <div className="flex">로고</div>
                 <div className="text-2xl font-bold text-center">회원가입</div>
-                {/* <GoogleIcon />
-                <img
-                    src={GoogleBtn}
-                    alt="Google Sign Up"
-                    className="w-full cursor-pointer transition-transform duration-300"
-                    onClick={handleGoogleClick}
-                /> */}
                 <button
                     type="button"
                     onClick={handleGoogleClick}
@@ -393,6 +384,7 @@ const Join = () => {
                     {loginState.loading ? "회원가입 중" : "회원가입"}
                 </button>
             </div>
+            <ToastContainer toasts={toasts} />
         </form>
     );
 };
