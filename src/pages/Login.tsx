@@ -171,7 +171,6 @@ const Login = () => {
                                 {...register("email", {
                                     required: "이메일을 입력해주세요"
                                 })}
-                                maxLength={20}
                                 type="text"
                                 placeholder="이메일 주소"
                             />
