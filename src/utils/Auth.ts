@@ -27,16 +27,3 @@ export const checkAuth = async (): Promise<boolean> => {
         return false;
     }
 };
-
-export const useAuthRedirect = (redirectPath: string = "/") => {
-    const { data: userData, isLoading } = useUserData();
-    const navigate = useNavigate();
-
-    useEffect(() => {
-        if (!isLoading && userData) {
-            navigate(redirectPath, { replace: true });
-        }
-    }, [userData, isLoading, navigate, redirectPath]);
-
-    return { isLoading, isAuthenticated: !!userData };
-};
