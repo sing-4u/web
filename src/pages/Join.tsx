@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import axios from "axios";
@@ -7,13 +7,11 @@ import CheckboxBlack from "../../src/assets/_checkbox.svg";
 import { useLocation, useNavigate } from "react-router-dom";
 import getInputErrorClassName from "../utils/className";
 import GoogleIcon from "../components/GoogleIcon";
-// import { useToast } from "../hooks/useToast";
-// import { ToastContainer } from "../components/ToastContainer";
-
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
+import { useAuthRedirect } from "../utils/Auth";
 
 interface LoginState {
     loading: boolean;
@@ -25,7 +23,7 @@ interface FormValues {
     name: string;
     email: string;
     password: string;
-    confirmPassword: string;
+    confirmPassword?: string;
 }
 
 interface CheckboxState {
@@ -36,23 +34,10 @@ interface CheckboxState {
 
 const Join = () => {
     const navigate = useNavigate();
-    const defaultValues = {
-        defaultValues: {
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: ""
-        }
-    };
-    const {
-        register,
-        handleSubmit,
-        setError,
-        watch,
-        formState: { errors }
-    } = useForm<FormValues>(defaultValues);
-
-    const watchPassword = watch("password");
+    const location = useLocation();
+    const from = location.state?.from?.pathname || "/";
+    const { isLoading, isAuthenticated } = useAuthRedirect("/");
+    const { showToast, toasts } = useToast();
 
     const [loginState, setLoginState] = useState<LoginState>({
         loading: false,
@@ -60,16 +45,23 @@ const Join = () => {
         accessToken: null
     });
 
-    const { showToast, toasts } = useToast();
-
-    const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
-
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
         age: false,
         terms: false,
         privacy: false
     });
+
+    const [termsError, setTermsError] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        setError,
+        watch,
+        formState: { errors }
+    } = useForm<FormValues>();
+
+    const watchPassword = watch("password");
 
     const {
         passwordState: password,
@@ -82,30 +74,6 @@ const Join = () => {
         handleToggle: handleConfirmToggle,
         handleEyeIconToggle: handleConfirmEyeIconToggle
     } = usePasswordToggle();
-
-    const [termsError, setTermsError] = useState("");
-
-    const isAllChecked = Object.values(checkboxes).every((box) => box);
-
-    const handleCheckboxToggle = (name: keyof CheckboxState) => {
-        setCheckboxes((prev) => ({ ...prev, [name]: !prev[name] }));
-        setTermsError("");
-    };
-
-    const handleGoogleClick = async () => {
-        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-        const params = new URLSearchParams({
-            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-            response_type: "code",
-            scope: [
-                "https://www.googleapis.com/auth/userinfo.profile",
-                "https://www.googleapis.com/auth/userinfo.email"
-            ].join(" "),
-            include_granted_scopes: "true"
-        });
-        window.location.href = `${oauth2Endpoint}?${params.toString()}`;
-    };
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -138,6 +106,36 @@ const Join = () => {
         }
     }, [navigate, from]);
 
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isAuthenticated) {
+        return null;
+    }
+
+    const isAllChecked = Object.values(checkboxes).every((box) => box);
+
+    const handleCheckboxToggle = (name: keyof CheckboxState) => {
+        setCheckboxes((prev) => ({ ...prev, [name]: !prev[name] }));
+        setTermsError("");
+    };
+
+    const handleGoogleClick = async () => {
+        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
+        const params = new URLSearchParams({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
+            response_type: "code",
+            scope: [
+                "https://www.googleapis.com/auth/userinfo.profile",
+                "https://www.googleapis.com/auth/userinfo.email"
+            ].join(" "),
+            include_granted_scopes: "true"
+        });
+        window.location.href = `${oauth2Endpoint}?${params.toString()}`;
+    };
+
     const handleAllCheckboxes = () => {
         const allChecked = Object.values(checkboxes).every((v) => v);
         setCheckboxes({
@@ -163,12 +161,11 @@ const Join = () => {
         return true;
     };
 
-    const onSubmit = async (data: FormValues) => {
+    const onSubmit = async ({ email, password, name }: FormValues) => {
         if (!validateTerms()) {
             return;
         }
 
-        const { email, password, name } = data;
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
@@ -182,6 +179,7 @@ const Join = () => {
             const { accessToken, refreshToken } = res.data;
             storeToken(accessToken, refreshToken);
             navigate("/");
+
             showToast("success", "회원가입이 완료되었습니다.");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
