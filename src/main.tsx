@@ -10,41 +10,46 @@ import CompleteJoin from "./pages/CompleteJoin";
 import { DialogProvider } from "./components/Dialog/DialogProvider";
 import NewPassword from "./pages/NewPassword";
 import FindPassword from "./pages/findPassword";
+import Mypage from "./pages/Mypage";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
-    {
-        path: "/",
-        element: <Home />
-    },
-    {
-        path: "/login",
-        element: <Login />
-    },
-    {
-        path: "/join",
-        element: <Join />
-    },
-    {
-        path: "/complete-join",
-        element: <CompleteJoin />
-    },
-    {
-        path: "find-password",
-        element: <FindPassword />
-    },
-    {
-        path: "new-password",
-        element: <NewPassword />
-    }
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/join",
+    element: <Join />,
+  },
+  {
+    path: "/complete-join",
+    element: <CompleteJoin />,
+  },
+  {
+    path: "find-password",
+    element: <FindPassword />,
+  },
+  {
+    path: "new-password",
+    element: <NewPassword />,
+  },
+  {
+    path: "mypage",
+    element: <Mypage />,
+  },
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <DialogProvider>
-        <QueryClientProvider client={queryClient}>
-            <App />
-            <RouterProvider router={router} />
-        </QueryClientProvider>
-    </DialogProvider>
+  <DialogProvider>
+    <QueryClientProvider client={queryClient}>
+      <App />
+      <RouterProvider router={router} />
+    </QueryClientProvider>
+  </DialogProvider>
 );

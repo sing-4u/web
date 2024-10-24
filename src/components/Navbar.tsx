@@ -26,7 +26,10 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
               <button className="flex w-[79px] h-[30px] border rounded-[5px] py-4 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-black text-white">
                 신청곡 관리
               </button>
-              <div className="w-[36px] h-[36px] rounded-full border overflow-hidden">
+              <div
+                onClick={() => navigate("/mypage")}
+                className="w-[36px] h-[36px] rounded-full border overflow-hidden cursor-pointer"
+              >
                 {profileImage || defaultProfileImage ? (
                   <img
                     src={
