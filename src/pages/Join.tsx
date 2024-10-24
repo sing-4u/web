@@ -175,10 +175,12 @@ const Join = () => {
                 { email, password, name }
             );
 
-            await axios.post(
+            const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/login/email`,
                 { email, password }
             );
+            const { accessToken, refreshToken } = res.data;
+            storeToken(accessToken, refreshToken);
             navigate("/");
             showToast("success", "회원가입이 완료되었습니다.");
         } catch (e) {
