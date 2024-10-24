@@ -30,7 +30,7 @@ const PasswordDialogContent = () => {
                 oldPassword,
                 newPassword
             });
-            openDialog("changePasssword");
+            openDialog("changePassword");
         } catch {
             // error handling
         }
