@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import getInputErrorClassName from "../utils/className";
+import axiosInstance from "../utils/axiosInstance";
 
 interface PasswordProps {
     newPassword: string;
@@ -21,12 +22,7 @@ const NewPassword = () => {
         handleSubmit,
         formState: { errors },
         watch
-    } = useForm<PasswordProps>({
-        defaultValues: {
-            newPassword: "",
-            confirmPassword: ""
-        }
-    });
+    } = useForm<PasswordProps>();
 
     const {
         passwordState: newPassword,
@@ -40,19 +36,11 @@ const NewPassword = () => {
         handleEyeIconToggle: handleConfirmEyeIconToggle
     } = usePasswordToggle();
 
-    const onSubmit = async (data: PasswordProps) => {
-        const { newPassword } = data;
+    const onSubmit = async ({ newPassword }: PasswordProps) => {
         try {
-            await axios.patch(
-                `${import.meta.env.VITE_API_URL}/auth/password`,
-                { newPassword },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${accessToken}`
-                    }
-                }
-            );
+            await axiosInstance(accessToken).patch("/auth/password", {
+                newPassword
+            });
             showToast("success", "비밀번호가 변경되었습니다.");
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);

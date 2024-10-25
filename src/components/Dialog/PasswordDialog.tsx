@@ -26,7 +26,7 @@ const PasswordDialogContent = () => {
     }) => {
         const { oldPassword, newPassword } = data;
         try {
-            await axiosInstance.patch("/users/me/password", {
+            await axiosInstance().patch("/users/me/password", {
                 oldPassword,
                 newPassword
             });
