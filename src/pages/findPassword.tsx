@@ -1,5 +1,5 @@
 import axios from "axios";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer } from "../components/ToastContainer";
 import { useToast } from "../hooks/useToast";
@@ -20,16 +20,11 @@ const FindPassword = () => {
         handleSubmit,
         watch,
         formState: { errors }
-    } = useForm<FormValue>({
-        defaultValues: {
-            email: "",
-            code: ""
-        }
-    });
+    } = useForm<FormValue>();
 
     const handleAuthenticationCodeClick = async () => {
         const email = watch("email");
-        console.log("email: ", email);
+
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/get-email-code`,
@@ -44,21 +39,15 @@ const FindPassword = () => {
         }
     };
 
-    const onSubmit: SubmitHandler<FormValue> = async (data) => {
-        const { email, code } = data;
+    const onSubmit = async ({ email, code }: FormValue) => {
         try {
             const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/verify-email-code`,
-                {
-                    email,
-                    code
-                }
+                { email, code }
             );
             const { data: accessToken } = res;
             navigate("/new-password", { state: accessToken });
         } catch (error) {
-            if (error instanceof Error) throw new Error(error.message);
-            // 401 에러 처리
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 showToast("error", "인증 번호가 일치하지 않습니다.");
             }
