@@ -225,7 +225,7 @@ const Login = () => {
                         <div className="flex items-center space-x-4 mt-6">
                             <div
                                 className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer"
-                                onClick={() => navigate("/Join")}
+                                onClick={() => navigate("/join")}
                             >
                                 회원가입
                             </div>
