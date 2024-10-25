@@ -9,6 +9,7 @@ import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
 import DeleteAccountModal from "../utils/DeleteAccountModal";
+import { useModal } from "../hooks/useModal";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -27,6 +28,8 @@ const Mypage = () => {
         logout();
         navigate("/");
     };
+
+    const { openModal } = useModal();
 
     useEffect(() => {
         if (userData?.name) {
@@ -218,7 +221,11 @@ const Mypage = () => {
                                 className={inputClass}
                                 disabled
                             />
-                            <button type="button" className={changeButtonClass}>
+                            <button
+                                type="button"
+                                className={changeButtonClass}
+                                onClick={() => openModal("email")}
+                            >
                                 변경
                             </button>
                         </div>

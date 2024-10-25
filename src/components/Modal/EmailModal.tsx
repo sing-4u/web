@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import axiosInstance from "../../utils/axiosInstance";
-import { useDialog } from "../../hooks/useDialog";
+import { useModal } from "../../hooks/useModal";
 
 const EmailDialogContent = () => {
     const {
@@ -17,14 +17,14 @@ const EmailDialogContent = () => {
         }
     });
 
-    const { openDialog } = useDialog();
+    const { openModal } = useModal();
 
     const onSubmit = async (data: { email: string; password: string }) => {
         const { email, password } = data;
 
         try {
             axiosInstance.patch("/users/me/email", { email, password });
-            openDialog("changeEmail");
+            openModal("changeEmail");
         } catch {
             // error handling
         }

@@ -7,9 +7,10 @@ import Login from "./pages/Login";
 import Home from "./Home";
 import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
-import { DialogProvider } from "./components/Dialog/DialogProvider";
+import { ModalProvider } from "./components/Modal/ModalProvider";
 import NewPassword from "./pages/NewPassword";
 import FindPassword from "./pages/findPassword";
+import Mypage from "./pages/Mypage";
 
 const queryClient = new QueryClient();
 
@@ -37,14 +38,18 @@ const router = createBrowserRouter([
     {
         path: "new-password",
         element: <NewPassword />
+    },
+    {
+        path: "/mypage",
+        element: <Mypage />
     }
 ]);
 
 createRoot(document.getElementById("root")!).render(
-    <DialogProvider>
+    <ModalProvider>
         <QueryClientProvider client={queryClient}>
             <App />
             <RouterProvider router={router} />
         </QueryClientProvider>
-    </DialogProvider>
+    </ModalProvider>
 );

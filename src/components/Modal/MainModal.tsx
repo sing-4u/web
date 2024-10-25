@@ -1,17 +1,18 @@
 import { DialogContentProps } from "../../types";
-import { DialogType } from "../../utils/dialogType";
-import Dialog from "./Dialog";
-import EmailDialogContent from "./EmailDialog";
-import PasswordDialogContent from "./PasswordDialog";
-import SuccessChangeEmailDialogContent from "./SuccessChangeEmailDialog";
-import SuccessChangePasswordDialogContent from "./SuccessChangePasswordDialog";
+import { ModalType } from "../../utils/modalType";
+import Dialog from "./Modal";
+import EmailDialogContent from "./EmailModal";
+import PasswordDialogContent from "./PasswordModal";
+import SNSDialogContent from "./SNSModal";
+import SuccessChangeEmailDialogContent from "./SuccessChangeEmailModal";
+import SuccessChangePasswordDialogContent from "./SuccessChangePasswordModal";
 
 interface DialogConfigProps {
     title: string;
     Content: React.ComponentType<DialogContentProps>;
 }
 
-const dialogConfigs: Record<DialogType, DialogConfigProps> = {
+const dialogConfigs: Record<ModalType, DialogConfigProps> = {
     email: {
         title: "이메일 변경",
         Content: EmailDialogContent
@@ -27,16 +28,20 @@ const dialogConfigs: Record<DialogType, DialogConfigProps> = {
     changeEmail: {
         title: "이메일 변경 완료",
         Content: SuccessChangeEmailDialogContent
+    },
+    sns: {
+        title: "SNS로 가입된 계정입니다.",
+        Content: SNSDialogContent
     }
 };
 
-interface MainDialogProps {
+interface MainModalProps {
     isOpen: boolean;
     onClose: () => void;
-    type?: DialogType | null;
+    type?: ModalType | null;
 }
 
-const MainDialog = ({ isOpen, onClose, type }: MainDialogProps) => {
+const MainModal = ({ isOpen, onClose, type }: MainModalProps) => {
     if (!type) return null;
 
     const { title, Content } = dialogConfigs[type];
@@ -48,4 +53,4 @@ const MainDialog = ({ isOpen, onClose, type }: MainDialogProps) => {
     );
 };
 
-export default MainDialog;
+export default MainModal;

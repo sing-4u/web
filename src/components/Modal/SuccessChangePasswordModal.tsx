@@ -1,5 +1,5 @@
 import { DialogContentProps } from "../../types";
-import Dialog from "./Dialog";
+import Dialog from "./Modal";
 
 const SuccessChangePasswordDialogContent = ({ title }: DialogContentProps) => {
     return <Dialog>{title}</Dialog>;

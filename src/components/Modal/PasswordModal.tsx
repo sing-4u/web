@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axiosInstance";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
-import { useDialog } from "../../hooks/useDialog";
+import { useModal } from "../../hooks/useModal";
 
 const PasswordDialogContent = () => {
     const {
@@ -14,7 +14,7 @@ const PasswordDialogContent = () => {
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
 
-    const { openDialog } = useDialog();
+    const { openModal } = useModal();
 
     const watchPassword = watch("newPassword");
     const watchOldPassword = watch("oldPassword");
@@ -30,7 +30,7 @@ const PasswordDialogContent = () => {
                 oldPassword,
                 newPassword
             });
-            openDialog("changePassword");
+            openModal("changePassword");
         } catch {
             // error handling
         }
