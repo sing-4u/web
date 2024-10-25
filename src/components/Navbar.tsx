@@ -19,7 +19,9 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
   return (
     <div className="w-full max-w-[376px] mx-auto">
       <div className="flex justify-between items-center w-full h-[60px] border-b-[0.5px] border-inputBorderColor px-6">
-        <div className="w-[80px] h-[30px]">Logo</div>
+        <div onClick={() => navigate("/")} className="w-[80px] h-[30px]">
+          Logo
+        </div>
         <div className="flex items-center gap-3">
           {isLoggedIn ? (
             <>
