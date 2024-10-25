@@ -4,7 +4,7 @@ import usePasswordToggle from "../../hooks/usePasswordToggle";
 import axiosInstance from "../../utils/axiosInstance";
 import { useModal } from "../../hooks/useModal";
 
-const EmailDialogContent = () => {
+const EmailModalContent = () => {
     const {
         register,
         handleSubmit,
@@ -23,7 +23,7 @@ const EmailDialogContent = () => {
         const { email, password } = data;
 
         try {
-            axiosInstance.patch("/users/me/email", { email, password });
+            axiosInstance().patch("/users/me/email", { email, password });
             openModal("changeEmail");
         } catch {
             // error handling
@@ -109,4 +109,4 @@ const EmailDialogContent = () => {
     );
 };
 
-export default EmailDialogContent;
+export default EmailModalContent;

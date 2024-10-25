@@ -1,8 +1,8 @@
-import { DialogContentProps } from "../../types";
-import Dialog from "./Modal";
+import { ModalContentProps } from "../../types";
+import Modal from "./Modal";
 
-const SuccessChangeEmailDialogContent = ({ title }: DialogContentProps) => {
-    return <Dialog>{title}</Dialog>;
+const SuccessChangeEmailModalContent = ({ title }: ModalContentProps) => {
+    return <Modal>{title}</Modal>;
 };
 
-export default SuccessChangeEmailDialogContent;
+export default SuccessChangeEmailModalContent;

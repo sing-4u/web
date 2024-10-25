@@ -1,8 +1,8 @@
-import { DialogContentProps } from "../../types";
-import Dialog from "./Modal";
+import { ModalContentProps } from "../../types";
+import Modal from "./Modal";
 
-const SuccessChangePasswordDialogContent = ({ title }: DialogContentProps) => {
-    return <Dialog>{title}</Dialog>;
+const SuccessChangePasswordModalContent = ({ title }: ModalContentProps) => {
+    return <Modal>{title}</Modal>;
 };
 
-export default SuccessChangePasswordDialogContent;
+export default SuccessChangePasswordModalContent;

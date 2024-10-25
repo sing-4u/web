@@ -1,14 +1,14 @@
 import { useModal } from "../../hooks/useModal";
 import CloseButton from "../../../src/assets/btn_close.svg";
 
-export interface DialogProps {
+export interface ModalProps {
     isOpen?: boolean;
     onClose?: () => void;
     title?: string;
     children?: React.ReactNode;
 }
 
-const Modal = ({ isOpen, title, children }: DialogProps) => {
+const Modal = ({ isOpen, title, children }: ModalProps) => {
     const { closeModal } = useModal();
     if (!isOpen) return null;
 

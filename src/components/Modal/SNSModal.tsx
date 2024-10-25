@@ -1,8 +1,8 @@
-import { DialogContentProps } from "../../types";
-import Dialog from "./Modal";
+import { ModalContentProps } from "../../types";
+import Modal from "./Modal";
 
-const SNSDialogContent = ({ title }: DialogContentProps) => {
-    return <Dialog>{title}</Dialog>;
+const SNSModalContent = ({ title }: ModalContentProps) => {
+    return <Modal>{title}</Modal>;
 };
 
-export default SNSDialogContent;
+export default SNSModalContent;

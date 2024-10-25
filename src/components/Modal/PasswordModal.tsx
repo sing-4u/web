@@ -4,7 +4,7 @@ import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import { useModal } from "../../hooks/useModal";
 
-const PasswordDialogContent = () => {
+const PasswordModalContent = () => {
     const {
         register,
         handleSubmit,
@@ -184,4 +184,4 @@ const PasswordDialogContent = () => {
     );
 };
 
-export default PasswordDialogContent;
+export default PasswordModalContent;
