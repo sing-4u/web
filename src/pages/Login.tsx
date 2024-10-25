@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../utils/Auth";
 import GoogleIcon from "../components/GoogleIcon";
+import storeToken from "../utils/storeToken";
 
 interface LoginFormValue {
   email: string;
@@ -42,11 +43,10 @@ const Login = () => {
     },
     onSuccess: (data) => {
       const { accessToken, refreshToken } = data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      storeToken(accessToken, refreshToken);
       navigate(from, { replace: true });
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError) => {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         setLoginState({
           loading: false,
@@ -100,7 +100,7 @@ const Login = () => {
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
         navigate(from, { replace: true });
-      } catch (error) {
+      } catch {
         setLoginState({
           loading: false,
           error: "Google 로그인에 실패했습니다.",
@@ -159,8 +159,8 @@ const Login = () => {
               <input
                 className={`w-[327px] h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                   errors.email ? "border-red-500" : "border-customGray"
-                } 
-                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] 
+                }
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                 {...register("email", { required: "이메일을 입력해주세요" })}
                 type="text"
@@ -181,8 +181,8 @@ const Login = () => {
               <input
                 className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                   errors.password ? "border-red-500" : "border-customGray"
-                } 
-                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px] 
+                }
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                 {...register("password", {
                   required: "비밀번호를 입력해주세요",
