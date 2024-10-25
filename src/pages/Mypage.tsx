@@ -119,6 +119,14 @@ const Mypage = () => {
         }
     };
 
+    const openEmailModal = () => {
+        openModal("email");
+    };
+
+    const openPasswordModal = () => {
+        openModal("password");
+    };
+
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
     const inputClass =
@@ -224,7 +232,7 @@ const Mypage = () => {
                             <button
                                 type="button"
                                 className={changeButtonClass}
-                                onClick={() => openModal("email")}
+                                onClick={openEmailModal}
                             >
                                 변경
                             </button>
@@ -240,7 +248,11 @@ const Mypage = () => {
                                 id="password"
                                 className={inputClass}
                             />
-                            <button type="button" className={changeButtonClass}>
+                            <button
+                                type="button"
+                                className={changeButtonClass}
+                                onClick={openPasswordModal}
+                            >
                                 변경
                             </button>
                         </div>
