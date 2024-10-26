@@ -1,4 +1,3 @@
-import React from "react";
 import { FieldErrors, FieldName } from "react-hook-form";
 
 interface FormValues {
