@@ -9,6 +9,7 @@ import axios from "axios";
 import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
 import DeleteAccountModal from "../utils/DeleteAccountModal";
+import { useModal } from "../hooks/useModal";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -27,6 +28,8 @@ const Mypage = () => {
         logout();
         navigate("/");
     };
+
+    const { openModal } = useModal();
 
     useEffect(() => {
         if (userData?.name) {
@@ -114,6 +117,14 @@ const Mypage = () => {
                 "프로필 이미지 삭제에 실패했습니다. 다시 시도해주세요."
             );
         }
+    };
+
+    const openEmailModal = () => {
+        openModal("email");
+    };
+
+    const openPasswordModal = () => {
+        openModal("password");
     };
 
     const inputLabelClass =
@@ -218,7 +229,11 @@ const Mypage = () => {
                                 className={inputClass}
                                 disabled
                             />
-                            <button type="button" className={changeButtonClass}>
+                            <button
+                                type="button"
+                                className={changeButtonClass}
+                                onClick={openEmailModal}
+                            >
                                 변경
                             </button>
                         </div>
@@ -233,7 +248,11 @@ const Mypage = () => {
                                 id="password"
                                 className={inputClass}
                             />
-                            <button type="button" className={changeButtonClass}>
+                            <button
+                                type="button"
+                                className={changeButtonClass}
+                                onClick={openPasswordModal}
+                            >
                                 변경
                             </button>
                         </div>
