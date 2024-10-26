@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import axios from "axios";
@@ -12,12 +12,6 @@ import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
-
-interface LoginState {
-    loading: boolean;
-    error: string | null;
-    accessToken: string | null;
-}
 
 interface FormValues {
     name: string;
@@ -38,12 +32,6 @@ const Join = () => {
     const from = location.state?.from?.pathname || "/";
     const { isLoading, isAuthenticated } = useAuthRedirect("/");
     const { showToast, toasts } = useToast();
-
-    const [loginState, setLoginState] = useState<LoginState>({
-        loading: false,
-        error: null,
-        accessToken: null
-    });
 
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
         age: false,
@@ -95,21 +83,16 @@ const Join = () => {
                     );
                     const { accessToken, refreshToken } = response.data;
                     storeToken(accessToken, refreshToken);
-                    setLoginState({ loading: false, error: null, accessToken });
                     navigate(from, { replace: true });
                 } catch (error) {
                     if (error) {
-                        setLoginState({
-                            loading: false,
-                            error: "Google 로그인에 실패했습니다.",
-                            accessToken: null
-                        });
+                        showToast("error", "Google 로그인에 실패했습니다.");
                     }
                 }
             };
             processGoogleLogin();
         }
-    }, [navigate, from]);
+    }, [navigate, from, showToast]);
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -385,7 +368,7 @@ const Join = () => {
                     className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
                     type="submit"
                 >
-                    {loginState.loading ? "회원가입 중" : "회원가입"}
+                    {isLoading ? "회원가입 중" : "회원가입"}
                 </button>
             </div>
             <ToastContainer toasts={toasts} />
