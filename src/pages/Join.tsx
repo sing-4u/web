@@ -56,12 +56,17 @@ const Join = () => {
     const {
         register,
         handleSubmit,
-        setError,
         watch,
         formState: { errors }
     } = useForm<FormValues>();
 
     const watchPassword = watch("password");
+
+    const isEmailFromGoogleDomain = (email: string): boolean => {
+        const googleDomains = ["gmail.com", "googlemail.com"];
+        const domain = email.split("@")[1];
+        return googleDomains.includes(domain.toLowerCase());
+    };
 
     const {
         passwordState: password,
@@ -167,6 +172,10 @@ const Join = () => {
         }
 
         try {
+            if (isEmailFromGoogleDomain(email)) {
+                showToast("error", "SNS로 가입된 계정입니다.");
+                return;
+            }
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
@@ -178,17 +187,12 @@ const Join = () => {
             );
             const { accessToken, refreshToken } = res.data;
             storeToken(accessToken, refreshToken);
-            navigate("/");
-
             showToast("success", "회원가입이 완료되었습니다.");
+            navigate("/");
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
-                    setError("email", {
-                        type: "manual",
-                        message:
-                            "이미 가입된 이메일 주소입니다. 다른 이메일 주소를 입력해 주세요."
-                    });
+                    showToast("error", "이미 가입된 이메일 주소입니다.");
                 }
             }
             if (e instanceof Error) throw new Error(e.message);

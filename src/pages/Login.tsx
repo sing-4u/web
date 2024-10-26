@@ -160,7 +160,9 @@ const Login = () => {
                 }
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
-                {...register("email", { required: "이메일을 입력해주세요" })}
+                {...register("email", {
+                  required: "이메일을 입력해주세요",
+                })}
                 type="text"
                 placeholder="이메일 주소"
               />
