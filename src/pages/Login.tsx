@@ -109,8 +109,6 @@ const Login = () => {
     };
     if (authCode) {
       processGoogleLogin(authCode);
-    } else if (!authCode) {
-      console.log("NO AUTH CODE");
     }
   }, [location.search, navigate, from]);
 
