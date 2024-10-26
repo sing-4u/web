@@ -12,6 +12,7 @@ import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface FormValues {
     name: string;
@@ -45,6 +46,7 @@ const Join = () => {
         register,
         handleSubmit,
         watch,
+
         formState: { errors }
     } = useForm<FormValues>();
 
@@ -93,10 +95,6 @@ const Join = () => {
             processGoogleLogin();
         }
     }, [navigate, from, showToast]);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
 
     if (isAuthenticated) {
         return null;
@@ -250,11 +248,7 @@ const Join = () => {
                                 }
                             })}
                         />
-                        {errors.email && (
-                            <p className="text-red-500">
-                                {errors?.email?.message}
-                            </p>
-                        )}
+                        <ErrorMessage field="email" errors={errors} />
                     </div>
                     <div className="relative flex flex-col">
                         <label
@@ -276,11 +270,7 @@ const Join = () => {
                                 }
                             })}
                         />
-                        {errors.password && (
-                            <p className="text-red-500">
-                                {errors?.password?.message}
-                            </p>
-                        )}
+                        <ErrorMessage field="password" errors={errors} />
 
                         <span className="flex justify-end items-center">
                             <img
@@ -311,11 +301,7 @@ const Join = () => {
                                     "비밀번호가 일치하지 않습니다."
                             })}
                         />
-                        {errors.confirmPassword && (
-                            <p className="text-red-500">
-                                {errors?.confirmPassword?.message}
-                            </p>
-                        )}
+                        <ErrorMessage field="confirmPassword" errors={errors} />
                         <span className="flex justify-end items-center">
                             <img
                                 src={handleConfirmEyeIconToggle()}
