@@ -26,4 +26,4 @@ env.d.ts
 .env
 fonts
 # Ignore public/web only
-/public/web/
+web/
