@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Checkbox from "../components/Checkbox";
 import axios from "axios";
@@ -12,12 +12,7 @@ import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
-
-interface LoginState {
-    loading: boolean;
-    error: string | null;
-    accessToken: string | null;
-}
+import ErrorMessage from "../components/ErrorMessage";
 
 interface FormValues {
     name: string;
@@ -39,12 +34,6 @@ const Join = () => {
     const { isLoading, isAuthenticated } = useAuthRedirect("/");
     const { showToast, toasts } = useToast();
 
-    const [loginState, setLoginState] = useState<LoginState>({
-        loading: false,
-        error: null,
-        accessToken: null
-    });
-
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
         age: false,
         terms: false,
@@ -57,6 +46,7 @@ const Join = () => {
         register,
         handleSubmit,
         watch,
+
         formState: { errors }
     } = useForm<FormValues>();
 
@@ -95,25 +85,16 @@ const Join = () => {
                     );
                     const { accessToken, refreshToken } = response.data;
                     storeToken(accessToken, refreshToken);
-                    setLoginState({ loading: false, error: null, accessToken });
                     navigate(from, { replace: true });
                 } catch (error) {
                     if (error) {
-                        setLoginState({
-                            loading: false,
-                            error: "Google 로그인에 실패했습니다.",
-                            accessToken: null
-                        });
+                        showToast("error", "Google 로그인에 실패했습니다.");
                     }
                 }
             };
             processGoogleLogin();
         }
-    }, [navigate, from]);
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    }, [navigate, from, showToast]);
 
     if (isAuthenticated) {
         return null;
@@ -267,11 +248,7 @@ const Join = () => {
                                 }
                             })}
                         />
-                        {errors.email && (
-                            <p className="text-red-500">
-                                {errors?.email?.message}
-                            </p>
-                        )}
+                        <ErrorMessage field="email" errors={errors} />
                     </div>
                     <div className="relative flex flex-col">
                         <label
@@ -293,11 +270,7 @@ const Join = () => {
                                 }
                             })}
                         />
-                        {errors.password && (
-                            <p className="text-red-500">
-                                {errors?.password?.message}
-                            </p>
-                        )}
+                        <ErrorMessage field="password" errors={errors} />
 
                         <span className="flex justify-end items-center">
                             <img
@@ -328,11 +301,7 @@ const Join = () => {
                                     "비밀번호가 일치하지 않습니다."
                             })}
                         />
-                        {errors.confirmPassword && (
-                            <p className="text-red-500">
-                                {errors?.confirmPassword?.message}
-                            </p>
-                        )}
+                        <ErrorMessage field="confirmPassword" errors={errors} />
                         <span className="flex justify-end items-center">
                             <img
                                 src={handleConfirmEyeIconToggle()}
@@ -385,7 +354,7 @@ const Join = () => {
                     className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
                     type="submit"
                 >
-                    {loginState.loading ? "회원가입 중" : "회원가입"}
+                    {isLoading ? "회원가입 중" : "회원가입"}
                 </button>
             </div>
             <ToastContainer toasts={toasts} />

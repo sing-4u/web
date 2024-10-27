@@ -1,3 +1,4 @@
+import { ComponentType } from "react";
 import { ModalContentProps } from "../../types";
 import { ModalType } from "../../utils/modalType";
 import EmailModalContent from "./EmailModal";
@@ -9,7 +10,7 @@ import SuccessChangePasswordModalContent from "./SuccessChangePasswordModal";
 
 interface ModalConfigProps {
     title: string;
-    Content: React.ComponentType<ModalContentProps>;
+    Content: ComponentType<ModalContentProps>;
 }
 
 const modalConfigs: Record<ModalType, ModalConfigProps> = {
