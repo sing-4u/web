@@ -1,9 +1,9 @@
 import { createContext, useState, ReactNode } from "react";
-import { ModalType } from "../../utils/modalType";
-import MainModal from "./MainModal";
+import { ModalType } from "../utils/modalType";
+import MainModal from "../components/Modal/MainModal";
 
 interface ModalContextProps {
-    openModal: (type: ModalType, errorMessage?: string) => void;
+    openModal: (type: ModalType) => void;
     closeModal: () => void;
     isOpen: boolean;
     type: ModalType | null;
@@ -16,14 +16,10 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [type, setType] = useState<ModalType | null>(null);
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(
-        undefined
-    );
 
-    const openModal = (modalType: ModalType, errorMessage?: string) => {
+    const openModal = (modalType: ModalType) => {
         setType(modalType);
         setIsOpen(true);
-        if (errorMessage) setErrorMessage(errorMessage);
     };
 
     const closeModal = () => {
@@ -34,12 +30,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
     return (
         <ModalContext.Provider value={{ isOpen, type, openModal, closeModal }}>
             {children}
-            <MainModal
-                isOpen={isOpen}
-                type={type}
-                onClose={closeModal}
-                errorMessage={errorMessage}
-            />
+            <MainModal isOpen={isOpen} type={type} onClose={closeModal} />
         </ModalContext.Provider>
     );
 };

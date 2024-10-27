@@ -13,6 +13,7 @@ import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
+import { useModal } from "../hooks/useModal";
 
 interface FormValues {
     name: string;
@@ -69,6 +70,8 @@ const Join = () => {
         handleToggle: handleConfirmToggle,
         handleEyeIconToggle: handleConfirmEyeIconToggle
     } = usePasswordToggle();
+
+    const { openModal } = useModal();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -154,7 +157,7 @@ const Join = () => {
 
         try {
             if (isEmailFromGoogleDomain(email)) {
-                showToast("error", "SNS로 가입된 계정입니다.");
+                openModal("sns", "SNS로 가입된 계정입니다.");
                 return;
             }
             await axios.post(
@@ -169,7 +172,9 @@ const Join = () => {
             const { accessToken, refreshToken } = res.data;
             storeToken(accessToken, refreshToken);
             showToast("success", "회원가입이 완료되었습니다.");
-            navigate("/");
+            setTimeout(() => {
+                navigate("/");
+            }, 1000);
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {

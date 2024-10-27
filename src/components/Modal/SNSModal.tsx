@@ -1,8 +1,5 @@
-import { ModalContentProps } from "../../types";
-import Modal from "./Modal";
-
-const SNSModalContent = ({ title }: ModalContentProps) => {
-    return <Modal>{title}</Modal>;
+const SNSModalContent = () => {
+    return <div className="flex flex-col items-center"></div>;
 };
 
 export default SNSModalContent;

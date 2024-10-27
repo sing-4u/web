@@ -40,15 +40,21 @@ interface MainModalProps {
     isOpen: boolean;
     onClose: () => void;
     type?: ModalType | null;
+    errorMessage?: string;
 }
 
-const MainModal = ({ isOpen, onClose, type }: MainModalProps) => {
+const MainModal = ({ isOpen, onClose, type, errorMessage }: MainModalProps) => {
     if (!type) return null;
 
     const { title, Content } = modalConfigs[type];
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose} title={title}>
+        <Modal
+            isOpen={isOpen}
+            onClose={onClose}
+            title={title}
+            errorMessage={errorMessage}
+        >
             <Content title={title} />
         </Modal>
     );
