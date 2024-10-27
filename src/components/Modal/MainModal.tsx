@@ -5,11 +5,9 @@ import EmailModalContent from "./EmailModal";
 import Modal from "./Modal";
 import PasswordModalContent from "./PasswordModal";
 import SNSModalContent from "./SNSModal";
-import SuccessChangeEmailModalContent from "./SuccessChangeEmailModal";
-import SuccessChangePasswordModalContent from "./SuccessChangePasswordModal";
 
 interface ModalConfigProps {
-    title: string;
+    title?: string;
     Content: ComponentType<ModalContentProps>;
 }
 
@@ -22,16 +20,7 @@ const modalConfigs: Record<ModalType, ModalConfigProps> = {
         title: "비밀번호 변경",
         Content: PasswordModalContent
     },
-    changePassword: {
-        title: "비밀번호 변경 완료",
-        Content: SuccessChangePasswordModalContent
-    },
-    changeEmail: {
-        title: "이메일 변경 완료",
-        Content: SuccessChangeEmailModalContent
-    },
     sns: {
-        title: "SNS로 가입된 계정입니다.",
         Content: SNSModalContent
     }
 };

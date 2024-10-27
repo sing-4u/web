@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axiosInstance";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
-import { useModal } from "../../hooks/useModal";
+import { useToast } from "../../hooks/useToast";
+import { ToastContainer } from "../ToastContainer";
 
 const PasswordModalContent = () => {
     const {
@@ -14,7 +15,7 @@ const PasswordModalContent = () => {
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
 
-    const { openModal } = useModal();
+    const { showToast, toasts } = useToast();
 
     const watchPassword = watch("newPassword");
     const watchOldPassword = watch("oldPassword");
@@ -30,7 +31,7 @@ const PasswordModalContent = () => {
                 oldPassword,
                 newPassword
             });
-            openModal("changePassword");
+            showToast("success", "비밀번호 변경 완료");
         } catch {
             // error handling
         }
@@ -180,6 +181,7 @@ const PasswordModalContent = () => {
             >
                 변경하기
             </button>
+            <ToastContainer toasts={toasts} />
         </form>
     );
 };

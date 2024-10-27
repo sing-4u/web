@@ -2,7 +2,8 @@ import { useForm } from "react-hook-form";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import axiosInstance from "../../utils/axiosInstance";
-import { useModal } from "../../hooks/useModal";
+import { useToast } from "../../hooks/useToast";
+import { ToastContainer } from "../ToastContainer";
 
 const EmailModalContent = () => {
     const {
@@ -17,14 +18,14 @@ const EmailModalContent = () => {
         }
     });
 
-    const { openModal } = useModal();
+    const { showToast, toasts } = useToast();
 
     const onSubmit = async (data: { email: string; password: string }) => {
         const { email, password } = data;
 
         try {
             axiosInstance().patch("/users/me/email", { email, password });
-            openModal("changeEmail");
+            showToast("success", "이메일 변경 완료");
         } catch {
             // error handling
         }
@@ -105,6 +106,7 @@ const EmailModalContent = () => {
             >
                 변경하기
             </button>
+            <ToastContainer toasts={toasts} />
         </form>
     );
 };

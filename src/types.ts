@@ -1,4 +1,4 @@
 export type ModalContentProps = {
-    title: string;
+    title?: string;
     errorMessage?: string;
 };
