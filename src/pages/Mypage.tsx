@@ -10,6 +10,7 @@ import { logout } from "../utils/Auth";
 import { useNavigate } from "react-router-dom";
 import DeleteAccountModal from "../utils/DeleteAccountModal";
 import { useModal } from "../hooks/useModal";
+import NicknameEditor from "../components/NicknameEditor";
 
 const Mypage = () => {
   const { data: userData } = useUserData();
@@ -172,33 +173,11 @@ const Mypage = () => {
             <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
           )}
           <div className="flex flex-col gap-y-2">
-            <label htmlFor="nickname" className={inputLabelClass}>
-              닉네임
-            </label>
-            <div className="relative flex items-center">
-              <input
-                type="text"
-                id="nickname"
-                value={nickname}
-                onChange={(e) => setNickname(e.target.value)}
-                disabled={!isEditingName}
-                className={inputClass}
-              />
-              <button
-                type="button"
-                className={changeButtonClass}
-                onClick={() => {
-                  if (isEditingName) {
-                    handleNameChange();
-                  } else {
-                    setNickname("");
-                    setIsEditingName(true);
-                  }
-                }}
-              >
-                {isEditingName ? "완료" : "수정"}
-              </button>
-            </div>
+            <NicknameEditor
+              nickname={nickname}
+              setNickname={setNickname}
+              onError={setErrorMessage}
+            />
           </div>
           <div className="flex flex-col gap-y-2">
             <label htmlFor="email" className={inputLabelClass}>
