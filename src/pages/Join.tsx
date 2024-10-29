@@ -14,7 +14,7 @@ import { ToastContainer } from "../components/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
 import { useModal } from "../hooks/useModal";
-
+import Logo from "../assets/logo.svg";
 interface FormValues {
     name: string;
     email: string;
@@ -32,7 +32,7 @@ const Join = () => {
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
-    const { isLoading, isAuthenticated } = useAuthRedirect("/");
+    const { isAuthenticated } = useAuthRedirect("/");
     const { showToast, toasts } = useToast();
 
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({
@@ -186,181 +186,187 @@ const Join = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="w-full max-w-md mx-auto p-6 space-y-4">
-                <div className="flex">로고</div>
-                <div className="text-2xl font-bold text-center">회원가입</div>
-                <button
-                    type="button"
-                    onClick={handleGoogleClick}
-                    className="w-full h-full flex items-center justify-center font-bold text-[14px] leading-[16.71px] cursor-pointer"
-                >
-                    <GoogleIcon />
-                    <span className="ml-2">Google로 계속하기</span>{" "}
-                </button>
-                <div className="space-x-2 mt-4 flex items-center">
-                    <span className="w-full border-b"></span>
+        <form onSubmit={handleSubmit(onSubmit)} className="px-4">
+            <div className="w-full max-w-md mx-auto">
+                <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
+                <div className="text-2xl font-bold text-center mb-6">
+                    회원가입
                 </div>
-                <section className="space-y-4">
-                    <div className="flex flex-col">
-                        <label
-                            htmlFor="name"
-                            className="text-left font-Pretendard mb-2"
+                <div className="space-y-4">
+                    <div className="w-full h-[48px] rounded-[10px] border border-black">
+                        <button
+                            type="button"
+                            onClick={handleGoogleClick}
+                            className="w-full h-full flex items-center justify-center font-bold text-sm"
                         >
-                            닉네임
-                        </label>
-                        <input
-                            {...register("name", {
-                                required: "닉네임을 입력해주세요.",
-                                maxLength: {
-                                    value: 50,
-                                    message: "최대 50자까지 입력 가능합니다."
-                                },
-                                minLength: {
-                                    value: 1,
-                                    message: "최소 1자 이상 입력해야합니다."
-                                },
-                                pattern: {
-                                    value: /^[가-힣a-zA-Z0-9\s!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]{1,50}$/,
-                                    message: "이름을 다시 확인해주세요."
-                                }
-                            })}
-                            className={getInputErrorClassName(errors.name)}
-                            placeholder="닉네임"
-                        />
-
-                        {errors.name && (
-                            <p className="text-red-500">
-                                {errors.name.message}
-                            </p>
-                        )}
+                            <GoogleIcon />
+                            <span className="ml-2">Google로 회원가입</span>
+                        </button>
                     </div>
-                    <div className="flex flex-col">
-                        <label
-                            htmlFor="email"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            이메일
-                        </label>
-                        <input
-                            placeholder="abc@email.com"
-                            className={getInputErrorClassName(errors.email)}
-                            {...register("email", {
-                                required: "이메일을 입력해주세요",
-                                pattern: {
-                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "올바른 이메일 형식이 아닙니다."
-                                }
-                            })}
-                        />
-                        <ErrorMessage field="email" errors={errors} />
-                    </div>
-                    <div className="relative flex flex-col">
-                        <label
-                            htmlFor="password"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            비밀번호
-                        </label>
-                        <input
-                            type={password.type}
-                            placeholder="비밀번호 확인"
-                            className={getInputErrorClassName(errors.password)}
-                            {...register("password", {
-                                required: "비밀번호를 입력해주세요",
-                                pattern: {
-                                    value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                    message:
-                                        "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
-                                }
-                            })}
-                        />
-                        <ErrorMessage field="password" errors={errors} />
 
-                        <span className="flex justify-end items-center">
-                            <img
-                                src={handleEyeIconToggle()}
-                                alt="Toggle Password Visibility"
-                                className="absolute inset-y-12 end-3 cursor-pointer"
-                                onClick={handleToggle}
+                    <div className="space-y-4">
+                        <div className="flex flex-col">
+                            <label className="text-sm mb-2">닉네임</label>
+                            <input
+                                {...register("name", {
+                                    required: "닉네임을 입력해주세요.",
+                                    maxLength: {
+                                        value: 50,
+                                        message:
+                                            "최대 50자까지 입력 가능합니다."
+                                    }
+                                })}
+                                className={`border border-[#e1e1e1] h-[48px] px-4 text-sm ${getInputErrorClassName(
+                                    errors.name
+                                )}`}
+                                placeholder="별명"
                             />
-                        </span>
-                    </div>
-                    <div className="relative flex flex-col">
-                        <label
-                            htmlFor="confirmPassword"
-                            className="text-left font-Pretendard mb-2"
-                        >
-                            비밀번호 확인
-                        </label>
-                        <input
-                            type={confirmPassword.type}
-                            placeholder="비밀번호 확인"
-                            className={getInputErrorClassName(
-                                errors.confirmPassword
+                            {errors.name && (
+                                <p className="text-red-500 text-xs mt-1">
+                                    {errors.name.message}
+                                </p>
                             )}
-                            {...register("confirmPassword", {
-                                required: "비밀번호 확인을 해주세요",
-                                validate: (value) =>
-                                    value === watchPassword ||
-                                    "비밀번호가 일치하지 않습니다."
-                            })}
-                        />
-                        <ErrorMessage field="confirmPassword" errors={errors} />
-                        <span className="flex justify-end items-center">
-                            <img
-                                src={handleConfirmEyeIconToggle()}
-                                alt="Toggle Password Visibility"
-                                className="absolute inset-y-12 end-3 cursor-pointer"
-                                onClick={handleConfirmToggle}
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="text-sm mb-2">이메일</label>
+                            <input
+                                {...register("email", {
+                                    required: "이메일을 입력해주세요",
+                                    pattern: {
+                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                        message:
+                                            "올바른 이메일 형식이 아닙니다."
+                                    }
+                                })}
+                                className={`border border-[#e1e1e1] h-[48px] px-4 text-sm ${getInputErrorClassName(
+                                    errors.email
+                                )}`}
+                                placeholder="abc@email.com"
                             />
-                        </span>
-                    </div>
-                </section>
-                <section>
-                    <span className="flex justify-start mb-4 font-Pretendard">
-                        약관동의
-                    </span>
-                    <div
-                        className="flex items-center space-x-2 cursor-pointer"
-                        onClick={handleAllCheckboxes}
-                    >
-                        <img
-                            src={isAllChecked ? CheckboxBlack : CheckboxOutline}
-                            alt=""
-                            className="mr-1"
-                        />
-                        <div className="flex w-screen justify-start">
-                            <label className="text-sm font-medium font-Pretendard leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                                전체동의
+                            <ErrorMessage field="email" errors={errors} />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="text-sm mb-2">비밀번호</label>
+                            <div className="relative">
+                                <input
+                                    type={password.type}
+                                    {...register("password", {
+                                        required: "비밀번호를 입력해주세요",
+                                        pattern: {
+                                            value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                                            message:
+                                                "영문, 숫자를 포함한 8자 이상의 비밀번호"
+                                        }
+                                    })}
+                                    className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 ${getInputErrorClassName(
+                                        errors.password
+                                    )}`}
+                                    placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleToggle}
+                                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                                >
+                                    <img
+                                        src={handleEyeIconToggle()}
+                                        alt="Toggle Password Visibility"
+                                        className="w-5 h-5"
+                                    />
+                                </button>
+                            </div>
+                            <ErrorMessage field="password" errors={errors} />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label className="text-sm mb-2">
+                                비밀번호 확인
                             </label>
+                            <div className="relative">
+                                <input
+                                    type={confirmPassword.type}
+                                    {...register("confirmPassword", {
+                                        required: "비밀번호 확인을 해주세요",
+                                        validate: (value) =>
+                                            value === watchPassword ||
+                                            "비밀번호가 일치하지 않습니다."
+                                    })}
+                                    className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 ${getInputErrorClassName(
+                                        errors.confirmPassword
+                                    )}`}
+                                    placeholder="비밀번호 확인"
+                                />
+                                <button
+                                    type="button"
+                                    onClick={handleConfirmToggle}
+                                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                                >
+                                    <img
+                                        src={handleConfirmEyeIconToggle()}
+                                        alt="Toggle Password Visibility"
+                                        className="w-5 h-5"
+                                    />
+                                </button>
+                            </div>
+                            <ErrorMessage
+                                field="confirmPassword"
+                                errors={errors}
+                            />
                         </div>
                     </div>
-                    <div className="space-x-2 mt-4 flex items-center">
-                        <span className="w-full border-b" />
+
+                    <div className="space-y-4 mt-6">
+                        <div className="text-sm">약관동의</div>
+                        <div
+                            className="flex items-center space-x-2 cursor-pointer"
+                            onClick={handleAllCheckboxes}
+                        >
+                            <img
+                                src={
+                                    isAllChecked
+                                        ? CheckboxBlack
+                                        : CheckboxOutline
+                                }
+                                alt=""
+                                className="w-5 h-5"
+                            />
+                            <span className="text-sm">전체동의</span>
+                        </div>
+                        <div className="w-full border-t border-gray-200 my-4"></div>
+                        <div className="space-y-4">
+                            {Object.entries(checkboxLabels).map(
+                                ([key, label]) => (
+                                    <Checkbox
+                                        key={key}
+                                        label={label}
+                                        isChecked={
+                                            checkboxes[
+                                                key as keyof CheckboxState
+                                            ]
+                                        }
+                                        onToggle={() =>
+                                            handleCheckboxToggle(
+                                                key as keyof CheckboxState
+                                            )
+                                        }
+                                    />
+                                )
+                            )}
+                        </div>
+                        {termsError && (
+                            <p className="text-red-500 text-xs">{termsError}</p>
+                        )}
                     </div>
-                </section>
-                <section className="space-y-2 font-Pretendard">
-                    {Object.entries(checkboxLabels).map(([key, label]) => (
-                        <Checkbox
-                            key={key}
-                            label={label}
-                            isChecked={checkboxes[key as keyof CheckboxState]}
-                            onToggle={() =>
-                                handleCheckboxToggle(key as keyof CheckboxState)
-                            }
-                        />
-                    ))}
-                    {termsError && (
-                        <p className="text-red-500 text-sm">{termsError}</p>
-                    )}
-                </section>
-                <button
-                    className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
-                    type="submit"
-                >
-                    {isLoading ? "회원가입 중" : "회원가입"}
-                </button>
+
+                    <button
+                        className="relative top-12 w-full bg-[#7846dd] text-white rounded-lg h-[48px] text-sm mt-8"
+                        type="submit"
+                    >
+                        회원가입
+                    </button>
+                </div>
             </div>
             <ToastContainer toasts={toasts} />
         </form>
