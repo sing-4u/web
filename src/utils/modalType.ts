@@ -1,6 +1,1 @@
-export type ModalType =
-    | "email"
-    | "password"
-    | "changePassword"
-    | "changeEmail"
-    | "sns";
+export type ModalType = "email" | "password" | "sns";
