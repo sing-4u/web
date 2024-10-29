@@ -1,17 +1,43 @@
+import { ComponentType } from "react";
 import { useModal } from "../../hooks/useModal";
+import { ModalContentProps } from "../../types";
+import { ModalType } from "../../utils/modalType";
+import EmailModalContent from "./EmailModal";
+import PasswordModalContent from "./PasswordModal";
+import SNSModalContent from "./SNSModal";
 import CloseButton from "../../../src/assets/btn_close.svg";
 
-export interface ModalProps {
-    isOpen?: boolean;
-    onClose?: () => void;
+interface ModalConfigProps {
     title?: string;
-    children?: React.ReactNode;
+    Content: ComponentType<ModalContentProps>;
+}
+
+const modalConfigs: Record<ModalType, ModalConfigProps> = {
+    email: {
+        title: "이메일 변경",
+        Content: EmailModalContent
+    },
+    password: {
+        title: "비밀번호 변경",
+        Content: PasswordModalContent
+    },
+    sns: {
+        Content: SNSModalContent
+    }
+};
+
+interface ModalProps {
+    isOpen: boolean;
+    type?: ModalType | null;
     errorMessage?: string;
 }
 
-const Modal = ({ isOpen, title, children, errorMessage }: ModalProps) => {
+const Modal = ({ isOpen, type, errorMessage }: ModalProps) => {
     const { closeModal } = useModal();
-    if (!isOpen) return null;
+
+    if (!isOpen || !type) return null;
+
+    const { title, Content } = modalConfigs[type];
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -26,7 +52,7 @@ const Modal = ({ isOpen, title, children, errorMessage }: ModalProps) => {
                         </button>
                     )}
                 </div>
-                {children}
+                <Content title={title} />
                 {errorMessage && (
                     <button
                         onClick={closeModal}
