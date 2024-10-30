@@ -2,6 +2,7 @@ import React from "react";
 import ImgProfileS from "./ImgProfileS";
 import { useNavigate, Route } from "react-router-dom";
 import useUserData from "../hooks/useUserData";
+import Logo from "./Logo";
 
 interface NavbarProps {
   profileImage?: string | File | null;
@@ -21,9 +22,9 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
       <div className="flex justify-between items-center w-full h-[60px] border-b-[0.5px] border-inputBorderColor px-6">
         <div
           onClick={() => navigate("/")}
-          className="w-[80px] h-[30px] cursor-pointer"
+          className="w-[64px] h-[22.5px] cursor-pointer"
         >
-          Logo
+          <Logo />
         </div>
         <div className="flex items-center gap-3">
           {isLoggedIn ? (

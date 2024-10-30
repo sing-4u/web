@@ -7,6 +7,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../utils/Auth";
 import GoogleIcon from "../components/GoogleIcon";
 import storeToken from "../utils/storeToken";
+import Logo from "../components/Logo";
 
 interface LoginFormValue {
   email: string;
@@ -126,16 +127,18 @@ const Login = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative">
-          <div className="absolute w-[118] h-[38px] top-[137px] left-[129px] font-bold text-[34px] leading-[38px] text-center">
-            <div>Sing4U</div>
+          <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
+            <div className="flex justify-center items-center w-[100px] h-[35.15px]">
+              <Logo />
+            </div>
           </div>
-          <div className="absolute w-[326px] h-[22px] top-[193px] left-[25px] font-medium text-[13px] leading-[22px] text-center">
+          <div className="absolute w-[326px] h-[22px] top-[181px] left-[25px] font-medium text-[13px] leading-[22px] text-center">
             지금 가입하면, 당신의 신청곡으로 특별한 노래를 선물해드릴게요
           </div>
           <div className="space-x-2 mt-4 flex items-center">
             <span className="w-full border-b"></span>
           </div>
-          <div className="absolute w-[327px] h-[52px] top-[293px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
+          <div className="absolute w-[327px] h-[52px] top-[278px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
             <button
               type="button"
               onClick={initiateGoogleLogin}
@@ -145,7 +148,7 @@ const Login = () => {
               <span className="ml-2">Google로 계속하기</span>{" "}
             </button>
           </div>
-          <div className="absolute w-[250px] h-[12px] top-[372px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
+          <div className="absolute w-[250px] h-[12px] top-[370px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
           </div>
           <div className="flex flex-col space-y-4 ">
