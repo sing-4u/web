@@ -56,7 +56,10 @@ const PasswordModalContent = () => {
     } = usePasswordToggle();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-y-4 rounded-[10px]"
+        >
             <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                     현재 비밀번호
@@ -72,10 +75,10 @@ const PasswordModalContent = () => {
                             }
                         })}
                         type={oldPasswordState.type}
-                        className={`w-full pr-10 ${getInputErrorClassName(
+                        className={`w-full pr-10 rounded-[10px] border-inputBorderColor ${getInputErrorClassName(
                             errors.oldPassword
                         )}`}
-                        placeholder="비밀번호를 입력해주세요."
+                        placeholder="비밀번호 입력"
                     />
                     <button
                         type="button"
@@ -114,10 +117,10 @@ const PasswordModalContent = () => {
                                 "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요."
                         })}
                         type={newPasswordState.type}
-                        className={`w-full pr-10 ${getInputErrorClassName(
+                        className={`w-full pr-10 rounded-[10px] border-inputBorderColor ${getInputErrorClassName(
                             errors.newPassword
                         )}`}
-                        placeholder="새 비밀번호를 입력해주세요."
+                        placeholder="새 비밀번호 입력"
                     />
                     <button
                         type="button"
@@ -151,10 +154,10 @@ const PasswordModalContent = () => {
                                 "비밀번호가 일치하지 않습니다."
                         })}
                         type={confirmPasswordState.type}
-                        className={`w-full pr-10 ${getInputErrorClassName(
+                        className={`w-full pr-10 rounded-[10px] border-inputBorderColor ${getInputErrorClassName(
                             errors.confirmPassword
                         )}`}
-                        placeholder="새 비밀번호를 다시 입력해주세요."
+                        placeholder="새 비밀번호 확인"
                     />
                     <button
                         type="button"
@@ -177,7 +180,7 @@ const PasswordModalContent = () => {
 
             <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-buttonBackgroundColor hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
                 변경하기
             </button>
