@@ -189,7 +189,7 @@ const Join = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="px-4">
             <div className="w-full max-w-md mx-auto">
                 <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
-                <div className="text-2xl font-bold text-center mb-6">
+                <div className="text-2xl font-bold text-center mb-6 font-pretendard">
                     회원가입
                 </div>
                 <div className="space-y-4">
@@ -216,7 +216,7 @@ const Join = () => {
                                             "최대 50자까지 입력 가능합니다."
                                     }
                                 })}
-                                className={`border border-[#e1e1e1] h-[48px] px-4 text-sm ${getInputErrorClassName(
+                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  text-inputTextColor ${getInputErrorClassName(
                                     errors.name
                                 )}`}
                                 placeholder="별명"
@@ -239,7 +239,7 @@ const Join = () => {
                                             "올바른 이메일 형식이 아닙니다."
                                     }
                                 })}
-                                className={`border border-[#e1e1e1] h-[48px] px-4 text-sm ${getInputErrorClassName(
+                                className={`border border-inputBorderColor h-[48px] px-4 text-sm text-inputTextColor ${getInputErrorClassName(
                                     errors.email
                                 )}`}
                                 placeholder="abc@email.com"
@@ -260,7 +260,7 @@ const Join = () => {
                                                 "영문, 숫자를 포함한 8자 이상의 비밀번호"
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 ${getInputErrorClassName(
+                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12 text-inputTextColor ${getInputErrorClassName(
                                         errors.password
                                     )}`}
                                     placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
@@ -293,7 +293,7 @@ const Join = () => {
                                             value === watchPassword ||
                                             "비밀번호가 일치하지 않습니다."
                                     })}
-                                    className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 ${getInputErrorClassName(
+                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12 text-inputTextColor ${getInputErrorClassName(
                                         errors.confirmPassword
                                     )}`}
                                     placeholder="비밀번호 확인"
@@ -361,7 +361,7 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="relative top-12 w-full bg-[#7846dd] text-white rounded-lg h-[48px] text-sm mt-8"
+                        className="relative top-12 w-full bg-buttonBackgroundColor text-white rounded-lg h-[48px] text-sm mt-8 font-pretendard"
                         type="submit"
                     >
                         회원가입

@@ -82,7 +82,7 @@ const FindPassword = () => {
                             }
                         })}
                         placeholder="가입한 이메일 주소"
-                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
+                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard placeholder:text-inputTextColor"
                     />
                     {errors.email && (
                         <span className="text-red-500 text-sm">
@@ -94,7 +94,7 @@ const FindPassword = () => {
                         className="absolute inset-y-12 end-3 cursor-pointer text-sm "
                         onClick={handleAuthenticationCodeClick}
                     >
-                        <span className="text-customGray hover:text-gray-400">
+                        <span className="text-inputTextColor hover:text-gray-400">
                             {isAuthenticationCodeRequested
                                 ? "재요청"
                                 : "인증번호 요청"}
@@ -115,7 +115,7 @@ const FindPassword = () => {
                             required: "인증번호는 필수입니다"
                         })}
                         placeholder="인증번호"
-                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard"
+                        className="border rounded-[10px] py-[14px] px-[18px] placeholder:font-Pretendard placeholder:text-inputTextColor"
                     />
                     {errors.code && (
                         <span className="text-red-500 text-sm">
@@ -125,7 +125,7 @@ const FindPassword = () => {
                     )}
                 </div>
                 <button
-                    className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
+                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px] font-Pretendard"
                     type="submit"
                 >
                     다음

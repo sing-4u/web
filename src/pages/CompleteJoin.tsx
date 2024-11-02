@@ -14,7 +14,7 @@ const CompleteJoin = () => {
                     </strong>
                 </div>
                 <button
-                    className="w-full bg-[#7846dd] text-white rounded-lg h-14 font-Pretendard"
+                    className="w-full bg-buttonBackgroundColor text-white rounded-lg h-14 font-Pretendard"
                     type="submit"
                 >
                     로그인
