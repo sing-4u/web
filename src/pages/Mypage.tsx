@@ -41,27 +41,6 @@ const Mypage = () => {
     }
   }, [userData]);
 
-  const handleNameChange = async () => {
-    if (isEditingName) {
-      try {
-        await axios.patch(
-          `${import.meta.env.VITE_API_URL}/users/me/name`,
-          { name: nickname },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        setIsEditingName(false);
-      } catch (error) {
-        if (error instanceof Error) {
-          setErrorMessage("닉네임 변경에 실패했습니다. 다시 시도해주세요.");
-        }
-      }
-    }
-  };
-
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {

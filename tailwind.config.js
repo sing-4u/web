@@ -11,6 +11,8 @@ export default {
         inputBorderColor: "#E1E1E1",
         inputTextColor: "#AAAAAA",
         buttonColor: "#F5F5F5",
+        buttonColor2: "#D9D9D9",
+        colorPurple: "#7846DD",
       },
     },
   },
