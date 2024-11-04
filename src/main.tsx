@@ -10,7 +10,7 @@ import CompleteJoin from "./pages/CompleteJoin";
 import { ModalProvider } from "./components/Modal/ModalProvider";
 import NewPassword from "./pages/NewPassword";
 import Mypage from "./pages/Mypage";
-import FindPassword from "./pages/FindPassword";
+import FindPassword from "./pages/findPassword";
 
 const queryClient = new QueryClient();
 
