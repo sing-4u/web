@@ -9,8 +9,8 @@ import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
 import { ModalProvider } from "./components/Modal/ModalProvider";
 import NewPassword from "./pages/NewPassword";
-import FindPassword from "./pages/FindPassword";
 import Mypage from "./pages/Mypage";
+import FindPassword from "./pages/FindPassword";
 
 const queryClient = new QueryClient();
 
