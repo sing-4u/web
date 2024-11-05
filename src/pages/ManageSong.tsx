@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import ImgProfileL from "../components/ImgProfileL";
 import useUserData from "../hooks/useUserData";
+import { useQueryClient } from "@tanstack/react-query";
+import { useStartReceiving } from "../hooks/useStartReceiving";
+import { useEndReceiving } from "../hooks/useEndReceiving";
+import { useSongList } from "../hooks/useSongList";
+import { useSongListId } from "../hooks/useSongListId";
 
 const ManageSong = () => {
   const { data: userData } = useUserData();
@@ -9,13 +14,38 @@ const ManageSong = () => {
   const nickname = userData?.name;
 
   const [receivingSong, setReceivingSong] = useState(false);
+  const [accodianOpen, setAccodianOpen] = useState(false);
 
-  const handleReceivingSong = () => {
-    setReceivingSong(true);
+  const startReceivingMutation = useStartReceiving();
+  const endReceivingMutation = useEndReceiving();
+  const { data: songList } = useSongList(receivingSong);
+  const { data: songListId } = useSongListId();
+
+  useEffect(() => {
+    const storedReceivingSong = localStorage.getItem("receivingSong");
+    if (storedReceivingSong) {
+      setReceivingSong(JSON.parse(storedReceivingSong));
+    }
+  }, []);
+
+  const handleStartReceiving = () => {
+    startReceivingMutation.mutate(undefined, {
+      onSuccess: () => {
+        setReceivingSong(true);
+        localStorage.setItem("receivingSong", JSON.stringify(true));
+      },
+    });
   };
 
-  const handleEndReceivingSong = () => {
-    setReceivingSong(false);
+  const handleEndReceiving = () => {
+    if (songListId) {
+      endReceivingMutation.mutate(songListId, {
+        onSuccess: () => {
+          setReceivingSong(false);
+          localStorage.removeItem("receivingSong");
+        },
+      });
+    }
   };
 
   const smallButtonClass =
@@ -60,13 +90,13 @@ const ManageSong = () => {
       <div className="flex flex-col items-center mt-4">
         <div className="flex space-x-2">
           <button
-            onClick={handleReceivingSong}
+            onClick={handleStartReceiving}
             className={smallButtonClass + " bg-buttonColor2"}
           >
             신청곡 받기
           </button>
           <button
-            onClick={handleEndReceivingSong}
+            onClick={handleEndReceiving}
             className={smallButtonClass + " bg-black text-white"}
           >
             신청곡 종료
@@ -76,6 +106,24 @@ const ManageSong = () => {
           <button>신청곡 링크 복사</button>
         </div>
       </div>
+      {receivingSong && songList && (
+        <div className="w-full mt-4">
+          <div className="accordion">
+            <div className="accordion-header">
+              <h2>신청 곡 목록</h2>
+            </div>
+            <div className="accordion-content">
+              <ul>
+                {songList.map((song: { title: string }, index: number) => (
+                  <li key={index}>
+                    {index + 1}. {song.title}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
