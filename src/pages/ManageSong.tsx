@@ -8,6 +8,7 @@ import { useEndReceiving } from "../hooks/useEndReceiving";
 import { useSongList } from "../hooks/useSongList";
 import { useSongListId } from "../hooks/useSongListId";
 import { set } from "react-hook-form";
+import formatDate from "../utils/formatData";
 
 const ManageSong = () => {
   const { data: userData } = useUserData();
@@ -46,6 +47,8 @@ const ManageSong = () => {
       });
     }
   };
+
+  const nowSongList = Array.isArray(songList) ? songList[0] : null;
 
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
@@ -105,11 +108,14 @@ const ManageSong = () => {
           <button>신청곡 링크 복사</button>
         </div>
       </div>
-      {receivingSong && songList && (
+      {receivingSong && nowSongList && (
         <div className="w-full mt-4">
           <div>
             <div>
-              <h2>신청 곡 목록</h2>
+              <h2>현재 신청곡 순위</h2>
+              <p>
+                {formatDate(nowSongList.startDate) + "부터 신청곡 받고 있어요"}
+              </p>
             </div>
             <div>
               <ul>
