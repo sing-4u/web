@@ -7,6 +7,7 @@ import { useStartReceiving } from "../hooks/useStartReceiving";
 import { useEndReceiving } from "../hooks/useEndReceiving";
 import { useSongList } from "../hooks/useSongList";
 import { useSongListId } from "../hooks/useSongListId";
+import { set } from "react-hook-form";
 
 const ManageSong = () => {
   const { data: userData } = useUserData();
@@ -14,26 +15,35 @@ const ManageSong = () => {
   const nickname = userData?.name;
 
   const [receivingSong, setReceivingSong] = useState(false);
-  const [accodianOpen, setAccodianOpen] = useState(false);
+  const [isaccodianOpen, setIsAccodianOpen] = useState(false);
+  const [isOpend, setIsOpend] = useState(false);
 
   const startReceivingMutation = useStartReceiving();
   const endReceivingMutation = useEndReceiving();
   const { data: songList } = useSongList(receivingSong);
   const { data: songListId } = useSongListId();
 
+  // useEffect(() => {
+  //   const storedReceivingSong = localStorage.getItem("receivingSong");
+  //   if (storedReceivingSong) {
+  //     setReceivingSong(JSON.parse(storedReceivingSong));
+  //   }
+  // }, []);
+
+  //:TODO: GILPYO - 실데이터 연동해야함
   useEffect(() => {
-    const storedReceivingSong = localStorage.getItem("receivingSong");
-    if (storedReceivingSong) {
-      setReceivingSong(JSON.parse(storedReceivingSong));
+    if (isOpend) {
+      setReceivingSong(true);
+      console.log(isOpend);
     }
-  }, []);
+  }, [isOpend]);
 
   const handleStartReceiving = () => {
     startReceivingMutation.mutate(undefined, {
       onSuccess: () => {
-        setReceivingSong(true);
-        localStorage.setItem("receivingSong", JSON.stringify(true));
+        setIsOpend(true);
       },
+      // localStorage.setItem("receivingSong", JSON.stringify(true));
     });
   };
 
@@ -42,7 +52,7 @@ const ManageSong = () => {
       endReceivingMutation.mutate(songListId, {
         onSuccess: () => {
           setReceivingSong(false);
-          localStorage.removeItem("receivingSong");
+          // localStorage.removeItem("receivingSong");
         },
       });
     }
