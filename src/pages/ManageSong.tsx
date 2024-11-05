@@ -107,11 +107,11 @@ const ManageSong = () => {
       </div>
       {receivingSong && songList && (
         <div className="w-full mt-4">
-          <div className="accordion">
-            <div className="accordion-header">
+          <div>
+            <div>
               <h2>신청 곡 목록</h2>
             </div>
-            <div className="accordion-content">
+            <div>
               <ul>
                 {songList.map((song: { title: string }, index: number) => (
                   <li key={index}>
