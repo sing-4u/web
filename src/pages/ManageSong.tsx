@@ -13,37 +13,27 @@ const ManageSong = () => {
   const { data: userData } = useUserData();
   const profileImage = userData?.image;
   const nickname = userData?.name;
+  const isReceivingOpen = userData?.isOpened;
 
   const [receivingSong, setReceivingSong] = useState(false);
   const [isaccodianOpen, setIsAccodianOpen] = useState(false);
-  const [isOpend, setIsOpend] = useState(false);
 
   const startReceivingMutation = useStartReceiving();
   const endReceivingMutation = useEndReceiving();
   const { data: songList } = useSongList(receivingSong);
   const { data: songListId } = useSongListId();
 
-  // useEffect(() => {
-  //   const storedReceivingSong = localStorage.getItem("receivingSong");
-  //   if (storedReceivingSong) {
-  //     setReceivingSong(JSON.parse(storedReceivingSong));
-  //   }
-  // }, []);
-
-  //:TODO: GILPYO - 실데이터 연동해야함
   useEffect(() => {
-    if (isOpend) {
+    if (isReceivingOpen) {
       setReceivingSong(true);
-      console.log(isOpend);
     }
-  }, [isOpend]);
+  }, [isReceivingOpen]);
 
   const handleStartReceiving = () => {
     startReceivingMutation.mutate(undefined, {
       onSuccess: () => {
-        setIsOpend(true);
+        setReceivingSong(true);
       },
-      // localStorage.setItem("receivingSong", JSON.stringify(true));
     });
   };
 
@@ -52,7 +42,6 @@ const ManageSong = () => {
       endReceivingMutation.mutate(songListId, {
         onSuccess: () => {
           setReceivingSong(false);
-          // localStorage.removeItem("receivingSong");
         },
       });
     }
