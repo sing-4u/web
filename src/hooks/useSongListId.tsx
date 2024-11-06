@@ -17,6 +17,7 @@ export const useSongListId = (songListId: string) => {
   return useQuery({
     queryKey: ["songListId", songListId],
     queryFn: () => fetchSongListId(songListId),
+    enabled: !!songListId,
     retry: false,
   });
 };
