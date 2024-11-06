@@ -8,9 +8,11 @@ import { useEndReceiving } from "../hooks/useEndReceiving";
 import { useSongList } from "../hooks/useSongList";
 import { useSongListId } from "../hooks/useSongListId";
 import { set } from "react-hook-form";
-import formatDate from "../utils/formatData";
+import formatDate from "../utils/formatDate";
 
 const ManageSong = () => {
+  const queryClient = useQueryClient();
+
   const { data: userData } = useUserData();
   const profileImage = userData?.image;
   const nickname = userData?.name;
@@ -22,7 +24,8 @@ const ManageSong = () => {
   const startReceivingMutation = useStartReceiving();
   const endReceivingMutation = useEndReceiving();
   const { data: songList } = useSongList(receivingSong);
-  const { data: songListId } = useSongListId();
+  const songListId = songList?.[0]?.id;
+  const { data: songListDetails } = useSongListId(songListId);
 
   useEffect(() => {
     if (isReceivingOpen) {
@@ -30,10 +33,17 @@ const ManageSong = () => {
     }
   }, [isReceivingOpen]);
 
+  useEffect(() => {
+    console.log("songList:", songList);
+    console.log("songListDetails:", songListDetails);
+  }, [songList, songListDetails]);
+
   const handleStartReceiving = () => {
     startReceivingMutation.mutate(undefined, {
       onSuccess: () => {
         setReceivingSong(true);
+        queryClient.invalidateQueries({ queryKey: ["songList"] });
+        queryClient.invalidateQueries({ queryKey: ["songListId"] });
       },
     });
   };
@@ -43,6 +53,8 @@ const ManageSong = () => {
       endReceivingMutation.mutate(songListId, {
         onSuccess: () => {
           setReceivingSong(false);
+          queryClient.invalidateQueries({ queryKey: ["songList"] });
+          queryClient.invalidateQueries({ queryKey: ["songListId"] });
         },
       });
     }
@@ -119,11 +131,13 @@ const ManageSong = () => {
             </div>
             <div>
               <ul>
-                {songList.map((song: { title: string }, index: number) => (
-                  <li key={index}>
-                    {index + 1}. {song.title}
-                  </li>
-                ))}
+                {songListDetails?.map(
+                  (song: { title: string }, index: number) => (
+                    <li key={index}>
+                      {index + 1}. {song.title}
+                    </li>
+                  )
+                )}
               </ul>
             </div>
           </div>
