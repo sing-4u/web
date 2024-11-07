@@ -10,6 +10,7 @@ import { useSongListId } from "../hooks/useSongListId";
 import formatDate from "../utils/formatDate";
 import ChevronDown from "../components/ChevronDown";
 import ChevronUp from "../components/ChevronUp";
+import PreviousSongList from "../components/previousSongList";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
@@ -20,12 +21,15 @@ const ManageSong = () => {
   const isReceivingOpen = userData?.isOpened;
 
   const [receivingSong, setReceivingSong] = useState(false);
-  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-  const [openAccordions, setOpenAccordions] = useState({});
+  const [isAccordionOpen, setIsAccordionOpen] = useState(true);
+  const [openPreviousSongs, setOpenPreviousSongs] = useState<{
+    [key: number]: boolean;
+  }>({});
 
   const startReceivingMutation = useStartReceiving();
   const endReceivingMutation = useEndReceiving();
-  const { data: songList } = useSongList(receivingSong);
+
+  const { data: songList } = useSongList(true);
   const songListId = songList?.[0]?.id;
   const { data: songListDetails } = useSongListId(songListId);
 
@@ -36,8 +40,7 @@ const ManageSong = () => {
   }, [isReceivingOpen]);
 
   useEffect(() => {
-    console.log("songList:", songList);
-    console.log("songListDetails:", songListDetails);
+    console.log("nowSongList:", songList);
   }, [songList, songListDetails]);
 
   const handleStartReceiving = () => {
@@ -55,6 +58,7 @@ const ManageSong = () => {
       endReceivingMutation.mutate(songListId, {
         onSuccess: () => {
           setReceivingSong(false);
+
           queryClient.invalidateQueries({ queryKey: ["songList"] });
           queryClient.invalidateQueries({ queryKey: ["songListId"] });
         },
@@ -63,6 +67,14 @@ const ManageSong = () => {
   };
 
   const nowSongList = Array.isArray(songList) ? songList[0] : null;
+  const previousSongLists =
+    songList?.filter(
+      (list: { endDate: string | null }) => list.endDate !== null
+    ) || [];
+
+  console.log("songList:", songList);
+  console.log("songListDetails:", songListDetails);
+  console.log("이전 신청곡 배열", previousSongLists);
 
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
@@ -128,18 +140,19 @@ const ManageSong = () => {
             className="flex justify-between items-center cursor-pointer"
             onClick={() => setIsAccordionOpen(!isAccordionOpen)}
           >
-            <h2 className="inline-block text-transparent bg-clip-text text-lg font-semibold bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]">
+            <h2 className="inline-block text-transparent bg-clip-text font-semibold text-[18px] leading-[21.48px] bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]">
               현재 신청 곡 순위
             </h2>
             {isAccordionOpen ? <ChevronUp /> : <ChevronDown />}
           </div>
 
-          <p className="text-gray-500 text-sm">
+          <p className="font-medium text-[12px] leading-[14.32px] text-black mt-1">
             {formatDate(nowSongList.startDate) + "부터 신청 곡 받고 있어요"}
           </p>
+
           {isAccordionOpen && (
-            <>
-              <ul>
+            <div>
+              <ul className="mt-4">
                 {songListDetails?.map(
                   (
                     song: { title: string; artist: string; count: number },
@@ -149,31 +162,44 @@ const ManageSong = () => {
                       className="flex items-center gap-4 py-2 border-b last:border-none"
                       key={index}
                     >
-                      <div className="flex items-center justify-center w-8 h-8 rounded-md bg-purple-500 text-white font-bold">
+                      <div className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px] bg-[#7846dd] text-white font-bold text-[12px] leading-[14.32px] text-center">
                         {index + 1}
                       </div>
 
                       <div className="flex flex-col">
-                        <span className="text-base font-semibold">
+                        <span className="font-medium text-[14px] leading-[16.71px text-black]">
                           {song.title}
                         </span>
-                        <span className="text-sm text-gray-500">
+                        <span className="font-medium text-[12px] leading-[14.32px] text-customGray">
                           {song.artist}
                         </span>
                       </div>
 
-                      <div className="ml-auto font-medium text-gray-700">
+                      <div className="font-semibold text-[14px] leading-[16.71px] ml-auto">
                         {song.count}명
                       </div>
                     </li>
                   )
                 )}
               </ul>
-              <button className="mt-4 px-4 py-2 text-blue-600 font-medium border-t-2 border-inputBorderClass">
+              <button className="mt-4 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass">
                 더보기 +
               </button>
-            </>
+            </div>
           )}
+        </div>
+      )}
+      {previousSongLists.length > 0 && (
+        <div className="w-[327px] mt-4 flex flex-col justify-center items-center mb-10">
+          {previousSongLists.map((list, idx) => (
+            <PreviousSongList
+              key={list.id}
+              list={list}
+              idx={idx}
+              openPreviousSongs={openPreviousSongs}
+              setOpenPreviousSongs={setOpenPreviousSongs}
+            />
+          ))}
         </div>
       )}
     </div>
