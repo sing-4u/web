@@ -8,6 +8,8 @@ import { useEndReceiving } from "../hooks/useEndReceiving";
 import { useSongList } from "../hooks/useSongList";
 import { useSongListId } from "../hooks/useSongListId";
 import formatDate from "../utils/formatDate";
+import ChevronDown from "../components/ChevronDown";
+import ChevronUp from "../components/ChevronUp";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
@@ -18,7 +20,8 @@ const ManageSong = () => {
   const isReceivingOpen = userData?.isOpened;
 
   const [receivingSong, setReceivingSong] = useState(false);
-  const [isaccodianOpen, setIsAccodianOpen] = useState(false);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [openAccordions, setOpenAccordions] = useState({});
 
   const startReceivingMutation = useStartReceiving();
   const endReceivingMutation = useEndReceiving();
@@ -120,26 +123,57 @@ const ManageSong = () => {
         </div>
       </div>
       {receivingSong && nowSongList && (
-        <div className="w-full mt-4">
-          <div>
-            <div>
-              <h2>현재 신청곡 순위</h2>
-              <p>
-                {formatDate(nowSongList.startDate) + "부터 신청곡 받고 있어요"}
-              </p>
-            </div>
-            <div>
+        <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-indigo-500/50 p-4 mt-8">
+          <div
+            className="flex justify-between items-center cursor-pointer"
+            onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+          >
+            <h2 className="inline-block text-transparent bg-clip-text text-lg font-semibold bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]">
+              현재 신청 곡 순위
+            </h2>
+            {isAccordionOpen ? <ChevronUp /> : <ChevronDown />}
+          </div>
+
+          <p className="text-gray-500 text-sm">
+            {formatDate(nowSongList.startDate) + "부터 신청 곡 받고 있어요"}
+          </p>
+          {isAccordionOpen && (
+            <>
               <ul>
                 {songListDetails?.map(
-                  (song: { title: string }, index: number) => (
-                    <li key={index}>
-                      {index + 1}. {song.title}
+                  (
+                    song: { title: string; artist: string; count: number },
+                    index: number
+                  ) => (
+                    <li
+                      className="flex items-center gap-4 py-2 border-b last:border-none"
+                      key={index}
+                    >
+                      <div className="flex items-center justify-center w-8 h-8 rounded-md bg-purple-500 text-white font-bold">
+                        {index + 1}
+                      </div>
+
+                      <div className="flex flex-col">
+                        <span className="text-base font-semibold">
+                          {song.title}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {song.artist}
+                        </span>
+                      </div>
+
+                      <div className="ml-auto font-medium text-gray-700">
+                        {song.count}명
+                      </div>
                     </li>
                   )
                 )}
               </ul>
-            </div>
-          </div>
+              <button className="mt-4 px-4 py-2 text-blue-600 font-medium border-t-2 border-inputBorderClass">
+                더보기 +
+              </button>
+            </>
+          )}
         </div>
       )}
     </div>
