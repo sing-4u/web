@@ -39,10 +39,6 @@ const ManageSong = () => {
     }
   }, [isReceivingOpen]);
 
-  useEffect(() => {
-    console.log("nowSongList:", songList);
-  }, [songList, songListDetails]);
-
   const handleStartReceiving = () => {
     startReceivingMutation.mutate(undefined, {
       onSuccess: () => {
@@ -71,10 +67,6 @@ const ManageSong = () => {
     songList?.filter(
       (list: { endDate: string | null }) => list.endDate !== null
     ) || [];
-
-  console.log("songList:", songList);
-  console.log("songListDetails:", songListDetails);
-  console.log("이전 신청곡 배열", previousSongLists);
 
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
