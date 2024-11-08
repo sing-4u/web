@@ -41,6 +41,12 @@ const Mypage = () => {
         }
     }, [userData]);
 
+
+  const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
     const handleNameChange = async () => {
         if (isEditingName) {
             try {
@@ -71,6 +77,7 @@ const Mypage = () => {
         if (file) {
             const formData = new FormData();
             formData.append("image", file);
+
 
             try {
                 await axios.patch(
