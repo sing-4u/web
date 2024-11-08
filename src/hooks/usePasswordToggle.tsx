@@ -9,7 +9,7 @@ interface PasswordState {
 
 const usePasswordToggle = () => {
     const [passwordState, setPasswordState] = useState<PasswordState>({
-        type: "password",
+        type: "text",
         value: ""
     });
 

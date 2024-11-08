@@ -13,9 +13,8 @@ export default {
         buttonColor: "#F5F5F5",
         buttonColor2: "#D9D9D9",
         colorPurple: "#7846DD",
-      },
+      }
     },
-  },
-  variants: {},
-  plugins: [],
+    variants: {},
+    plugins: []
 };
