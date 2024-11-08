@@ -57,10 +57,6 @@ const SongDetail = () => {
 
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
-    // const inputClass =
-    //     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
-    // const changeButtonClass =
-    //     "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
 
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
