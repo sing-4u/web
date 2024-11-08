@@ -12,6 +12,7 @@ import NewPassword from "./pages/NewPassword";
 import Mypage from "./pages/Mypage";
 import ManageSong from "./pages/ManageSong";
 import FindPassword from "./pages/findPassword";
+import SongDetail from "./pages/SongDetail";
 
 const queryClient = new QueryClient();
 

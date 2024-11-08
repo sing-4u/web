@@ -7,6 +7,8 @@ import TriangleFill from "../assets/ic_TriangleFill.svg";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../utils/axiosInstance";
 import getInputErrorClassName from "../utils/className";
+import { useModal } from "../hooks/useModal";
+import { SongRequestData } from "../types";
 
 interface SongDetailForm {
     artist: string;
@@ -17,11 +19,26 @@ const SongDetail = () => {
     const { data: userData } = useUserData();
     const profileImage = userData?.image;
 
+    const { openModal } = useModal();
+
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        getValues
     } = useForm<SongDetailForm>();
+
+    const handlePostSong = () => {
+        const { artist, title } = getValues();
+        const songData: SongRequestData = {
+            artist,
+            title
+        };
+
+        if (artist && title) {
+            openModal("songRequestSuccess", songData);
+        }
+    };
 
     const onSubmit = async (data: SongDetailForm) => {
         const { id: userId, email } = userData ?? {
@@ -40,10 +57,10 @@ const SongDetail = () => {
 
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
-    const inputClass =
-        "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
-    const changeButtonClass =
-        "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
+    // const inputClass =
+    //     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
+    // const changeButtonClass =
+    //     "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
 
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
@@ -136,7 +153,10 @@ const SongDetail = () => {
                             제출 후 수정이 불가능합니다.
                         </span>
                     </div>
-                    <button className="flex items-center justify-center gap-2  bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white px-4 py-3 rounded-lg hover:opacity-90 transition-opacity">
+                    <button
+                        onClick={handlePostSong}
+                        className="flex items-center justify-center gap-2  bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white px-4 py-3 rounded-lg hover:opacity-90 transition-opacity"
+                    >
                         신청곡 보내기
                     </button>
                 </form>

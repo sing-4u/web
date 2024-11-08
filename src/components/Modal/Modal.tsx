@@ -1,11 +1,12 @@
 import { ComponentType } from "react";
 import { useModal } from "../../hooks/useModal";
-import { ModalContentProps } from "../../types";
+import { ModalContentProps, SongRequestData } from "../../types";
 import { ModalType } from "../../utils/modalType";
 import EmailModalContent from "./EmailModal";
 import PasswordModalContent from "./PasswordModal";
 import SNSModalContent from "./SNSModal";
 import CloseButton from "../../../src/assets/btn_close.svg";
+import SongRequestSuccessModal from "./SongRequestSuccessModal";
 
 interface ModalConfigProps {
     title?: string;
@@ -23,6 +24,9 @@ const modalConfigs: Record<ModalType, ModalConfigProps> = {
     },
     sns: {
         Content: SNSModalContent
+    },
+    songRequestSuccess: {
+        Content: SongRequestSuccessModal
     }
 };
 
@@ -30,9 +34,10 @@ interface ModalProps {
     isOpen: boolean;
     type?: ModalType | null;
     errorMessage?: string;
+    data?: SongRequestData;
 }
 
-const Modal = ({ isOpen, type, errorMessage }: ModalProps) => {
+const Modal = ({ isOpen, type, data, errorMessage }: ModalProps) => {
     const { closeModal } = useModal();
 
     if (!isOpen || !type) return null;
@@ -52,7 +57,7 @@ const Modal = ({ isOpen, type, errorMessage }: ModalProps) => {
                         </button>
                     )}
                 </div>
-                <Content title={title} />
+                <Content title={title} data={data} />
                 {errorMessage && (
                     <button
                         onClick={closeModal}

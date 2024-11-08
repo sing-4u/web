@@ -1,1 +1,1 @@
-export type ModalType = "email" | "password" | "sns";
+export type ModalType = "email" | "password" | "sns" | "songRequestSuccess";
