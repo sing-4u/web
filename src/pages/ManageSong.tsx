@@ -183,15 +183,20 @@ const ManageSong = () => {
       )}
       {previousSongLists.length > 0 && (
         <div className="w-[327px] mt-4 flex flex-col justify-center items-center mb-10">
-          {previousSongLists.map((list, idx) => (
-            <PreviousSongList
-              key={list.id}
-              list={list}
-              idx={idx}
-              openPreviousSongs={openPreviousSongs}
-              setOpenPreviousSongs={setOpenPreviousSongs}
-            />
-          ))}
+          {previousSongLists.map(
+            (
+              list: { id: number; startDate: string; endDate: string | null },
+              idx: number
+            ) => (
+              <PreviousSongList
+                key={list.id.toString()}
+                list={list}
+                idx={idx}
+                openPreviousSongs={openPreviousSongs}
+                setOpenPreviousSongs={setOpenPreviousSongs}
+              />
+            )
+          )}
         </div>
       )}
     </div>

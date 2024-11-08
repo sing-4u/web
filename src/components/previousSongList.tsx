@@ -5,7 +5,7 @@ import ChevronUp from "./ChevronUp";
 import formatDate from "../utils/formatDate";
 
 interface PreviousSongListProps {
-  list: { id: string; startDate: string; endDate: string };
+  list: { id: number; startDate: string; endDate: string | null };
   idx: number;
   openPreviousSongs: Record<number, boolean>;
   setOpenPreviousSongs: React.Dispatch<
@@ -19,7 +19,7 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
   openPreviousSongs,
   setOpenPreviousSongs,
 }) => {
-  const { data: previousSongDetails } = useSongListId(list.id);
+  const { data: previousSongDetails } = useSongListId(list.id.toString());
 
   return (
     <div
@@ -40,7 +40,7 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
             이전 신청곡 순위
           </h2>
           <p className=" font-medium text-[12px] leading-[14.32px] mt-1">
-            {formatDate(list.startDate)} ~ {formatDate(list.endDate)}
+            {formatDate(list.startDate)} ~ {formatDate(list.endDate ?? "")}
           </p>
         </div>
         {openPreviousSongs[idx] ? <ChevronUp /> : <ChevronDown />}
