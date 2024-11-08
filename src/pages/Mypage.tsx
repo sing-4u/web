@@ -41,6 +41,27 @@ const Mypage = () => {
     }
   }, [userData]);
 
+  const handleNameChange = async () => {
+    if (isEditingName) {
+      try {
+        await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/me/name`,
+          { name: nickname },
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setIsEditingName(false);
+      } catch (error) {
+        if (error instanceof Error) {
+          setErrorMessage("닉네임 변경에 실패했습니다. 다시 시도해주세요.");
+        }
+      }
+    }
+  };
+
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -99,7 +120,7 @@ const Mypage = () => {
   const inputClass =
     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
   const changeButtonClass =
-    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
+    "bg-customGray absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
 
   return (
     <div className="min-h-screen flex flex-col items-center">

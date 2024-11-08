@@ -135,7 +135,7 @@ const NewPassword = () => {
                 </div>
 
                 <button
-                    className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
+                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px] font-Pretendard"
                     type="submit"
                 >
                     비밀번호 변경하기
