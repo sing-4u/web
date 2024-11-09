@@ -11,6 +11,8 @@ import { useNavigate } from "react-router-dom";
 import DeleteAccountModal from "../utils/DeleteAccountModal";
 import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
+import EmailModalContent from "../components/Modal/EmailModal";
+import PasswordModalContent from "../components/Modal/PasswordModal";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -115,11 +117,19 @@ const Mypage = () => {
     };
 
     const openEmailModal = () => {
-        openModal("email");
+        openModal({
+            title: "이메일 변경",
+            Content: EmailModalContent,
+            errorMessage: ""
+        });
     };
 
     const openPasswordModal = () => {
-        openModal("password");
+        openModal({
+            title: "비밀번호 변경",
+            Content: PasswordModalContent,
+            errorMessage: ""
+        });
     };
 
     const inputLabelClass =

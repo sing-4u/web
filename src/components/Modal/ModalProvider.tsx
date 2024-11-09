@@ -1,61 +1,71 @@
-import { createContext, useState, ReactNode } from "react";
-import { ModalType } from "../../utils/modalType";
+import { createContext, useState, ReactNode, ComponentType } from "react";
 // import MainModal from "./MainModal";
 import Modal from "./Modal";
-import { SongRequestData } from "../../types";
+import { ModalContentProps } from "../../types";
 
 interface ModalContextProps {
-    openModal: (
-        type: ModalType,
-        data?: SongRequestData,
-        errorMessage?: string
-    ) => void;
+    openModal: <T>(config: {
+        title?: string;
+        Content: ComponentType<ModalContentProps<T>>;
+        errorMessage?: string;
+        data?: T;
+    }) => void;
 
     closeModal: () => void;
     isOpen: boolean;
-    type: ModalType | null;
 }
 
 export const ModalContext = createContext<ModalContextProps | undefined>(
     undefined
 );
 
-export const ModalProvider = ({ children }: { children: ReactNode }) => {
+export function ModalProvider({ children }: { children: ReactNode }) {
     const [isOpen, setIsOpen] = useState(false);
-    const [type, setType] = useState<ModalType | null>(null);
+    const [title, setTitle] = useState<string | undefined>("");
+    const [content, setContent] = useState<
+        ComponentType<ModalContentProps<unknown>> | undefined
+    >();
     const [errorMessage, setErrorMessage] = useState<string | undefined>(
         undefined
     );
-    const [modalData, setModalData] = useState<SongRequestData>();
 
-    const openModal = (
-        modalType: ModalType,
-        data?: SongRequestData,
-        errorMessage?: string
-    ) => {
-        setType(modalType);
+    const [modalData, setModalData] = useState<unknown>();
 
+    const openModal = <T,>({
+        title,
+        Content,
+        errorMessage,
+        data
+    }: {
+        title?: string;
+        Content: ComponentType<ModalContentProps<T>>;
+        errorMessage?: string;
+        data?: T;
+    }) => {
+        setTitle(title);
+        setContent(() => Content as ComponentType<ModalContentProps<unknown>>);
+        setErrorMessage(errorMessage);
         setModalData(data);
         setIsOpen(true);
-
-        if (errorMessage) setErrorMessage(errorMessage);
     };
 
     const closeModal = () => {
         setIsOpen(false);
-        setType(null);
-        setModalData(undefined);
+        setTitle(undefined);
+        setContent(undefined);
+        setErrorMessage(undefined);
     };
 
     return (
-        <ModalContext.Provider value={{ isOpen, type, openModal, closeModal }}>
+        <ModalContext.Provider value={{ isOpen, openModal, closeModal }}>
             {children}
             <Modal
                 isOpen={isOpen}
-                type={type}
+                title={title}
+                Content={content}
                 errorMessage={errorMessage}
                 data={modalData}
             />
         </ModalContext.Provider>
     );
-};
+}

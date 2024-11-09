@@ -3,8 +3,8 @@ export interface SongRequestData {
     title: string;
 }
 
-export interface ModalContentProps {
+export interface ModalContentProps<T> {
     title?: string;
     errorMessage?: string;
-    data?: SongRequestData;
+    data?: T;
 }

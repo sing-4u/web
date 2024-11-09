@@ -8,7 +8,9 @@ import { useForm } from "react-hook-form";
 import axiosInstance from "../utils/axiosInstance";
 import getInputErrorClassName from "../utils/className";
 import { useModal } from "../hooks/useModal";
-import { SongRequestData } from "../types";
+import axios from "axios";
+import SongRequestFailModal from "../components/Modal/SongRequestFailModal";
+import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal";
 
 interface SongDetailForm {
     artist: string;
@@ -30,29 +32,42 @@ const SongDetail = () => {
 
     const handlePostSong = () => {
         const { artist, title } = getValues();
-        const songData: SongRequestData = {
-            artist,
-            title
-        };
 
         if (artist && title) {
-            openModal("songRequestSuccess", songData);
+            openModal({
+                Content: SongRequestSuccessModal,
+                errorMessage: "",
+                data: { artist, title }
+            });
+            // openModal("songRequestSuccess", { artist, title });
         }
     };
 
-    const onSubmit = async (data: SongDetailForm) => {
+    const onSubmit = async ({ artist, title }: SongDetailForm) => {
         const { id: userId, email } = userData ?? {
             id: "",
             email: ""
         };
-        const { artist, title } = data;
-
-        await axiosInstance().post("/songs", {
-            userId,
-            email,
-            artist,
-            title
-        });
+        try {
+            await axiosInstance().post("/songs", {
+                userId,
+                email,
+                artist,
+                title
+            });
+        } catch (error) {
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 409) {
+                    // openModal("songRequestFail", { artist, title });
+                    openModal({
+                        Content: SongRequestFailModal,
+                        errorMessage: "",
+                        data: { artist, title, userId, email }
+                    });
+                }
+            }
+            // 409 에러 처리
+        }
     };
 
     const inputLabelClass =
