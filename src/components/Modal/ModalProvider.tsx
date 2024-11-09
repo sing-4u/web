@@ -68,6 +68,7 @@ export function ModalProvider({ children }: { children: ReactNode }) {
             {children}
             <Modal
                 // isOpen={isOpen}
+                onClose={closeModal}
                 title={title}
                 Content={content}
                 errorMessage={errorMessage}
