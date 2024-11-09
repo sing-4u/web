@@ -1,7 +1,19 @@
 import CheckCircleFill from "../../assets/ic_CheckCircleFill.svg";
-import { ModalContentProps } from "../../types";
+import { useModal } from "../../hooks/useModal";
 
-const SongRequestSuccessModal = ({ data }: ModalContentProps) => {
+// ReactNode 말고 unknown으로 처리하는 방법
+interface SongRequestSuccessModalProps<
+    T extends Record<string, React.ReactNode>
+> {
+    data?: T;
+    buttonBackgroundColor?: string;
+}
+
+function SongRequestSuccessModal<T extends Record<string, React.ReactNode>>({
+    data,
+    buttonBackgroundColor
+}: SongRequestSuccessModalProps<T>) {
+    const { closeModal } = useModal();
     if (!data) return;
     return (
         <div className="flex flex-col items-center justify-center">
@@ -29,11 +41,14 @@ const SongRequestSuccessModal = ({ data }: ModalContentProps) => {
                     </div>
                 </div>
             </div>
-            <button className="mt-6 rounded-md py-4 font-semibold font-pretendard text-white bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] w-full">
+            <button
+                onClick={closeModal}
+                className={`mt-6 rounded-md py-4 font-semibold font-pretendard text-white ${buttonBackgroundColor} w-full`}
+            >
                 확인
             </button>
         </div>
     );
-};
+}
 
 export default SongRequestSuccessModal;

@@ -7,4 +7,5 @@ export interface ModalContentProps<T> {
     title?: string;
     errorMessage?: string;
     data?: T;
+    buttonBackgroundColor?: string;
 }

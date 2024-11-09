@@ -4,23 +4,25 @@ import { ModalContentProps } from "../../types";
 import CloseButton from "../../../src/assets/btn_close.svg";
 
 interface ModalProps<T> {
-    isOpen: boolean;
+    // isOpen: boolean;
     title?: string;
     Content?: ComponentType<ModalContentProps<T>>;
     errorMessage?: string;
     data?: T;
+    buttonBackgroundColor?: string;
 }
 
 export function Modal<T>({
-    isOpen,
+    // isOpen,
     title,
     Content,
     data,
-    errorMessage
+    errorMessage,
+    buttonBackgroundColor
 }: ModalProps<T>) {
     const { closeModal } = useModal();
 
-    if (!isOpen || !Content) return null;
+    if (!Content) return null;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
@@ -36,16 +38,19 @@ export function Modal<T>({
                             </button>
                         ))}
                 </div>
-                <Content title={title} data={data} />
-                {errorMessage ||
-                    (errorMessage === "" && (
-                        <button
-                            onClick={closeModal}
-                            className="w-full py-3 bg-[#4D77FF] text-black rounded-lg"
-                        >
-                            확인
-                        </button>
-                    ))}
+                <Content
+                    title={title}
+                    data={data}
+                    buttonBackgroundColor={buttonBackgroundColor}
+                />
+                {errorMessage && (
+                    <button
+                        onClick={closeModal}
+                        className="w-full py-3 bg-[#4D77FF] text-black rounded-lg"
+                    >
+                        확인
+                    </button>
+                )}
             </div>
         </div>
     );

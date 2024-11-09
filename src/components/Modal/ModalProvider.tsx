@@ -9,10 +9,11 @@ interface ModalContextProps {
         Content: ComponentType<ModalContentProps<T>>;
         errorMessage?: string;
         data?: T;
+        buttonBackgroundColor?: string;
     }) => void;
 
     closeModal: () => void;
-    isOpen: boolean;
+    // isOpen: boolean;
 }
 
 export const ModalContext = createContext<ModalContextProps | undefined>(
@@ -20,7 +21,7 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
 );
 
 export function ModalProvider({ children }: { children: ReactNode }) {
-    const [isOpen, setIsOpen] = useState(false);
+    // const [isOpen, setIsOpen] = useState(false);
     const [title, setTitle] = useState<string | undefined>("");
     const [content, setContent] = useState<
         ComponentType<ModalContentProps<unknown>> | undefined
@@ -30,41 +31,48 @@ export function ModalProvider({ children }: { children: ReactNode }) {
     );
 
     const [modalData, setModalData] = useState<unknown>();
+    const [buttonBackgroundColor, setButtonBackgroundColor] = useState<
+        string | undefined
+    >(undefined);
 
     const openModal = <T,>({
         title,
         Content,
         errorMessage,
-        data
+        data,
+        buttonBackgroundColor
     }: {
         title?: string;
         Content: ComponentType<ModalContentProps<T>>;
         errorMessage?: string;
         data?: T;
+        buttonBackgroundColor?: string;
     }) => {
         setTitle(title);
         setContent(() => Content as ComponentType<ModalContentProps<unknown>>);
         setErrorMessage(errorMessage);
         setModalData(data);
-        setIsOpen(true);
+        setButtonBackgroundColor(buttonBackgroundColor);
+        // setIsOpen(true);
     };
 
     const closeModal = () => {
-        setIsOpen(false);
+        // setIsOpen(false);
         setTitle(undefined);
         setContent(undefined);
         setErrorMessage(undefined);
     };
 
     return (
-        <ModalContext.Provider value={{ isOpen, openModal, closeModal }}>
+        <ModalContext.Provider value={{ openModal, closeModal }}>
             {children}
             <Modal
-                isOpen={isOpen}
+                // isOpen={isOpen}
                 title={title}
                 Content={content}
                 errorMessage={errorMessage}
                 data={modalData}
+                buttonBackgroundColor={buttonBackgroundColor}
             />
         </ModalContext.Provider>
     );

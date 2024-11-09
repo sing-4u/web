@@ -37,9 +37,10 @@ const SongDetail = () => {
             openModal({
                 Content: SongRequestSuccessModal,
                 errorMessage: "",
-                data: { artist, title }
+                data: { artist, title },
+                buttonBackgroundColor:
+                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
-            // openModal("songRequestSuccess", { artist, title });
         }
     };
 
@@ -62,7 +63,9 @@ const SongDetail = () => {
                     openModal({
                         Content: SongRequestFailModal,
                         errorMessage: "",
-                        data: { artist, title, userId, email }
+                        data: { artist, title, userId, email },
+                        buttonBackgroundColor:
+                            "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
                     });
                 }
             }

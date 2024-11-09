@@ -1,15 +1,16 @@
 import TriangleFill from "../../assets/ic_TriangleFill.svg";
+import { useModal } from "../../hooks/useModal";
 
-interface SongRequestFailModalProps {
-    data?: {
-        artist?: string;
-        title?: string;
-        userId?: string;
-        email?: string;
-    };
+interface SongRequestFailModalProps<T extends Record<string, React.ReactNode>> {
+    data?: T;
+    buttonBackgroundColor?: string;
 }
 
-const SongRequestFailModal = ({ data }: SongRequestFailModalProps) => {
+function SongRequestFailModal<T extends Record<string, React.ReactNode>>({
+    data,
+    buttonBackgroundColor
+}: SongRequestFailModalProps<T>) {
+    const { closeModal } = useModal();
     return (
         <>
             <div className="flex justify-center mt-[-15px]">
@@ -44,14 +45,14 @@ const SongRequestFailModal = ({ data }: SongRequestFailModalProps) => {
                     </div>
                 </div>
             </div>
-            {/* <button
+            <button
                 onClick={closeModal}
-                className="flex justify-center items-center rounded-md w-full h-12 mt-4 bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                className={`flex justify-center items-center rounded-md w-full h-12 mt-4 ${buttonBackgroundColor}`}
             >
                 확인
-            </button> */}
+            </button>
         </>
     );
-};
+}
 
 export default SongRequestFailModal;
