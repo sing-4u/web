@@ -16,6 +16,7 @@ const Mypage = () => {
   const { data: userData } = useUserData();
   const [nickname, setNickname] = useState(userData?.name || "");
   const [isEditingName, setIsEditingName] = useState(false);
+
   const [profileImage, setProfileImage] = useState<string | File | null>(
     userData?.image || null
   );
@@ -61,6 +62,7 @@ const Mypage = () => {
       }
     }
   };
+
 
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
