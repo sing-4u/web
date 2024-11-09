@@ -68,6 +68,18 @@ const ManageSong = () => {
       (list: { endDate: string | null }) => list.endDate !== null
     ) || [];
 
+  const handleCopyUrl = () => {
+    const currentUrl = window.location.href;
+    navigator.clipboard
+      .writeText(currentUrl)
+      .then(() => {
+        console.log("복사 완료");
+      })
+      .catch((error) => {
+        console.error("복사 실패: ", error);
+      });
+  };
+
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
 
@@ -98,7 +110,7 @@ const ManageSong = () => {
           <p
             className="absolute flex justify-center items-center bottom-[-10px] left-1/2 transform -translate-x-1/2
           w-[73px] h-[20px] rounded-[4px] py-1 px-2 font-semibold text-[10px] leading-[11.93px]
-           bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white"
+           bg-gradient-to-r from-[#7B92C7] via-[#3f384d] to-[#BB7FA0] text-white"
           >
             신청곡 받는 중
           </p>
@@ -122,8 +134,13 @@ const ManageSong = () => {
             신청곡 종료
           </button>
         </div>
-        <div className="mt-3 w-[327px] h-[44px] rounded-[4px] py-3.5 px-5 text-center bg-colorPurple text-white font-semibold text-[14px] leading-[16.71px] cursor-pointer">
-          <button>신청곡 링크 복사</button>
+        <div className="relative mt-3 w-[327px] h-[44px] rounded-[4px] py-3.5 px-5 text-center bg-colorPurple text-white font-semibold text-[14px] leading-[16.71px] cursor-pointer">
+          <button
+            onClick={handleCopyUrl}
+            className="absolute inset-0 w-full h-full"
+          >
+            신청곡 링크 복사
+          </button>
         </div>
       </div>
       {receivingSong && nowSongList && (
