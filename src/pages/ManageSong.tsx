@@ -23,6 +23,7 @@ const ManageSong = () => {
   const [receivingSong, setReceivingSong] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
+
   const [openPreviousSongs, setOpenPreviousSongs] = useState<{
     [key: number]: boolean;
   }>({});
@@ -167,7 +168,7 @@ const ManageSong = () => {
         </div>
       </div>
       {receivingSong && nowSongList ? (
-        <div className="flex flex-col rounded-[8px] border-2 border-indigo-500/50 p-4 mt-8">
+        <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-indigo-500/50 p-4 mt-8">
           <div
             className="flex justify-between items-center cursor-pointer"
             onClick={() => setIsAccordionOpen(!isAccordionOpen)}
