@@ -80,6 +80,10 @@ const ManageSong = () => {
       });
   };
 
+  const sortedSongListDetails = songListDetails
+    ?.slice()
+    .sort((a: { count: number }, b: { count: number }) => b.count - a.count);
+
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
 
@@ -162,7 +166,7 @@ const ManageSong = () => {
           {isAccordionOpen && (
             <div>
               <ul className="mt-4">
-                {songListDetails?.map(
+                {sortedSongListDetails?.map(
                   (
                     song: { title: string; artist: string; count: number },
                     index: number
