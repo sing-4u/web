@@ -183,7 +183,7 @@ const Join = () => {
                             buttonBackgroundColor: "#7846dd"
                         });
                     } else {
-                        showToast("error", "이미 가입된 이메일 주소입니다.");
+                        return;
                     }
                 }
             }
