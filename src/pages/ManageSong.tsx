@@ -22,6 +22,7 @@ const ManageSong = () => {
 
   const [receivingSong, setReceivingSong] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
+  const [showCopyAlert, setShowCopyAlert] = useState(false);
   const [openPreviousSongs, setOpenPreviousSongs] = useState<{
     [key: number]: boolean;
   }>({});
@@ -73,7 +74,8 @@ const ManageSong = () => {
     navigator.clipboard
       .writeText(currentUrl)
       .then(() => {
-        console.log("복사 완료");
+        setShowCopyAlert(true);
+        setTimeout(() => setShowCopyAlert(false), 2000);
       })
       .catch((error) => {
         console.error("복사 실패: ", error);
@@ -145,10 +147,19 @@ const ManageSong = () => {
           >
             신청곡 링크 복사
           </button>
+          {showCopyAlert && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="flex justify-center items-center text-center w-[178px] h-[61px] bg-white">
+                <p className="text-black font-semibold text-[18px] leading-[21.48px]">
+                  링크복사 완료!
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       {receivingSong && nowSongList && (
-        <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-indigo-500/50 p-4 mt-8">
+        <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-[#7846DD] p-4 mt-8">
           <div
             className="flex justify-between items-center cursor-pointer"
             onClick={() => setIsAccordionOpen(!isAccordionOpen)}
