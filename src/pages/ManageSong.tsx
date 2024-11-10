@@ -10,7 +10,7 @@ import { useSongListId } from "../hooks/useSongListId";
 import formatDate from "../utils/formatDate";
 import ChevronDown from "../components/ChevronDown";
 import ChevronUp from "../components/ChevronUp";
-import PreviousSongList from "../components/previousSongList";
+import PreviousSongList from "../components/PreviousSongList";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
@@ -82,15 +82,23 @@ const ManageSong = () => {
       });
   };
 
-  const sortedSongListDetails = songListDetails
-    ?.slice()
-    .sort((a: { count: number }, b: { count: number }) => b.count - a.count);
+  const sortedSongListDetails =
+    songListDetails
+      ?.slice()
+      .sort(
+        (a: { count: number }, b: { count: number }) => b.count - a.count
+      ) || [];
 
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
 
+  const noSongDataBoxClass =
+    "flex justify-center items-center w-[327px] h-[200px] rounded-[8px] mt-4 border-2 border-inputBorderColor";
+  const noSongDataTextClass =
+    "w-[314px] h-[99px] py-6 px-20 font-semibold text-[15px] leading-[20px] opacity-50 text-center";
+
   return (
-    <div className="w-full max-w-[376px] mx-auto flex flex-col items-center">
+    <div className="w-full max-w-[376px] mx-auto flex flex-col items-center border-inputBorderColor">
       <Navbar />
       <div className="relative w-[90px] h-[90px] mt-6">
         <div
@@ -158,8 +166,8 @@ const ManageSong = () => {
           )}
         </div>
       </div>
-      {receivingSong && nowSongList && (
-        <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-[#7846DD] p-4 mt-8">
+      {receivingSong && nowSongList ? (
+        <div className="flex flex-col rounded-[8px] border-2 border-indigo-500/50 p-4 mt-8">
           <div
             className="flex justify-between items-center cursor-pointer"
             onClick={() => setIsAccordionOpen(!isAccordionOpen)}
@@ -212,8 +220,14 @@ const ManageSong = () => {
             </div>
           )}
         </div>
+      ) : (
+        <div className={noSongDataBoxClass}>
+          <p className={noSongDataTextClass}>
+            신청곡 게시물이 없습니다. 신청곡을 받아보세요.
+          </p>
+        </div>
       )}
-      {previousSongLists.length > 0 && (
+      {previousSongLists.length > 0 ? (
         <div className="w-[327px] mt-4 flex flex-col justify-center items-center mb-10">
           {previousSongLists.map(
             (
@@ -229,6 +243,14 @@ const ManageSong = () => {
               />
             )
           )}
+        </div>
+      ) : (
+        <div className={noSongDataBoxClass}>
+          <p className="w-[180px] h-[45px] font-semibold text-[15px] leading-[20px] opacity-50 text-center">
+            이전 신청곡이 없습니다.
+            <br />
+            신청곡이 쌓이면 보여드릴게요
+          </p>
         </div>
       )}
     </div>

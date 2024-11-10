@@ -21,6 +21,13 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
 }) => {
   const { data: previousSongDetails } = useSongListId(list.id.toString());
 
+  const sortedPreviousSongDetails =
+    previousSongDetails
+      ?.slice()
+      .sort(
+        (a: { count: number }, b: { count: number }) => b.count - a.count
+      ) || [];
+
   return (
     <div
       key={list.id}
@@ -47,7 +54,7 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
       </div>
       {openPreviousSongs[idx] && (
         <ul className="mt-4">
-          {previousSongDetails?.map(
+          {sortedPreviousSongDetails?.map(
             (
               song: { title: string; artist: string; count: number },
               index: number
