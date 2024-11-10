@@ -11,6 +11,8 @@ import { useModal } from "../hooks/useModal";
 import axios from "axios";
 import SongRequestFailModal from "../components/Modal/SongRequestFailModal";
 import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal";
+import EmailInputModal from "../components/Modal/EmailInputModal";
+import { useNavigate } from "react-router-dom";
 
 interface SongDetailForm {
     artist: string;
@@ -18,6 +20,7 @@ interface SongDetailForm {
 }
 
 const SongDetail = () => {
+    const navigate = useNavigate();
     const { data: userData } = useUserData();
     const profileImage = userData?.image;
 
@@ -30,16 +33,37 @@ const SongDetail = () => {
         getValues
     } = useForm<SongDetailForm>();
 
-    const handlePostSong = () => {
+    const handlePostSong = async () => {
         const { artist, title } = getValues();
 
         if (artist && title) {
+            const { id: userId, email } = userData ?? {
+                id: "",
+                email: ""
+            };
+            await axiosInstance().post("/songs", {
+                userId,
+                email,
+                artist,
+                title
+            });
             openModal({
                 Content: SongRequestSuccessModal,
                 errorMessage: "",
                 data: { artist, title },
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+            });
+        }
+        if (!userData) {
+            openModal({
+                Content: (props) => (
+                    <EmailInputModal
+                        {...props}
+                        navigate={navigate}
+                        modalData={{ artist, title }}
+                    />
+                )
             });
         }
     };
@@ -50,16 +74,10 @@ const SongDetail = () => {
             email: ""
         };
         try {
-            await axiosInstance().post("/songs", {
-                userId,
-                email,
-                artist,
-                title
-            });
+            //
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
-                    // openModal("songRequestFail", { artist, title });
                     openModal({
                         Content: SongRequestFailModal,
                         errorMessage: "",

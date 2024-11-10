@@ -20,7 +20,7 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
     undefined
 );
 
-export function ModalProvider({ children }: { children: ReactNode }) {
+export const ModalProvider = ({ children }: { children: ReactNode }) => {
     // const [isOpen, setIsOpen] = useState(false);
     const [title, setTitle] = useState<string | undefined>("");
     const [content, setContent] = useState<
@@ -77,4 +77,4 @@ export function ModalProvider({ children }: { children: ReactNode }) {
             />
         </ModalContext.Provider>
     );
-}
+};

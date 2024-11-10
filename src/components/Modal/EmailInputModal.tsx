@@ -2,37 +2,68 @@ import React, { useState } from "react";
 import getInputErrorClassName from "../../utils/className";
 import { NavigateFunction } from "react-router-dom";
 import { useModal } from "../../hooks/useModal";
+import useUserData from "../../hooks/useUserData";
+import axiosInstance from "../../utils/axiosInstance";
 
-interface EmailInputModalProps {
-    navigate: NavigateFunction;
+interface SongData {
+    artist: string;
+    title: string;
 }
 
-const EmailInputModal = ({ navigate }: EmailInputModalProps) => {
+interface EmailInputModalProps<T extends SongData> {
+    navigate: NavigateFunction;
+    modalData?: T;
+}
+
+export default function EmailInputModal<T extends SongData>({
+    navigate,
+    modalData
+}: EmailInputModalProps<T>) {
     const [email, setEmail] = useState("");
+    const [error, setError] = useState("");
     const { closeModal } = useModal();
+
+    const { data: userData } = useUserData();
+    const { id, email: userEmail } = userData ?? {
+        id: "",
+        userEmail: ""
+    };
 
     const handleClickLogin = () => {
         navigate("/login");
         closeModal();
     };
 
-    const handleClickSongDetail = () => {
-        closeModal();
-        navigate("/song-detail");
+    const handleClickSongDetail = async () => {
+        if (!email.trim()) {
+            setError("이메일을 입력해주세요.");
+            return;
+        }
+        await axiosInstance().post("/songs", {
+            userId: id,
+            email: userEmail,
+            artist: modalData?.artist,
+            title: modalData?.title
+        });
     };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(event.target.value);
+        if (error) setError("");
     };
 
-    const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (!email.trim()) {
+            setError("이메일을 입력해주세요.");
+            return;
+        }
     };
     return (
-        <div className="h-96">
+        <div>
             <button
                 onClick={handleClickLogin}
-                className="bg-colorPurple w-full h-12 rounded-md text-white text-[14px] font-pretendard font-semibold"
+                className="bg-colorPurple w-full h-12 rounded-md text-white text-[14px] font-semibold"
             >
                 로그인
             </button>
@@ -55,17 +86,18 @@ const EmailInputModal = ({ navigate }: EmailInputModalProps) => {
                     value={email}
                     onChange={handleEmailChange}
                     placeholder="이메일 입력"
-                    className={`border-[0.5px] border-inputBorderColor ${getInputErrorClassName} placeholder:text-[14px] mt-2`}
+                    className={`border-[0.5px] border-inputBorderColor ${
+                        error ? "border-red-500" : ""
+                    } ${getInputErrorClassName} placeholder:text-[14px] mt-2`}
                 />
+                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
                 <button
                     onClick={handleClickSongDetail}
-                    className="bg-colorPurple w-full h-12 rounded-md mt-10 text-white text-[14px] font-pretendard font-semibold"
+                    className="bg-colorPurple w-full h-12 rounded-md mt-10 text-white text-[14px] font-semibold"
                 >
                     비회원으로 신청하기
                 </button>
             </form>
         </div>
     );
-};
-
-export default EmailInputModal;
+}
