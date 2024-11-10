@@ -11,27 +11,29 @@ interface ModalProps<T> {
     buttonBackgroundColor?: string;
 }
 
-export function Modal<T>({
+export const Modal = <T,>({
     onClose,
     title,
     Content,
     data,
     errorMessage,
     buttonBackgroundColor
-}: ModalProps<T>) {
+}: ModalProps<T>) => {
     if (!Content) return null;
 
     return (
-        <dialog
+        <div
             className="fixed inset-0 bg-transparent p-0"
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
-            open
         >
             <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center p-4">
-                <div className="bg-white p-6 rounded-lg w-[328px] relative">
+                <dialog
+                    className="bg-white p-6 rounded-lg w-[328px] relative"
+                    open
+                >
                     <div className="flex justify-center items-center mb-4">
                         <h2 className="text-lg font-bold">
                             {errorMessage || title}
@@ -56,10 +58,10 @@ export function Modal<T>({
                             확인
                         </button>
                     )}
-                </div>
+                </dialog>
             </div>
-        </dialog>
+        </div>
     );
-}
+};
 
 export default Modal;
