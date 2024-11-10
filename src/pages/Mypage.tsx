@@ -11,8 +11,8 @@ import { useNavigate } from "react-router-dom";
 import DeleteAccountModal from "../utils/DeleteAccountModal";
 import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
-import EmailModalContent from "../components/Modal/EmailModal";
-import PasswordModalContent from "../components/Modal/PasswordModal";
+import EmailChangeModal from "../components/Modal/EmailChangeModal";
+import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 
 const Mypage = () => {
     const { data: userData } = useUserData();
@@ -119,7 +119,7 @@ const Mypage = () => {
     const openEmailModal = () => {
         openModal({
             title: "이메일 변경",
-            Content: EmailModalContent,
+            Content: EmailChangeModal,
             errorMessage: ""
         });
     };
@@ -127,7 +127,7 @@ const Mypage = () => {
     const openPasswordModal = () => {
         openModal({
             title: "비밀번호 변경",
-            Content: PasswordModalContent,
+            Content: PasswordChangeModal,
             errorMessage: ""
         });
     };
