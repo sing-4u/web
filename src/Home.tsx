@@ -1,16 +1,10 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../src/assets/ic_Search.svg";
 import Card from "../src/assets/card.svg";
 import Navbar from "./components/Navbar";
 import { useNavigate } from "react-router-dom";
-import useUserData from "./hooks/useUserData";
-import { useModal } from "./hooks/useModal";
-import EmailInputModal from "./components/Modal/EmailInputModal";
 
 export default function Home() {
-    const { data } = useUserData();
-    const userData = !!data;
-    const { openModal } = useModal();
     const navigate = useNavigate();
     const [items, setItems] = useState(Array(10).fill(0));
     const [loading, setLoading] = useState(false);
@@ -51,20 +45,7 @@ export default function Home() {
     }, []);
 
     const handleSongDetailClick = () => {
-        // navigate("/song-detail");
-        // 비로그인 상태라면
-        // 이메일 입력 모달 띄우기
-        if (!userData) {
-            openModal({
-                title: "싱포유 회원이시면",
-                Content: (props) => (
-                    <EmailInputModal {...props} navigate={navigate} />
-                ),
-                errorMessage: ""
-            });
-        } else {
-            navigate("/song-detail");
-        }
+        navigate("/song-detail");
     };
 
     return (
