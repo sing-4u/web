@@ -5,7 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 
-const EmailModalContent = () => {
+const EmailChangeModal = () => {
     const {
         register,
         handleSubmit,
@@ -114,4 +114,4 @@ const EmailModalContent = () => {
     );
 };
 
-export default EmailModalContent;
+export default EmailChangeModal;

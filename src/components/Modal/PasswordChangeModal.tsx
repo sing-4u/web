@@ -5,7 +5,7 @@ import usePasswordToggle from "../../hooks/usePasswordToggle";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 
-const PasswordModalContent = () => {
+const PasswordChangeModal = () => {
     const {
         register,
         handleSubmit,
@@ -189,4 +189,4 @@ const PasswordModalContent = () => {
     );
 };
 
-export default PasswordModalContent;
+export default PasswordChangeModal;
