@@ -6,15 +6,15 @@ const CompleteJoin = () => {
             <div className="flex flex-col items-center">
                 <img src={Profile} alt="" className="w-64 h-64 mb-4" />
                 <div className="flex flex-col space-y-4 mb-10">
-                    <strong className="font-Pretendard text-4xl font-bold">
+                    <strong className="text-4xl font-bold">
                         회원가입 완료
                     </strong>
-                    <strong className="font-Pretendard text-2xl font-bold">
+                    <strong className="text-2xl font-bold">
                         당신의 음악이야기가 시작됩니다.
                     </strong>
                 </div>
                 <button
-                    className="w-full bg-buttonBackgroundColor text-white rounded-lg h-14 font-Pretendard"
+                    className="w-full bg-buttonBackgroundColor text-white rounded-lg h-14"
                     type="submit"
                 >
                     로그인

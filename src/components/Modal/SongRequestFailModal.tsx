@@ -6,10 +6,12 @@ interface SongRequestFailModalProps<T extends Record<string, React.ReactNode>> {
     buttonBackgroundColor?: string;
 }
 
-function SongRequestFailModal<T extends Record<string, React.ReactNode>>({
+export const SongRequestFailModal = <
+    T extends Record<string, React.ReactNode>
+>({
     data,
     buttonBackgroundColor
-}: SongRequestFailModalProps<T>) {
+}: SongRequestFailModalProps<T>) => {
     const { closeModal } = useModal();
     return (
         <>
@@ -53,6 +55,6 @@ function SongRequestFailModal<T extends Record<string, React.ReactNode>>({
             </button>
         </>
     );
-}
+};
 
 export default SongRequestFailModal;

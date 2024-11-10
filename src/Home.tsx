@@ -116,7 +116,7 @@ export default function Home() {
                     <p>Loading...</p>
                 ) : (
                     <button
-                        className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
+                        className="w-full bg-black text-white rounded-[10px] h-[52px]"
                         onClick={loadMoreItems}
                     >
                         더보기

@@ -9,10 +9,12 @@ interface SongRequestSuccessModalProps<
     buttonBackgroundColor?: string;
 }
 
-function SongRequestSuccessModal<T extends Record<string, React.ReactNode>>({
+export const SongRequestSuccessModal = <
+    T extends Record<string, React.ReactNode>
+>({
     data,
     buttonBackgroundColor
-}: SongRequestSuccessModalProps<T>) {
+}: SongRequestSuccessModalProps<T>) => {
     const { closeModal } = useModal();
     if (!data) return;
     return (
@@ -43,12 +45,12 @@ function SongRequestSuccessModal<T extends Record<string, React.ReactNode>>({
             </div>
             <button
                 onClick={closeModal}
-                className={`mt-6 rounded-md py-4 font-semibold font-pretendard text-white ${buttonBackgroundColor} w-full`}
+                className={`mt-6 rounded-md py-4 font-semibold text-white ${buttonBackgroundColor} w-full`}
             >
                 확인
             </button>
         </div>
     );
-}
+};
 
 export default SongRequestSuccessModal;
