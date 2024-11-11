@@ -186,14 +186,17 @@ const Join = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="px-4">
-            <div className="w-full max-w-md mx-auto">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="extraSmall:w-96 extraSmall:mx-auto lg:mx-auto"
+        >
+            <div className="">
                 <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
-                <div className="text-2xl font-bold text-center mb-6 font-pretendard">
+                <div className="text-2xl font-bold text-center mb-6">
                     회원가입
                 </div>
-                <div className="space-y-4">
-                    <div className="w-full h-[48px] rounded-[10px] border border-black">
+                <div className="my-16">
+                    <div className="w-full h-[48px] rounded-[10px] border border-black my-12">
                         <button
                             type="button"
                             onClick={handleGoogleClick}
@@ -203,7 +206,7 @@ const Join = () => {
                             <span className="ml-2">Google로 회원가입</span>
                         </button>
                     </div>
-
+                    <div className="w-full border-t border-gray-200 my-6"></div>
                     <div className="space-y-4">
                         <div className="flex flex-col">
                             <label className="text-sm mb-2">닉네임</label>
@@ -216,7 +219,7 @@ const Join = () => {
                                             "최대 50자까지 입력 가능합니다."
                                     }
                                 })}
-                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  ${getInputErrorClassName(
+                                className={`border border-inputBorderColor h-14 placeholder:text-sm  ${getInputErrorClassName(
                                     errors.name
                                 )}`}
                                 placeholder="별명"
@@ -239,7 +242,7 @@ const Join = () => {
                                             "올바른 이메일 형식이 아닙니다."
                                     }
                                 })}
-                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  ${getInputErrorClassName(
+                                className={`border border-inputBorderColor h-16 placeholder:text-sm  ${getInputErrorClassName(
                                     errors.email
                                 )}`}
                                 placeholder="abc@email.com"
@@ -260,7 +263,7 @@ const Join = () => {
                                                 "영문, 숫자를 포함한 8자 이상의 비밀번호"
                                         }
                                     })}
-                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12  ${getInputErrorClassName(
+                                    className={`border border-inputBorderColor w-full h-16 placeholder:text-sm pr-12  ${getInputErrorClassName(
                                         errors.password
                                     )}`}
                                     placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
@@ -293,7 +296,7 @@ const Join = () => {
                                             value === watchPassword ||
                                             "비밀번호가 일치하지 않습니다."
                                     })}
-                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12  ${getInputErrorClassName(
+                                    className={`border border-inputBorderColor w-full h-16 placeholder:text-sm pr-12  ${getInputErrorClassName(
                                         errors.confirmPassword
                                     )}`}
                                     placeholder="비밀번호 확인"
@@ -317,7 +320,7 @@ const Join = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-4 mt-6">
+                    <div className="mt-6">
                         <div className="text-sm">약관동의</div>
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
@@ -361,7 +364,7 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="relative top-12 w-full bg-buttonBackgroundColor text-white rounded-lg h-[48px] text-sm mt-8 font-pretendard"
+                        className="relative top-8 w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8 font-pretendard"
                         type="submit"
                     >
                         회원가입
