@@ -21,7 +21,6 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
 );
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-    // const [isOpen, setIsOpen] = useState(false);
     const [title, setTitle] = useState<string | undefined>("");
     const [content, setContent] = useState<
         ComponentType<ModalContentProps<unknown>> | undefined
@@ -53,11 +52,9 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         setErrorMessage(errorMessage);
         setModalData(data);
         setButtonBackgroundColor(buttonBackgroundColor);
-        // setIsOpen(true);
     };
 
     const closeModal = () => {
-        // setIsOpen(false);
         setTitle(undefined);
         setContent(undefined);
         setErrorMessage(undefined);
@@ -67,7 +64,6 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         <ModalContext.Provider value={{ openModal, closeModal }}>
             {children}
             <Modal
-                // isOpen={isOpen}
                 onClose={closeModal}
                 title={title}
                 Content={content}
