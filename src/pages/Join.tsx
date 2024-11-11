@@ -216,7 +216,7 @@ const Join = () => {
                                             "최대 50자까지 입력 가능합니다."
                                     }
                                 })}
-                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  text-inputTextColor ${getInputErrorClassName(
+                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  ${getInputErrorClassName(
                                     errors.name
                                 )}`}
                                 placeholder="별명"
@@ -239,7 +239,7 @@ const Join = () => {
                                             "올바른 이메일 형식이 아닙니다."
                                     }
                                 })}
-                                className={`border border-inputBorderColor h-[48px] px-4 text-sm text-inputTextColor ${getInputErrorClassName(
+                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  ${getInputErrorClassName(
                                     errors.email
                                 )}`}
                                 placeholder="abc@email.com"
@@ -260,7 +260,7 @@ const Join = () => {
                                                 "영문, 숫자를 포함한 8자 이상의 비밀번호"
                                         }
                                     })}
-                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12 text-inputTextColor ${getInputErrorClassName(
+                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12  ${getInputErrorClassName(
                                         errors.password
                                     )}`}
                                     placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
@@ -293,7 +293,7 @@ const Join = () => {
                                             value === watchPassword ||
                                             "비밀번호가 일치하지 않습니다."
                                     })}
-                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12 text-inputTextColor ${getInputErrorClassName(
+                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12  ${getInputErrorClassName(
                                         errors.confirmPassword
                                     )}`}
                                     placeholder="비밀번호 확인"
