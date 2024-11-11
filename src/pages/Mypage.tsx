@@ -13,7 +13,7 @@ import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
 
 const Mypage = () => {
-  const { data: userData } = useUserData();
+  const { data: userData, refetch } = useUserData();
   const [nickname, setNickname] = useState(userData?.name || "");
 
   const [profileImage, setProfileImage] = useState<string | File | null>(
@@ -27,11 +27,16 @@ const Mypage = () => {
 
   const handleLogout = () => {
     logout();
-    navigate("/");
-    window.location.reload();
+    refetch();
   };
 
   const { openModal } = useModal();
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/", { replace: true });
+    }
+  }, [userData, navigate]);
 
   useEffect(() => {
     if (userData?.name) {
