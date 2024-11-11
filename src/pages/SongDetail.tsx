@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
 import CameraImg from "../components/CameraImg";
@@ -12,7 +12,7 @@ import axios from "axios";
 import SongRequestFailModal from "../components/Modal/SongRequestFailModal";
 import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal";
 import EmailInputModal from "../components/Modal/EmailInputModal";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 interface SongDetailForm {
     artist: string;
@@ -20,9 +20,13 @@ interface SongDetailForm {
 }
 
 const SongDetail = () => {
+    const [searchParams] = useSearchParams();
+    const formId = searchParams.get("formId");
     const navigate = useNavigate();
     const { data: userData } = useUserData();
     const profileImage = userData?.image;
+
+    const [userId, setUserId] = useState<string>("");
 
     const { openModal } = useModal();
 
@@ -33,35 +37,52 @@ const SongDetail = () => {
         getValues
     } = useForm<SongDetailForm>();
 
+    const isLoggedIn = !!userData;
+
+    useEffect(() => {
+        async function fetchRequestForm() {
+            if (formId) {
+                try {
+                    const { data: id } = await axiosInstance().get(
+                        `/users/form/${formId}`
+                    );
+                    setUserId(id);
+                } catch {
+                    throw new Error("Failed to fetch user form");
+                }
+            }
+        }
+        fetchRequestForm();
+    }, [formId]);
+
     const handlePostSong = async () => {
         const { artist, title } = getValues();
+        const { email } = userData ?? {
+            email: ""
+        };
 
+        await axiosInstance().post("/songs", {
+            userId: formId,
+            email,
+            artist,
+            title
+        });
         if (artist && title) {
-            const { id: userId, email } = userData ?? {
-                id: "",
-                email: ""
-            };
-            await axiosInstance().post("/songs", {
-                userId,
-                email,
-                artist,
-                title
-            });
             openModal({
                 Content: SongRequestSuccessModal,
                 errorMessage: "",
-                data: { artist, title },
+                data: { artist, title, formId },
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
         }
-        if (!userData) {
+        if (!isLoggedIn) {
             openModal({
                 Content: (props) => (
                     <EmailInputModal
                         {...props}
                         navigate={navigate}
-                        modalData={{ artist, title }}
+                        modalData={{ artist, title, formId, email }}
                     />
                 )
             });
@@ -69,10 +90,7 @@ const SongDetail = () => {
     };
 
     const onSubmit = async ({ artist, title }: SongDetailForm) => {
-        const { id: userId, email } = userData ?? {
-            id: "",
-            email: ""
-        };
+        const { email } = userData ?? { email: "" };
         try {
             //
         } catch (error) {
