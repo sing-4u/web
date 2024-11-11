@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { useSongListId } from "../hooks/useSongListId";
 import ChevronDown from "./ChevronDown";
 import ChevronUp from "./ChevronUp";
@@ -20,6 +20,7 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
   setOpenPreviousSongs,
 }) => {
   const { data: previousSongDetails } = useSongListId(list.id.toString());
+  const [visibleSongs, setVisibleSongs] = useState(5);
 
   const sortedPreviousSongDetails =
     previousSongDetails
@@ -27,6 +28,10 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
       .sort(
         (a: { count: number }, b: { count: number }) => b.count - a.count
       ) || [];
+
+  const handleShowMoreSongs = () => {
+    setVisibleSongs((prev) => prev + 5);
+  };
 
   return (
     <div
@@ -54,29 +59,41 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
       </div>
       {openPreviousSongs[idx] && (
         <ul className="mt-4">
-          {sortedPreviousSongDetails?.map(
-            (
-              song: { title: string; artist: string; count: number },
-              index: number
-            ) => (
-              <li
-                key={index}
-                className="flex items-center gap-4 py-2 border-b last:border-none"
-              >
-                <div className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px] bg-black text-white font-bold text-[12px]">
-                  {index + 1}
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-medium text-[14px]">{song.title}</span>
-                  <span className="font-medium text-[12px] text-customGray">
-                    {song.artist}
-                  </span>
-                </div>
-                <div className="font-semibold text-[14px] ml-auto">
-                  {song.count}명
-                </div>
-              </li>
-            )
+          {sortedPreviousSongDetails
+            ?.slice(0, visibleSongs)
+            .map(
+              (
+                song: { title: string; artist: string; count: number },
+                index: number
+              ) => (
+                <li
+                  key={index}
+                  className="flex items-center gap-4 py-2 border-b last:border-none"
+                >
+                  <div className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px] bg-black text-white font-bold text-[12px]">
+                    {index + 1}
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="font-medium text-[14px]">
+                      {song.title}
+                    </span>
+                    <span className="font-medium text-[12px] text-customGray">
+                      {song.artist}
+                    </span>
+                  </div>
+                  <div className="font-semibold text-[14px] ml-auto">
+                    {song.count}명
+                  </div>
+                </li>
+              )
+            )}
+          {sortedPreviousSongDetails.length > visibleSongs && (
+            <button
+              className="mt-4 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass"
+              onClick={handleShowMoreSongs}
+            >
+              더보기 +
+            </button>
           )}
         </ul>
       )}

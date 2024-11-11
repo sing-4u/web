@@ -23,6 +23,7 @@ const ManageSong = () => {
   const [receivingSong, setReceivingSong] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(true);
   const [showCopyAlert, setShowCopyAlert] = useState(false);
+  const [visibleSongs, setVisibleSongs] = useState(5);
 
   const [openPreviousSongs, setOpenPreviousSongs] = useState<{
     [key: number]: boolean;
@@ -81,6 +82,10 @@ const ManageSong = () => {
       .catch((error) => {
         console.error("복사 실패: ", error);
       });
+  };
+
+  const handleShowMoreSongs = () => {
+    setVisibleSongs((prev) => prev + 5);
   };
 
   const sortedSongListDetails =
@@ -186,38 +191,45 @@ const ManageSong = () => {
           {isAccordionOpen && (
             <div>
               <ul className="mt-4">
-                {sortedSongListDetails?.map(
-                  (
-                    song: { title: string; artist: string; count: number },
-                    index: number
-                  ) => (
-                    <li
-                      className="flex items-center gap-4 py-2 border-b last:border-none"
-                      key={index}
-                    >
-                      <div className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px] bg-[#7846dd] text-white font-bold text-[12px] leading-[14.32px] text-center">
-                        {index + 1}
-                      </div>
+                {sortedSongListDetails
+                  ?.slice(0, visibleSongs)
+                  .map(
+                    (
+                      song: { title: string; artist: string; count: number },
+                      index: number
+                    ) => (
+                      <li
+                        className="flex items-center gap-4 py-2 border-b last:border-none"
+                        key={index}
+                      >
+                        <div className="flex items-center justify-center w-[24px] h-[24px] rounded-[4px] bg-[#7846dd] text-white font-bold text-[12px] leading-[14.32px] text-center">
+                          {index + 1}
+                        </div>
 
-                      <div className="flex flex-col">
-                        <span className="font-medium text-[14px] leading-[16.71px text-black]">
-                          {song.title}
-                        </span>
-                        <span className="font-medium text-[12px] leading-[14.32px] text-customGray">
-                          {song.artist}
-                        </span>
-                      </div>
+                        <div className="flex flex-col">
+                          <span className="font-medium text-[14px] leading-[16.71px text-black]">
+                            {song.title}
+                          </span>
+                          <span className="font-medium text-[12px] leading-[14.32px] text-customGray">
+                            {song.artist}
+                          </span>
+                        </div>
 
-                      <div className="font-semibold text-[14px] leading-[16.71px] ml-auto">
-                        {song.count}명
-                      </div>
-                    </li>
-                  )
-                )}
+                        <div className="font-semibold text-[14px] leading-[16.71px] ml-auto">
+                          {song.count}명
+                        </div>
+                      </li>
+                    )
+                  )}
               </ul>
-              <button className="mt-4 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass">
-                더보기 +
-              </button>
+              {sortedSongListDetails.length > visibleSongs && (
+                <button
+                  className="mt-4 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass"
+                  onClick={handleShowMoreSongs}
+                >
+                  더보기 +
+                </button>
+              )}
             </div>
           )}
         </div>
