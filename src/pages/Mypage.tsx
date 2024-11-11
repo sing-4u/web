@@ -28,6 +28,7 @@ const Mypage = () => {
   const handleLogout = () => {
     logout();
     navigate("/");
+    window.location.reload();
   };
 
   const { openModal } = useModal();
