@@ -14,10 +14,7 @@ const Password = ({ title, text1, text2, type }: PasswordProps) => {
             <div className="text-2xl font-bold text-center">{title}</div>
             <div className="space-y-4">
                 <div className="relative flex flex-col">
-                    <label
-                        htmlFor="email"
-                        className="text-left font-Pretendard mb-2"
-                    >
+                    <label htmlFor="email" className="text-left mb-2">
                         {text1}
                     </label>
                     <input
@@ -27,10 +24,7 @@ const Password = ({ title, text1, text2, type }: PasswordProps) => {
                     />
                 </div>
                 <div className="relative flex flex-col">
-                    <label
-                        htmlFor="password"
-                        className="text-left font-Pretendard mb-2"
-                    >
+                    <label htmlFor="password" className="text-left mb-2">
                         {text2}
                     </label>
                     <input

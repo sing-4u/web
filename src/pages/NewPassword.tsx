@@ -63,10 +63,7 @@ const NewPassword = () => {
                 </div>
 
                 <div className="relative flex flex-col">
-                    <label
-                        htmlFor="newPassword"
-                        className="text-left font-Pretendard mb-2"
-                    >
+                    <label htmlFor="newPassword" className="text-left  mb-2">
                         새 비밀번호
                     </label>
                     <input
@@ -100,7 +97,7 @@ const NewPassword = () => {
                 <div className="relative flex flex-col">
                     <label
                         htmlFor="confirmPassword"
-                        className="text-left font-Pretendard mb-2"
+                        className="text-left  mb-2"
                     >
                         새 비밀번호 확인
                     </label>
@@ -135,7 +132,7 @@ const NewPassword = () => {
                 </div>
 
                 <button
-                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px] font-Pretendard"
+                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px] "
                     type="submit"
                 >
                     비밀번호 변경하기

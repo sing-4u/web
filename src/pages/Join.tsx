@@ -15,6 +15,7 @@ import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
 import { useModal } from "../hooks/useModal";
 import Logo from "../assets/logo.svg";
+import SNSModalContent from "../components/Modal/SNSModal";
 interface FormValues {
     name: string;
     email: string;
@@ -156,10 +157,6 @@ const Join = () => {
         }
 
         try {
-            if (isEmailFromGoogleDomain(email)) {
-                openModal("sns", "SNS로 가입된 계정입니다.");
-                return;
-            }
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/register/email`,
                 { email, password, name }
@@ -178,7 +175,16 @@ const Join = () => {
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
-                    showToast("error", "이미 가입된 이메일 주소입니다.");
+                    if (isEmailFromGoogleDomain(email)) {
+                        openModal({
+                            title: "SNS로 가입된 계정입니다.",
+                            Content: SNSModalContent,
+                            errorMessage: "",
+                            buttonBackgroundColor: "#7846dd"
+                        });
+                    } else {
+                        return;
+                    }
                 }
             }
             if (e instanceof Error) throw new Error(e.message);
@@ -361,7 +367,7 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="relative top-12 w-full bg-buttonBackgroundColor text-white rounded-lg h-[48px] text-sm mt-8 font-pretendard"
+                        className="relative top-12 w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8 font-pretendard"
                         type="submit"
                     >
                         회원가입
