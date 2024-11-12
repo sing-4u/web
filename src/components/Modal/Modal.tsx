@@ -1,12 +1,13 @@
 import { ComponentType } from "react";
-import { ModalContentProps } from "../../types";
+import { ModalContentProps, ModalType } from "../../types";
 import CloseButton from "../../../src/assets/btn_close.svg";
 
 interface ModalProps<T> {
     onClose: () => void;
     title?: string;
     Content?: ComponentType<ModalContentProps<T>>;
-    errorMessage?: string;
+    // errorMessage?: string;
+    type: ModalType;
     data?: T;
     buttonBackgroundColor?: string;
 }
@@ -16,7 +17,7 @@ export const Modal = <T,>({
     title,
     Content,
     data,
-    errorMessage,
+    type,
     buttonBackgroundColor
 }: ModalProps<T>) => {
     if (!Content) return null;
@@ -34,7 +35,7 @@ export const Modal = <T,>({
                     className="bg-white p-6 rounded-lg w-[328px] relative"
                     open
                 >
-                    <div
+                    {/* <div
                         className={`flex ${
                             errorMessage ? "justify-center" : "justify-between"
                         } items-center mb-4`}
@@ -47,6 +48,14 @@ export const Modal = <T,>({
                                 <img src={CloseButton} alt="Close" />
                             </button>
                         )}
+                    </div> */}
+                    <div className="flex justify-between items-center mb-4">
+                        <h2 className="text-lg font-bold">{title}</h2>
+                        {type === ModalType.DEFAULT && (
+                            <button onClick={onClose}>
+                                <img src={CloseButton} alt="Close" />
+                            </button>
+                        )}
                     </div>
                     <Content
                         title={title}
@@ -54,11 +63,20 @@ export const Modal = <T,>({
                         buttonBackgroundColor={buttonBackgroundColor}
                     />
 
-                    {!errorMessage ? (
+                    {/* {!errorMessage ? (
                         <div className="text-red-500 text-sm mt-2">
                             {errorMessage}
                         </div>
                     ) : (
+                        <button
+                            onClick={onClose}
+                            className="w-full py-3 bg-colorPurple text-textColor rounded-lg mt-4"
+                        >
+                            확인
+                        </button>
+                    )} */}
+
+                    {type === ModalType.ERROR && (
                         <button
                             onClick={onClose}
                             className="w-full py-3 bg-colorPurple text-textColor rounded-lg mt-4"

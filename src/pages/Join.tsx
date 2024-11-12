@@ -16,6 +16,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import { useModal } from "../hooks/useModal";
 import Logo from "../assets/logo.svg";
 import SNSModalContent from "../components/Modal/SNSModal";
+import { ModalType } from "../types";
 interface FormValues {
     name: string;
     email: string;
@@ -179,7 +180,7 @@ const Join = () => {
                         openModal({
                             title: "SNS로 가입된 계정입니다.",
                             Content: SNSModalContent,
-                            errorMessage: "SNS로 가입된 계정입니다.",
+                            type: ModalType.ERROR,
                             buttonBackgroundColor: "#7846dd"
                         });
                     } else {
