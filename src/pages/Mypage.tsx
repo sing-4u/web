@@ -15,32 +15,78 @@ import EmailChangeModal from "../components/Modal/EmailChangeModal";
 import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 
 const Mypage = () => {
-    const { data: userData } = useUserData();
-    const [nickname, setNickname] = useState(userData?.name || "");
-    // const [isEditingName, setIsEditingName] = useState(false);
 
-    const [profileImage, setProfileImage] = useState<string | File | null>(
-        userData?.image || null
-    );
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const { data: userData, refetch } = useUserData();
+  const [nickname, setNickname] = useState(userData?.name || "");
 
-    const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profileImage, setProfileImage] = useState<string | File | null>(
+    userData?.image || null
+  );
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
-    const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const handleLogout = () => {
-        logout();
-        navigate("/");
-    };
+  const navigate = useNavigate();
 
-    const { openModal } = useModal();
+  const handleLogout = () => {
+    logout();
+    refetch();
+  };
 
-    useEffect(() => {
-        if (userData?.name) {
-            setNickname(userData.name);
-        }
-        if (userData?.image) {
-            setProfileImage(userData.image);
+  const { openModal } = useModal();
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/", { replace: true });
+    }
+  }, [userData, navigate]);
+
+  useEffect(() => {
+    if (userData?.name) {
+      setNickname(userData.name);
+    }
+    if (userData?.image) {
+      setProfileImage(userData.image);
+    }
+  }, [userData]);
+
+  const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("image", file);
+
+      try {
+        await axios.patch(
+          `${import.meta.env.VITE_API_URL}/users/me/image`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+            },
+          }
+        );
+        setProfileImage(URL.createObjectURL(file));
+        setErrorMessage(null);
+      } catch {
+        setErrorMessage(
+          "프로필 이미지 변경에 실패했습니다. 다시 시도해주세요."
+        );
+      }
+    }
+  };
+
+  const handleImageDelete = async () => {
+    try {
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/users/me/image`,
+        { image: null },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+
         }
     }, [userData]);
 
