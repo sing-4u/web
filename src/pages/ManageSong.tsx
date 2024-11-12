@@ -11,8 +11,7 @@ import formatDate from "../utils/formatDate";
 import ChevronDown from "../components/ChevronDown";
 import ChevronUp from "../components/ChevronUp";
 import axiosInstance from "../utils/axiosInstance";
-import PreviousSongList from "../components/PreviousSongList";
-//deploy 테스트
+import PreviousSongList from "../components/PreviousSong";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
