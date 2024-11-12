@@ -10,7 +10,7 @@ import GoogleIcon from "../components/GoogleIcon";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
-import { ToastContainer } from "../components/ToastContainer";
+import { ToastContainer } from "../hooks/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
 import { useModal } from "../hooks/useModal";
@@ -179,7 +179,7 @@ const Join = () => {
                         openModal({
                             title: "SNS로 가입된 계정입니다.",
                             Content: SNSModalContent,
-                            errorMessage: "",
+                            errorMessage: "SNS로 가입된 계정입니다.",
                             buttonBackgroundColor: "#7846dd"
                         });
                     } else {

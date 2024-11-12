@@ -13,7 +13,8 @@ export default {
                 inputTextColor: "#AAAAAA",
                 buttonColor: "#F5F5F5",
                 buttonColor2: "#D9D9D9",
-                colorPurple: "#7846DD"
+                colorPurple: "#7846DD",
+                textColor: "#ffffff"
             }
         }
     },

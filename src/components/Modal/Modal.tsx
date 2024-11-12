@@ -34,26 +34,34 @@ export const Modal = <T,>({
                     className="bg-white p-6 rounded-lg w-[328px] relative"
                     open
                 >
-                    <div className="flex justify-center items-center mb-4">
+                    <div
+                        className={`flex ${
+                            errorMessage ? "justify-center" : "justify-between"
+                        } items-center mb-4`}
+                    >
                         <h2 className="text-lg font-bold">
                             {errorMessage || title}
                         </h2>
-                        {!errorMessage ||
-                            (errorMessage !== "" && (
-                                <button onClick={onClose}>
-                                    <img src={CloseButton} alt="Close" />
-                                </button>
-                            ))}
+                        {errorMessage === "" && (
+                            <button onClick={onClose}>
+                                <img src={CloseButton} alt="Close" />
+                            </button>
+                        )}
                     </div>
                     <Content
                         title={title}
                         data={data}
                         buttonBackgroundColor={buttonBackgroundColor}
                     />
-                    {errorMessage && (
+
+                    {!errorMessage ? (
+                        <div className="text-red-500 text-sm mt-2">
+                            {errorMessage}
+                        </div>
+                    ) : (
                         <button
                             onClick={onClose}
-                            className="w-full py-3 bg-[#4D77FF] text-black rounded-lg mt-4"
+                            className="w-full py-3 bg-colorPurple text-textColor rounded-lg mt-4"
                         >
                             확인
                         </button>
