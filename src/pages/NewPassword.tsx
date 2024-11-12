@@ -14,7 +14,6 @@ interface PasswordProps {
 
 const NewPassword = () => {
     const { state } = useLocation();
-    console.log("state: ", state);
     const { accessToken } = state;
     const { showToast, toasts } = useToast();
 

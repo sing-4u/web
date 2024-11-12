@@ -14,7 +14,6 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
     const { data: userData, isLoading, error } = useUserData();
 
     const isLoggedIn = !!userData;
-    console.log("isLoggedIn: ", isLoggedIn);
     const defaultProfileImage =
         typeof userData?.image === "string" ? userData.image : undefined;
 
