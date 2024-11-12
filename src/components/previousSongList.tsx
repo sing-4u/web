@@ -23,11 +23,9 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
   const [visibleSongs, setVisibleSongs] = useState(5);
 
   const sortedPreviousSongDetails =
-    previousSongDetails
-      ?.slice()
-      .sort(
-        (a: { count: number }, b: { count: number }) => b.count - a.count
-      ) || [];
+    previousSongDetails?.sort(
+      (a: { count: number }, b: { count: number }) => b.count - a.count
+    ) || [];
 
   const handleShowMoreSongs = () => {
     setVisibleSongs((prev) => prev + 5);
