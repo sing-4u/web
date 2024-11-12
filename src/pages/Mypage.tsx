@@ -13,6 +13,7 @@ import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
 import EmailChangeModal from "../components/Modal/EmailChangeModal";
 import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
+import { ModalType } from "../types";
 
 const Mypage = () => {
     const { data: userData, refetch } = useUserData();
@@ -104,14 +105,18 @@ const Mypage = () => {
     const openEmailModal = () => {
         openModal({
             title: "이메일 변경",
-            Content: EmailChangeModal
+            Content: EmailChangeModal,
+            type: ModalType.DEFAULT,
+            buttonBackgroundColor: "#7846dd"
         });
     };
 
     const openPasswordModal = () => {
         openModal({
             title: "비밀번호 변경",
-            Content: PasswordChangeModal
+            Content: PasswordChangeModal,
+            type: ModalType.DEFAULT,
+            buttonBackgroundColor: "#7846dd"
         });
     };
 

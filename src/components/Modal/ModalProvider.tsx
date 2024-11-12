@@ -13,7 +13,6 @@ interface ModalContextProps {
     }) => void;
 
     closeModal: () => void;
-    // isOpen: boolean;
 }
 
 export const ModalContext = createContext<ModalContextProps | undefined>(
