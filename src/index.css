@@ -3,29 +3,29 @@
 @tailwind utilities;
 
 body {
-  font-family: Pretendard;
+    font-family: Pretendard;
 }
 
 @font-face {
-  font-family: Pretendard;
-  font-weight: 400;
-  src: local("Pretendard Regular"),
-    url("./assets/fonts/Pretendard-Regular.woff") format("woff"),
-    url("./assets/fonts/Pretendard-Regular.woff2") format("woff2");
+    font-family: Pretendard;
+    font-weight: 400;
+    src: local("Pretendard Regular"),
+        url("./assets/fonts/Pretendard-Regular.woff") format("woff"),
+        url("./assets/fonts/Pretendard-Regular.woff2") format("woff2");
 }
 @font-face {
-  font-family: Pretendard;
-  font-weight: 500;
-  src: local("Pretendard Medium"),
-    url("./assets/fonts/Pretendard-Medium.woff") format("woff"),
-    url("./assets/fonts/Pretendard-Medium.woff2") format("woff2");
+    font-family: Pretendard;
+    font-weight: 500;
+    src: local("Pretendard Medium"),
+        url("./assets/fonts/Pretendard-Medium.woff") format("woff"),
+        url("./assets/fonts/Pretendard-Medium.woff2") format("woff2");
 }
 @font-face {
-  font-family: Pretendard;
-  font-weight: 700;
-  src: local("Pretendard Bold"),
-    url("./assets/fonts/Pretendard-Bold.woff") format("woff"),
-    url("./assets/fonts/Pretendard-Bold.woff2") format("woff2");
+    font-family: Pretendard;
+    font-weight: 700;
+    src: local("Pretendard Bold"),
+        url("./assets/fonts/Pretendard-Bold.woff") format("woff"),
+        url("./assets/fonts/Pretendard-Bold.woff2") format("woff2");
 }
 
 @keyframes bounceIn {
@@ -47,4 +47,10 @@ body {
 
 .animate-bounceIn {
     animation: bounceIn 0.6s ease-out;
+}
+
+@layer base {
+    html {
+        font-family: "Pretendard", system-ui, sans-serif;
+    }
 }
