@@ -13,7 +13,8 @@ import ChevronUp from "../components/ChevronUp";
 import PreviousSongList from "../components/PreviousSongList";
 import axiosInstance from "../utils/axiosInstance";
 
-// 커밋 트리거 테스트
+// 커밋 테스트를 위해 주석 추가
+// deploy 테스트를 위해 주석 추가
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
