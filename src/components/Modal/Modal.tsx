@@ -24,9 +24,7 @@ export const Modal = <T,>({
     const buttonClassName = `w-full py-3 ${buttonBackgroundColor} text-textColor rounded-lg mt-4`;
 
     const onClickModal = (event: React.MouseEvent<HTMLElement>) => {
-        if (event.target === event.currentTarget) {
-            onClose?.();
-        }
+        if (event.target === event.currentTarget) onClose?.();
     };
     return (
         <div
