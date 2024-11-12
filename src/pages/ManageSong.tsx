@@ -10,10 +10,12 @@ import { useSongListId } from "../hooks/useSongListId";
 import formatDate from "../utils/formatDate";
 import ChevronDown from "../components/ChevronDown";
 import ChevronUp from "../components/ChevronUp";
-import PreviousSongList from "../components/previousSongList";
+import axiosInstance from "../utils/axiosInstance";
+import PreviousSongList from "../components/PreviousSongList";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
+  const [userId, setUserId] = useState("");
 
   const { data: userData } = useUserData();
   const profileImage = userData?.image;
@@ -25,6 +27,15 @@ const ManageSong = () => {
   const [openPreviousSongs, setOpenPreviousSongs] = useState<{
     [key: number]: boolean;
   }>({});
+
+  useEffect(() => {
+    async function fetchRequestForm() {
+      const data = await axiosInstance().get(`/users/form/${userData?.id}`);
+
+      setUserId(data.data.id);
+    }
+    fetchRequestForm();
+  }, [userData?.id]);
 
   const startReceivingMutation = useStartReceiving();
   const endReceivingMutation = useEndReceiving();
@@ -69,9 +80,11 @@ const ManageSong = () => {
     ) || [];
 
   const handleCopyUrl = () => {
-    const currentUrl = window.location.href;
+    const baseUrl = window.location.origin;
+    const requestUrl = `${baseUrl}/song-detail?formId=${userId}`;
+
     navigator.clipboard
-      .writeText(currentUrl)
+      .writeText(requestUrl)
       .then(() => {
         console.log("복사 완료");
       })
@@ -164,7 +177,11 @@ const ManageSong = () => {
               <ul className="mt-4">
                 {songListDetails?.map(
                   (
-                    song: { title: string; artist: string; count: number },
+                    song: {
+                      title: string;
+                      artist: string;
+                      count: number;
+                    },
                     index: number
                   ) => (
                     <li
@@ -202,7 +219,11 @@ const ManageSong = () => {
         <div className="w-[327px] mt-4 flex flex-col justify-center items-center mb-10">
           {previousSongLists.map(
             (
-              list: { id: number; startDate: string; endDate: string | null },
+              list: {
+                id: number;
+                startDate: string;
+                endDate: string | null;
+              },
               idx: number
             ) => (
               <PreviousSongList

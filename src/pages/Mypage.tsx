@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
 import ImgProfileL from "../components/ImgProfileL";
@@ -11,11 +11,12 @@ import { useNavigate } from "react-router-dom";
 import DeleteAccountModal from "../utils/DeleteAccountModal";
 import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
+import EmailChangeModal from "../components/Modal/EmailChangeModal";
+import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 
 const Mypage = () => {
-  const { data: userData } = useUserData();
+  const { data: userData, refetch } = useUserData();
   const [nickname, setNickname] = useState(userData?.name || "");
-  const [isEditingName, setIsEditingName] = useState(false);
 
   const [profileImage, setProfileImage] = useState<string | File | null>(
     userData?.image || null
@@ -28,10 +29,17 @@ const Mypage = () => {
 
   const handleLogout = () => {
     logout();
+    refetch();
     navigate("/");
   };
 
   const { openModal } = useModal();
+
+  useEffect(() => {
+    if (!userData) {
+      navigate("/", { replace: true });
+    }
+  }, [userData, navigate]);
 
   useEffect(() => {
     if (userData?.name) {
@@ -41,28 +49,6 @@ const Mypage = () => {
       setProfileImage(userData.image);
     }
   }, [userData]);
-
-  const handleNameChange = async () => {
-    if (isEditingName) {
-      try {
-        await axios.patch(
-          `${import.meta.env.VITE_API_URL}/users/me/name`,
-          { name: nickname },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
-            },
-          }
-        );
-        setIsEditingName(false);
-      } catch (error) {
-        if (error instanceof Error) {
-          setErrorMessage("닉네임 변경에 실패했습니다. 다시 시도해주세요.");
-        }
-      }
-    }
-  };
-
 
   const handleImageChange = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -110,11 +96,19 @@ const Mypage = () => {
   };
 
   const openEmailModal = () => {
-    openModal("email");
+    openModal({
+      title: "이메일 변경",
+      Content: EmailChangeModal,
+      errorMessage: "",
+    });
   };
 
   const openPasswordModal = () => {
-    openModal("password");
+    openModal({
+      title: "비밀번호 변경",
+      Content: PasswordChangeModal,
+      errorMessage: "",
+    });
   };
 
   const inputLabelClass =

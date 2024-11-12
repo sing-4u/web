@@ -5,7 +5,7 @@ import usePasswordToggle from "../../hooks/usePasswordToggle";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 
-const PasswordModalContent = () => {
+const PasswordChangeModal = () => {
     const {
         register,
         handleSubmit,
@@ -180,7 +180,7 @@ const PasswordModalContent = () => {
 
             <button
                 type="submit"
-                className="mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-buttonBackgroundColor hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-colorPurple hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
                 변경하기
             </button>
@@ -189,4 +189,4 @@ const PasswordModalContent = () => {
     );
 };
 
-export default PasswordModalContent;
+export default PasswordChangeModal;

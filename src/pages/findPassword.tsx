@@ -66,10 +66,7 @@ const FindPassword = () => {
                 </div>
 
                 <div className="relative flex flex-col">
-                    <label
-                        htmlFor="email"
-                        className="text-left font-Pretendard mb-2"
-                    >
+                    <label htmlFor="email" className="text-left mb-2">
                         이메일
                     </label>
                     <input
@@ -102,10 +99,7 @@ const FindPassword = () => {
                     </button>
                 </div>
                 <div className="relative flex flex-col">
-                    <label
-                        htmlFor="code"
-                        className="text-left font-Pretendard mb-2"
-                    >
+                    <label htmlFor="code" className="text-left mb-2">
                         인증번호
                     </label>
                     <input
@@ -125,7 +119,7 @@ const FindPassword = () => {
                     )}
                 </div>
                 <button
-                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px] font-Pretendard"
+                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px]"
                     type="submit"
                 >
                     다음

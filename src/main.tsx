@@ -12,49 +12,54 @@ import NewPassword from "./pages/NewPassword";
 import Mypage from "./pages/Mypage";
 import ManageSong from "./pages/ManageSong";
 import FindPassword from "./pages/findPassword";
+import SongDetail from "./pages/SongDetail";
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/join",
-    element: <Join />,
-  },
-  {
-    path: "/complete-join",
-    element: <CompleteJoin />,
-  },
-  {
-    path: "find-password",
-    element: <FindPassword />,
-  },
-  {
-    path: "new-password",
-    element: <NewPassword />,
-  },
-  {
-    path: "/mypage",
-    element: <Mypage />,
-  },
-  {
-    path: "/manage-song",
-    element: <ManageSong />,
-  },
+    {
+        path: "/",
+        element: <Home />
+    },
+    {
+        path: "/login",
+        element: <Login />
+    },
+    {
+        path: "/join",
+        element: <Join />
+    },
+    {
+        path: "/complete-join",
+        element: <CompleteJoin />
+    },
+    {
+        path: "find-password",
+        element: <FindPassword />
+    },
+    {
+        path: "new-password",
+        element: <NewPassword />
+    },
+    {
+        path: "/mypage",
+        element: <Mypage />
+    },
+    {
+        path: "/manage-song",
+        element: <ManageSong />
+    },
+    {
+        path: "/song-detail",
+        element: <SongDetail />
+    }
 ]);
 
 createRoot(document.getElementById("root")!).render(
-  <ModalProvider>
-    <QueryClientProvider client={queryClient}>
-      <App />
-      <RouterProvider router={router} />
-    </QueryClientProvider>
-  </ModalProvider>
+    <ModalProvider>
+        <QueryClientProvider client={queryClient}>
+            <App />
+            <RouterProvider router={router} />
+        </QueryClientProvider>
+    </ModalProvider>
 );

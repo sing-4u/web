@@ -4,10 +4,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
+                sans: ["Pretendard", "system-ui", "sans-serif"], // 기본 폰트로 Pretendard 설정
                 pretendard: ["Pretendard"]
-            },
-            screens: {
-                extraSmall: "375px"
             },
             colors: {
                 customGray: "#888888",
