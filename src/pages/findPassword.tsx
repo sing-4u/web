@@ -6,6 +6,7 @@ import { useToast } from "../hooks/useToast";
 import { useEffect, useState } from "react";
 import getInputErrorClassName from "../utils/className";
 import { ToastContainer } from "../components/ToastContainer";
+import Navbar from "../components/Navbar";
 
 interface FormValue {
     email: string;
@@ -92,12 +93,12 @@ const FindPassword = () => {
     };
 
     return (
-        <>
+        <div className="w-full max-w-[376px] mx-auto">
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md mx-auto p-6 space-y-4"
             >
-                <div className="flex">로고</div>
+                <Navbar />
                 <div className="text-2xl font-bold text-center">
                     비밀번호 찾기
                 </div>
@@ -178,7 +179,7 @@ const FindPassword = () => {
                 </button>
             </form>
             <ToastContainer toasts={toasts} />
-        </>
+        </div>
     );
 };
 
