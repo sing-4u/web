@@ -1,10 +1,11 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer } from "../hooks/ToastContainer";
+
 import { useToast } from "../hooks/useToast";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import getInputErrorClassName from "../utils/className";
+import { ToastContainer } from "../components/ToastContainer";
 
 interface FormValue {
     email: string;
@@ -20,12 +21,46 @@ const FindPassword = () => {
         register,
         handleSubmit,
         watch,
-        formState: { errors }
+        formState: { errors, dirtyFields }
     } = useForm<FormValue>();
+
+    const isEmailValid = dirtyFields.email && !errors.email;
+
+    const MINUTES_IN_MS = 3 * 60 * 1000;
+    const INTERVAL = 1000;
+    const [timeLeft, setTimeLeft] = useState<number | null>(null);
+
+    const minutes = String(
+        Math.floor(((timeLeft || 0) / (1000 * 60)) % 60)
+    ).padStart(2, "0");
+    const second = String(Math.floor(((timeLeft || 0) / 1000) % 60)).padStart(
+        2,
+        "0"
+    );
+
+    useEffect(() => {
+        if (timeLeft === null || !isAuthenticationCodeRequested) return;
+
+        const timer = setInterval(() => {
+            setTimeLeft((prevTime) => {
+                if (prevTime === null) return null;
+                if (prevTime <= 0) {
+                    clearInterval(timer);
+                    setIsAuthenticationCodeRequested(false);
+                    return 0;
+                }
+                return prevTime - INTERVAL;
+            });
+        }, INTERVAL);
+
+        return () => {
+            clearInterval(timer);
+        };
+    }, [timeLeft, isAuthenticationCodeRequested]);
 
     const handleAuthenticationCodeClick = async () => {
         const email = watch("email");
-
+        if (timeLeft === 0) return;
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/get-email-code`,
@@ -35,6 +70,7 @@ const FindPassword = () => {
             );
             showToast("success", "인증 번호가 전송되었습니다.");
             setIsAuthenticationCodeRequested(true);
+            setTimeLeft(MINUTES_IN_MS);
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
         }
@@ -89,10 +125,20 @@ const FindPassword = () => {
                     )}
                     <button
                         type="button"
-                        className="absolute inset-y-12 end-3 cursor-pointer text-sm "
+                        disabled={!isEmailValid}
+                        className={`absolute inset-y-11 end-3 cursor-pointer text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
+                            ${
+                                isEmailValid
+                                    ? "bg-black text-white hover:text-gray-400"
+                                    : "bg-customGray text-textColor"
+                            }`}
                         onClick={handleAuthenticationCodeClick}
                     >
-                        <span className="text-inputTextColor hover:text-gray-400">
+                        <span
+                            className="
+
+                            rounded-[4px] flex flex-col justify-center disabled:text-textColor hover:text-gray-400"
+                        >
                             {isAuthenticationCodeRequested
                                 ? "재요청"
                                 : "인증번호 요청"}
@@ -116,6 +162,11 @@ const FindPassword = () => {
                         <span className="text-red-500 text-sm">
                             {errors.code.message ||
                                 "인증번호가 일치하지 않습니다."}
+                        </span>
+                    )}
+                    {timeLeft !== 0 && (
+                        <span className="absolute inset-y-12 end-3 text-red-500">
+                            {minutes}:{second}
                         </span>
                     )}
                 </div>

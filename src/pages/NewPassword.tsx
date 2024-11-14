@@ -1,11 +1,11 @@
 import axios from "axios";
-import { ToastContainer } from "../hooks/ToastContainer";
 import { useToast } from "../hooks/useToast";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import getInputErrorClassName from "../utils/className";
 import axiosInstance from "../utils/axiosInstance";
+import { ToastContainer } from "../components/ToastContainer";
 
 interface PasswordProps {
     newPassword: string;
