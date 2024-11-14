@@ -3,7 +3,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import { useToast } from "../../hooks/useToast";
-import { ToastContainer } from "../ToastContainer";
+import { ToastContainer } from "../../hooks/ToastContainer";
 
 const PasswordChangeModal = () => {
     const {

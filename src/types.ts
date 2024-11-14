@@ -9,3 +9,9 @@ export interface ModalContentProps<T> {
     data?: T;
     buttonBackgroundColor?: string;
 }
+
+export enum ModalType {
+    DEFAULT,
+    ERROR,
+    SUCCESS
+}

@@ -1,19 +1,18 @@
 import { createContext, useState, ReactNode, ComponentType } from "react";
 // import MainModal from "./MainModal";
 import Modal from "./Modal";
-import { ModalContentProps } from "../../types";
+import { ModalContentProps, ModalType } from "../../types";
 
 interface ModalContextProps {
     openModal: <T>(config: {
+        type: ModalType;
         title?: string;
         Content: ComponentType<ModalContentProps<T>>;
-        errorMessage?: string;
         data?: T;
-        buttonBackgroundColor?: string;
+        buttonBackgroundColor: string;
     }) => void;
 
     closeModal: () => void;
-    // isOpen: boolean;
 }
 
 export const ModalContext = createContext<ModalContextProps | undefined>(
@@ -21,56 +20,53 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
 );
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-    const [title, setTitle] = useState<string | undefined>("");
-    const [content, setContent] = useState<
-        ComponentType<ModalContentProps<unknown>> | undefined
-    >();
-    const [errorMessage, setErrorMessage] = useState<string | undefined>(
-        undefined
-    );
-
-    const [modalData, setModalData] = useState<unknown>();
-    const [buttonBackgroundColor, setButtonBackgroundColor] = useState<
-        string | undefined
-    >(undefined);
+    const [modalConfig, setModalConfig] = useState<{
+        type: ModalType;
+        title?: string;
+        Content: ComponentType<ModalContentProps<unknown>>;
+        data?: unknown;
+        buttonBackgroundColor?: string;
+    } | null>(null);
 
     const openModal = <T,>({
+        type,
         title,
         Content,
-        errorMessage,
         data,
         buttonBackgroundColor
     }: {
+        type: ModalType;
         title?: string;
         Content: ComponentType<ModalContentProps<T>>;
-        errorMessage?: string;
         data?: T;
-        buttonBackgroundColor?: string;
+        buttonBackgroundColor: string;
     }) => {
-        setTitle(title);
-        setContent(() => Content as ComponentType<ModalContentProps<unknown>>);
-        setErrorMessage(errorMessage);
-        setModalData(data);
-        setButtonBackgroundColor(buttonBackgroundColor);
+        setModalConfig({
+            type,
+            title,
+            Content: Content as ComponentType<ModalContentProps<unknown>>,
+            data,
+            buttonBackgroundColor
+        });
     };
 
     const closeModal = () => {
-        setTitle(undefined);
-        setContent(undefined);
-        setErrorMessage(undefined);
+        setModalConfig(null);
     };
 
     return (
         <ModalContext.Provider value={{ openModal, closeModal }}>
             {children}
-            <Modal
-                onClose={closeModal}
-                title={title}
-                Content={content}
-                errorMessage={errorMessage}
-                data={modalData}
-                buttonBackgroundColor={buttonBackgroundColor}
-            />
+            {modalConfig && (
+                <Modal
+                    onClose={closeModal}
+                    type={modalConfig?.type}
+                    title={modalConfig?.title}
+                    Content={modalConfig?.Content}
+                    data={modalConfig?.data}
+                    buttonBackgroundColor={modalConfig?.buttonBackgroundColor}
+                />
+            )}
         </ModalContext.Provider>
     );
 };

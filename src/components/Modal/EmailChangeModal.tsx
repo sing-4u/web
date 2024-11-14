@@ -3,7 +3,7 @@ import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import axiosInstance from "../../utils/axiosInstance";
 import { useToast } from "../../hooks/useToast";
-import { ToastContainer } from "../ToastContainer";
+import { ToastContainer } from "../../hooks/ToastContainer";
 
 const EmailChangeModal = () => {
     const {
@@ -54,9 +54,7 @@ const EmailChangeModal = () => {
                             }
                         })}
                         type="email"
-                        className={`mb-2 border-inputBorderColor rounded-lg ${getInputErrorClassName(
-                            errors.email
-                        )}`}
+                        className={`${getInputErrorClassName(errors.email)}`}
                         placeholder="이메일 입력"
                     />
                     {errors.email ? (
@@ -80,7 +78,7 @@ const EmailChangeModal = () => {
                             }
                         })}
                         type={passwordState.type}
-                        className={`w-full border-inputBorderColor rounded-lg ${getInputErrorClassName(
+                        className={`w-full ${getInputErrorClassName(
                             errors.password
                         )}`}
                         placeholder="비밀번호를 입력해주세요."
@@ -109,6 +107,7 @@ const EmailChangeModal = () => {
             >
                 변경하기
             </button>
+
             <ToastContainer toasts={toasts} />
         </form>
     );

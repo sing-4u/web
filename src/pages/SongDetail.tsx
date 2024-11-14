@@ -13,6 +13,7 @@ import SongRequestFailModal from "../components/Modal/SongRequestFailModal";
 import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal";
 import EmailInputModal from "../components/Modal/EmailInputModal";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { ModalType } from "../types";
 
 interface SongDetailForm {
     artist: string;
@@ -69,8 +70,9 @@ const SongDetail = () => {
         });
         if (artist && title) {
             openModal({
+                title: "신청 완료",
+                type: ModalType.SUCCESS,
                 Content: SongRequestSuccessModal,
-                errorMessage: "",
                 data: { artist, title, formId },
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
@@ -84,7 +86,11 @@ const SongDetail = () => {
                         navigate={navigate}
                         modalData={{ artist, title, formId, email }}
                     />
-                )
+                ),
+                title: "신청 실패",
+                type: ModalType.ERROR,
+                buttonBackgroundColor:
+                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
         }
     };
@@ -97,8 +103,9 @@ const SongDetail = () => {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
                     openModal({
+                        title: "신청 실패",
+                        type: ModalType.ERROR,
                         Content: SongRequestFailModal,
-                        errorMessage: "",
                         data: { artist, title, userId, email },
                         buttonBackgroundColor:
                             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"

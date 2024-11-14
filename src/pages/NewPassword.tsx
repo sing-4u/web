@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ToastContainer } from "../components/ToastContainer";
+import { ToastContainer } from "../hooks/ToastContainer";
 import { useToast } from "../hooks/useToast";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
@@ -132,7 +132,7 @@ const NewPassword = () => {
                 </div>
 
                 <button
-                    className="w-full bg-buttonBackgroundColor text-white rounded-[10px] h-[52px] "
+                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] "
                     type="submit"
                 >
                     비밀번호 변경하기
