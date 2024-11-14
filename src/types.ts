@@ -1,3 +1,5 @@
+import { ComponentType } from "react";
+
 export interface SongRequestData {
     artist: string;
     title: string;
@@ -14,4 +16,12 @@ export enum ModalType {
     DEFAULT,
     ERROR,
     SUCCESS
+}
+
+export interface ModalProps<T = unknown> {
+    title?: string;
+    type?: ModalType;
+    Content?: ComponentType<ModalContentProps<T>>;
+    data?: T;
+    buttonBackgroundColor?: string;
 }

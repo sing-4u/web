@@ -1,27 +1,22 @@
 import CheckCircleFill from "../../assets/ic_CheckCircleFill.svg";
 import { useModal } from "../../hooks/useModal";
+import { ModalProps } from "../../types";
 
-// ReactNode 말고 unknown으로 처리하는 방법
-interface SongRequestSuccessModalProps<
-    T extends Record<string, React.ReactNode>
-> {
-    data?: T;
-    buttonBackgroundColor?: string;
-}
+interface SongRequestSuccessModalProps
+    extends ModalProps<{ artist: string; title: string; formId: string }> {}
 
-export const SongRequestSuccessModal = <
-    T extends Record<string, React.ReactNode>
->({
+export const SongRequestSuccessModal = ({
+    title,
     data,
     buttonBackgroundColor
-}: SongRequestSuccessModalProps<T>) => {
+}: SongRequestSuccessModalProps) => {
     const { closeModal } = useModal();
     if (!data) return;
     return (
         <div className="flex flex-col items-center justify-center">
             <div className="flex flex-col mb-2">
                 <img src={CheckCircleFill} alt="" />
-                <h3 className="text-[18px] font-bold">신청완료</h3>
+                <h3 className="text-[18px] font-bold">{title}</h3>
             </div>
             <div className="w-full border border-black rounded-md space-y-2 mx-2">
                 <div className="bg-colorPurple flex justify-center text-white p-3">

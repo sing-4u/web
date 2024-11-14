@@ -6,7 +6,7 @@ interface ModalProps<T> {
     onClose?: () => void;
     title?: string;
     Content?: ComponentType<ModalContentProps<T>>;
-    type: ModalType;
+    type?: ModalType;
     data?: T;
     buttonBackgroundColor?: string;
 }

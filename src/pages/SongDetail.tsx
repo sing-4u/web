@@ -22,7 +22,7 @@ interface SongDetailForm {
 
 const SongDetail = () => {
     const [searchParams] = useSearchParams();
-    const formId = searchParams.get("formId");
+    const formId = searchParams.get("formId")!;
     const navigate = useNavigate();
     const { data: userData } = useUserData();
     const profileImage = userData?.image;
