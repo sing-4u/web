@@ -8,7 +8,7 @@ import { UserData } from "../../hooks/useUserData";
 interface SongData {
     artist: string;
     title: string;
-    formId: string;
+    formId: string | null;
     userData?: UserData;
 }
 
@@ -26,13 +26,7 @@ export default function EmailInputModal<T extends SongData>({
     const [error, setError] = useState("");
     const { closeModal } = useModal();
 
-    const userData = modalData?.userData;
     const formId = modalData?.formId;
-
-    const { id } = userData ?? {
-        id: "",
-        userEmail: ""
-    };
 
     const handleClickLogin = () => {
         navigate("/login");
@@ -44,7 +38,6 @@ export default function EmailInputModal<T extends SongData>({
             setError("이메일을 입력해주세요.");
             return;
         }
-        console.log(id, "id");
         await axiosInstance().post("/songs", {
             userId: formId,
             email,
