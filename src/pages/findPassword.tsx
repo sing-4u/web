@@ -13,6 +13,8 @@ interface FormValue {
     code: string;
 }
 
+const MAX_LENGTH = 6;
+
 const FindPassword = () => {
     const navigate = useNavigate();
     const { showToast, toasts } = useToast();
@@ -96,14 +98,14 @@ const FindPassword = () => {
         <div className="w-full max-w-[376px] mx-auto">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="w-full max-w-md mx-auto p-6 space-y-4"
+                className="w-full max-w-md mx-auto p-6"
             >
                 <Navbar />
-                <div className="text-2xl font-bold text-center">
+                <div className="text-2xl font-bold text-center mt-[22px]">
                     비밀번호 찾기
                 </div>
 
-                <div className="relative flex flex-col">
+                <div className="relative flex flex-col mt-[60px]">
                     <label htmlFor="email" className="text-left mb-2">
                         이메일
                     </label>
@@ -117,7 +119,9 @@ const FindPassword = () => {
                             }
                         })}
                         placeholder="가입한 이메일 주소"
-                        className={getInputErrorClassName(errors.email)}
+                        className={`mb-[22px] ${getInputErrorClassName(
+                            errors.email
+                        )}`}
                     />
                     {errors.email && (
                         <span className="text-red-500 text-sm">
@@ -130,7 +134,7 @@ const FindPassword = () => {
                         className={`absolute inset-y-11 end-3 cursor-pointer text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
                                 isEmailValid
-                                    ? "bg-black text-white hover:text-gray-400"
+                                    ? "bg-black text-textColor hover:text-gray-400"
                                     : "bg-customGray text-textColor"
                             }`}
                         onClick={handleAuthenticationCodeClick}
@@ -154,9 +158,13 @@ const FindPassword = () => {
                         id="code"
                         type="text"
                         {...register("code", {
-                            required: "인증번호는 필수입니다"
+                            required: "인증번호는 필수입니다",
+                            maxLength: {
+                                value: MAX_LENGTH,
+                                message: `인증번호는 ${MAX_LENGTH}자리로 입력해주세요.`
+                            }
                         })}
-                        placeholder="인증번호"
+                        placeholder="인증번호 6자리 입력"
                         className={getInputErrorClassName(errors.code)}
                     />
                     {errors.code && (
@@ -172,7 +180,7 @@ const FindPassword = () => {
                     )}
                 </div>
                 <button
-                    className="w-full bg-colorPurple text-textColor rounded-[10px] h-[52px]"
+                    className="w-full bg-colorPurple text-textColor rounded-[10px] h-[52px] mt-10"
                     type="submit"
                 >
                     다음
