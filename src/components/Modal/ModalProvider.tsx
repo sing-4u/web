@@ -1,10 +1,10 @@
 import { createContext, useState, ReactNode, ComponentType } from "react";
 // import MainModal from "./MainModal";
 import Modal from "./Modal";
-import { ModalContentProps, ModalProps } from "../../types";
+import { BaseModalProps, ModalContentProps } from "../../types";
 
 export interface ModalContextProps {
-    openModal: <T>(config: ModalProps<T>) => void;
+    openModal: <T>(config: BaseModalProps<T>) => void;
 
     closeModal: () => void;
 }
@@ -14,9 +14,8 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
 );
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-    const [modalConfig, setModalConfig] = useState<ModalProps<unknown> | null>(
-        null
-    );
+    const [modalConfig, setModalConfig] =
+        useState<BaseModalProps<unknown> | null>(null);
 
     const openModal = <T,>({
         type,
@@ -24,7 +23,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         Content,
         data,
         buttonBackgroundColor
-    }: ModalProps<T>) => {
+    }: BaseModalProps<T>) => {
         setModalConfig({
             type,
             title,

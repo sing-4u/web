@@ -1,14 +1,8 @@
-import { ComponentType } from "react";
-import { ModalContentProps, ModalType } from "../../types";
+import { BaseModalProps, ModalType } from "../../types";
 import CloseButton from "../../../src/assets/btn_close.svg";
 
-interface ModalProps<T> {
+interface ModalExtendedProps<T> extends BaseModalProps<T> {
     onClose?: () => void;
-    title?: string;
-    Content?: ComponentType<ModalContentProps<T>>;
-    type?: ModalType;
-    data?: T;
-    buttonBackgroundColor?: string;
 }
 
 export const Modal = <T,>({
@@ -18,7 +12,7 @@ export const Modal = <T,>({
     data,
     type,
     buttonBackgroundColor
-}: ModalProps<T>) => {
+}: ModalExtendedProps<T>) => {
     if (!Content) return null;
 
     const buttonClassName = `w-full py-3 ${buttonBackgroundColor} text-textColor rounded-lg mt-4`;

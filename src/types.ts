@@ -18,7 +18,7 @@ export enum ModalType {
     SUCCESS
 }
 
-export interface ModalProps<T = unknown> {
+export interface BaseModalProps<T = unknown> {
     title?: string;
     type?: ModalType;
     Content?: ComponentType<ModalContentProps<T>>;
