@@ -54,7 +54,7 @@ export const Modal = <T,>({
                     />
 
                     {(type === ModalType.ERROR ||
-                        type === ModalType.DEFAULT) && (
+                        type === ModalType.SUCCESS) && (
                         <button onClick={onClose} className={buttonClassName}>
                             확인
                         </button>
