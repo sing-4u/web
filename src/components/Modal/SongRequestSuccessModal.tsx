@@ -1,9 +1,9 @@
 import CheckCircleFill from "../../assets/ic_CheckCircleFill.svg";
 import { useModal } from "../../hooks/useModal";
-import { ModalProps } from "../../types";
+import { BaseModalProps } from "../../types";
 
 interface SongRequestSuccessModalProps
-    extends ModalProps<{ artist: string; title: string; formId: string }> {}
+    extends BaseModalProps<{ artist: string; title: string; formId: string }> {}
 
 export const SongRequestSuccessModal = ({
     title,
