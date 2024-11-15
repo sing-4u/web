@@ -9,8 +9,11 @@ import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
 import { ModalProvider } from "./components/Modal/ModalProvider";
 import NewPassword from "./pages/NewPassword";
-import FindPassword from "./pages/findPassword";
 import Mypage from "./pages/Mypage";
+import ManageSong from "./pages/ManageSong";
+
+import SongDetail from "./pages/SongDetail";
+import FindPassword from "./pages/findPassword";
 
 const queryClient = new QueryClient();
 
@@ -40,8 +43,16 @@ const router = createBrowserRouter([
         element: <NewPassword />
     },
     {
-        path: "mypage",
+        path: "/mypage",
         element: <Mypage />
+    },
+    {
+        path: "/manage-song",
+        element: <ManageSong />
+    },
+    {
+        path: "/song-detail",
+        element: <SongDetail />
     }
 ]);
 

@@ -5,7 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 
-const EmailModalContent = () => {
+const EmailChangeModal = () => {
     const {
         register,
         handleSubmit,
@@ -35,7 +35,10 @@ const EmailModalContent = () => {
         usePasswordToggle();
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-y-4 rounded-[10px]"
+        >
             <div>
                 <label className="mb-2 block text-sm font-medium text-gray-700">
                     이메일
@@ -51,10 +54,8 @@ const EmailModalContent = () => {
                             }
                         })}
                         type="email"
-                        className={`mb-2 ${getInputErrorClassName(
-                            errors.email
-                        )}`}
-                        placeholder="이메일을 입력해주세요."
+                        className={`${getInputErrorClassName(errors.email)}`}
+                        placeholder="이메일 입력"
                     />
                     {errors.email ? (
                         <p className="text-red-500">{errors.email.message}</p>
@@ -77,7 +78,7 @@ const EmailModalContent = () => {
                             }
                         })}
                         type={passwordState.type}
-                        className={`pr-10 w-full ${getInputErrorClassName(
+                        className={`w-full ${getInputErrorClassName(
                             errors.password
                         )}`}
                         placeholder="비밀번호를 입력해주세요."
@@ -102,13 +103,14 @@ const EmailModalContent = () => {
 
             <button
                 type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium  bg-colorPurple text-white hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
                 변경하기
             </button>
+
             <ToastContainer toasts={toasts} />
         </form>
     );
 };
 
-export default EmailModalContent;
+export default EmailChangeModal;

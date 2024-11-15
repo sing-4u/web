@@ -41,7 +41,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
   const inputClass =
     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
   const changeButtonClass =
-    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
+    "bg-customGray absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
 
   return (
     <div className="flex flex-col gap-y-2">
@@ -59,7 +59,9 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
         />
         <button
           type="button"
-          className={changeButtonClass}
+          className={`${changeButtonClass} ${
+            isEditing ? "bg-gray-800" : "bg-customGray"
+          }`}
           onClick={handleNameChange}
         >
           {isEditing ? "완료" : "수정"}

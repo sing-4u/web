@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import SearchIcon from "../src/assets/ic_Search.svg";
 import Card from "../src/assets/card.svg";
 import Navbar from "./components/Navbar";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+    const navigate = useNavigate();
     const [items, setItems] = useState(Array(10).fill(0));
     const [loading, setLoading] = useState(false);
     const loaderRef = useRef(null);
@@ -42,6 +44,10 @@ export default function Home() {
         };
     }, []);
 
+    const handleSongDetailClick = () => {
+        navigate("/song-detail");
+    };
+
     return (
         <div className="w-full max-w-md mx-auto p-6 space-y-4">
             <div className="flex justify-between">
@@ -63,11 +69,14 @@ export default function Home() {
                 {items.map((_, index) => (
                     <div key={index} className="flex flex-col">
                         <div className="relative rounded-[20px] p-[5px] bg-gradient-to-br from-yellow-200 via-pink-200 to-blue-200 flex flex-col justify-center">
-                            <div className="relative">
+                            <div
+                                className="relative aspect-square"
+                                onClick={handleSongDetailClick}
+                            >
                                 <img
                                     src={Card}
                                     alt={`Card ${index + 1}`}
-                                    className="w-full h-auto hover:cursor-pointer rounded-[16px]"
+                                    className="w-full h-full hover:cursor-pointer rounded-[16px] object-cover"
                                 />
                                 {isReceipted && (
                                     <div className="absolute top-2 left-2 bg-yellow-300 text-xs font-bold py-1 px-2 rounded-md border border-black">
@@ -88,7 +97,7 @@ export default function Home() {
                     <p>Loading...</p>
                 ) : (
                     <button
-                        className="w-full bg-black text-white rounded-[10px] h-[52px] font-Pretendard"
+                        className="w-full bg-black text-white rounded-[10px] h-[52px]"
                         onClick={loadMoreItems}
                     >
                         더보기
