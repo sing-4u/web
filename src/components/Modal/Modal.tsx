@@ -20,6 +20,7 @@ export const Modal = <T,>({
     const onClickModal = (event: React.MouseEvent<HTMLElement>) => {
         if (event.target === event.currentTarget) onClose?.();
     };
+
     return (
         <div
             className="fixed inset-0 bg-transparent p-0"
@@ -52,12 +53,8 @@ export const Modal = <T,>({
                         buttonBackgroundColor={buttonBackgroundColor}
                     />
 
-                    {type === ModalType.ERROR && (
-                        <button onClick={onClose} className={buttonClassName}>
-                            확인
-                        </button>
-                    )}
-                    {type === ModalType.DEFAULT && (
+                    {(type === ModalType.ERROR ||
+                        type === ModalType.DEFAULT) && (
                         <button onClick={onClose} className={buttonClassName}>
                             확인
                         </button>
