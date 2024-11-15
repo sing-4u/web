@@ -46,7 +46,7 @@ const Join = () => {
         register,
         handleSubmit,
         watch,
-
+        setError,
         formState: { errors }
     } = useForm<FormValues>();
 
@@ -165,7 +165,11 @@ const Join = () => {
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
-                    return;
+                    // return;
+                    setError("email", {
+                        type: "manual",
+                        message: "이미 존재하는 이메일입니다."
+                    });
                 }
             }
             if (e instanceof Error) throw new Error(e.message);
