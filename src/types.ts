@@ -9,7 +9,7 @@ export interface ModalContentProps<T> {
     title?: string;
     errorMessage?: string;
     data?: T;
-    buttonBackgroundColor?: string;
+    buttonBackgroundColor: string;
 }
 
 export enum ModalType {
@@ -23,5 +23,5 @@ export interface BaseModalProps<T = unknown> {
     type?: ModalType;
     Content?: ComponentType<ModalContentProps<T>>;
     data?: T;
-    buttonBackgroundColor?: string;
+    buttonBackgroundColor: string;
 }
