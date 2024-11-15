@@ -107,7 +107,7 @@ const Mypage = () => {
             title: "이메일 변경",
             Content: EmailChangeModal,
             type: ModalType.DEFAULT,
-            buttonBackgroundColor: "#7846dd"
+            buttonBackgroundColor: "bg-[#7846dd]"
         });
     };
 
@@ -116,7 +116,7 @@ const Mypage = () => {
             title: "비밀번호 변경",
             Content: PasswordChangeModal,
             type: ModalType.DEFAULT,
-            buttonBackgroundColor: "#7846dd"
+            buttonBackgroundColor: "bg-[#7846dd]"
         });
     };
 
