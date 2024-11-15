@@ -34,7 +34,7 @@ export const Modal = <T,>({
             <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 <dialog
-                    className="bg-white p-6 rounded-lg w-[328px] relative"
+                    className="bg-white p-10 rounded-lg w-[460px] relative"
                     open
                 >
                     <div
@@ -44,7 +44,7 @@ export const Modal = <T,>({
                                 : "justify-between"
                         } items-center mb-4`}
                     >
-                        <h2 className="text-lg font-bold">{title}</h2>
+                        <h2 className="text-2xl font-bold">{title}</h2>
                         {/* 성공도 실패도 아닐 경우(이메일 변경 모달, 비밀번호 변경 모달) */}
                         {type === ModalType.DEFAULT && (
                             <button onClick={onClose}>
