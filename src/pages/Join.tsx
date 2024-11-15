@@ -365,7 +365,7 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="w-full bg-[#7846dd] text-white rounded-lg h-[48px] text-sm mt-8"
+                        className="w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8"
                         type="submit"
                     >
                         회원가입
