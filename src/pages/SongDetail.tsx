@@ -22,7 +22,7 @@ interface SongDetailForm {
 
 const SongDetail = () => {
     const [searchParams] = useSearchParams();
-    const formId = searchParams.get("formId")!;
+    const formId = searchParams.get("id");
     const navigate = useNavigate();
     const { data: userData } = useUserData();
     const profileImage = userData?.image;
@@ -58,22 +58,20 @@ const SongDetail = () => {
 
     const handlePostSong = async () => {
         const { artist, title } = getValues();
-        const { email } = userData ?? {
-            email: ""
-        };
+        const { email } = userData ?? { email: "" };
 
-        await axiosInstance().post("/songs", {
-            userId: formId,
-            email,
-            artist,
-            title
-        });
-        if (artist && title) {
+        if (isLoggedIn && artist && title) {
+            await axiosInstance().post("/songs", {
+                userId: formId,
+                email,
+                artist,
+                title
+            });
             openModal({
                 title: "신청 완료",
                 type: ModalType.SUCCESS,
                 Content: SongRequestSuccessModal,
-                data: { artist, title, formId },
+                data: { artist, title, formId, email },
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
@@ -84,11 +82,11 @@ const SongDetail = () => {
                     <EmailInputModal
                         {...props}
                         navigate={navigate}
-                        modalData={{ artist, title, formId, email }}
+                        modalData={{ artist, title, formId, userData }}
                     />
                 ),
-                title: "신청 실패",
-                type: ModalType.ERROR,
+                title: "싱포유 회원이시면",
+                type: ModalType.DEFAULT,
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });

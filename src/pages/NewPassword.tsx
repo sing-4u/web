@@ -1,11 +1,12 @@
 import axios from "axios";
-import { ToastContainer } from "../hooks/ToastContainer";
 import { useToast } from "../hooks/useToast";
 import { useForm } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import getInputErrorClassName from "../utils/className";
 import axiosInstance from "../utils/axiosInstance";
+import { ToastContainer } from "../components/ToastContainer";
+import Navbar from "../components/Navbar";
 
 interface PasswordProps {
     newPassword: string;
@@ -54,23 +55,25 @@ const NewPassword = () => {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="w-full max-w-md mx-auto p-6 space-y-4"
+            className="w-full max-w-[376px] mx-auto p-6"
         >
-            <div className="w-full max-w-md mx-auto p-6 space-y-4">
-                <div className="flex">로고</div>
-                <div className="text-2xl font-bold text-center">
-                    비밀번호 찾기
+            <Navbar />
+            <div className="">
+                <div className="text-2xl font-bold text-center mt-[22px]">
+                    비밀번호 재설정
                 </div>
 
-                <div className="relative flex flex-col">
-                    <label htmlFor="newPassword" className="text-left  mb-2">
+                <div className="relative flex flex-col mt-[60px]">
+                    <label htmlFor="newPassword" className="text-left mb-2">
                         새 비밀번호
                     </label>
                     <input
                         type={newPassword.type}
                         id="newPassword"
                         placeholder="새 비밀번호"
-                        className={getInputErrorClassName(errors.newPassword)}
+                        className={`mb-[22px] ${getInputErrorClassName(
+                            errors.newPassword
+                        )}`}
                         {...register("newPassword", {
                             required: "비밀번호를 입력해주세요",
                             pattern: {
@@ -95,10 +98,7 @@ const NewPassword = () => {
                     </span>
                 </div>
                 <div className="relative flex flex-col">
-                    <label
-                        htmlFor="confirmPassword"
-                        className="text-left  mb-2"
-                    >
+                    <label htmlFor="confirmPassword" className="text-left mb-2">
                         새 비밀번호 확인
                     </label>
                     <input
@@ -132,7 +132,7 @@ const NewPassword = () => {
                 </div>
 
                 <button
-                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] "
+                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10"
                     type="submit"
                 >
                     비밀번호 변경하기
