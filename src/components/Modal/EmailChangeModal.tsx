@@ -3,7 +3,7 @@ import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import axiosInstance from "../../utils/axiosInstance";
 import { useToast } from "../../hooks/useToast";
-import { ToastContainer } from "../../hooks/ToastContainer";
+import { ToastContainer } from "../ToastContainer";
 
 const EmailChangeModal = () => {
     const {
