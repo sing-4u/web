@@ -115,7 +115,7 @@ const SongDetail = () => {
     };
 
     const inputLabelClass =
-        "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
+        "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2";
 
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
@@ -154,13 +154,13 @@ const SongDetail = () => {
                     accept="image/*"
                     className="hidden"
                 />
-                <div className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
+                {/* <div className="w-[90px] h-[16px] font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
                     이미지삭제
-                </div>
-                <span className="font-bold text-lg">{userData?.name}</span>
+                </div> */}
+                <span className="font-bold text-lg mt-4">{userData?.name}</span>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col space-y-6"
+                    className="flex flex-col mt-[22px]"
                 >
                     <div className="flex flex-col gap-1">
                         <label htmlFor="가수" className={inputLabelClass}>
@@ -169,7 +169,7 @@ const SongDetail = () => {
                         <input
                             type="text"
                             placeholder="가수이름"
-                            className={`rounded-md px-4 h-[48px] text-sm ${getInputErrorClassName(
+                            className={`rounded-md px-4 h-[48px] text-sm mb-11 ${getInputErrorClassName(
                                 errors.artist
                             )}`}
                             {...register("artist", {
@@ -202,7 +202,7 @@ const SongDetail = () => {
                             </span>
                         )}
                     </div>
-                    <div className="flex justify-center items-center gap-2">
+                    <div className="flex justify-center items-center gap-2 my-[22px]">
                         <img src={TriangleFill} alt="warning" />
                         <span className="font-pretendard text-sm">
                             제출 후 수정이 불가능합니다.
