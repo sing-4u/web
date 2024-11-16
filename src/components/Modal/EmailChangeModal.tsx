@@ -5,6 +5,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
+import { useState } from "react";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -21,16 +22,22 @@ const EmailChangeModal = ({
         }
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const { showToast, toasts } = useToast();
 
     const onSubmit = async (data: { email: string; password: string }) => {
         const { email, password } = data;
 
         try {
-            axiosInstance().patch("/users/me/email", { email, password });
+            setIsLoading(true);
+            await axiosInstance().patch("/users/me/email", { email, password });
+
             showToast("success", "이메일 변경 완료");
         } catch {
             // error handling
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -97,6 +104,7 @@ const EmailChangeModal = ({
 
                             <button
                                 type="button"
+                                disabled={isLoading}
                                 className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
                                 onClick={handleToggle}
                             >
@@ -115,7 +123,7 @@ const EmailChangeModal = ({
                 type="submit"
                 className={`mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium  ${buttonBackgroundColor} text-white hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
             >
-                변경하기
+                {isLoading ? "변경 중" : "변경하기"}
             </button>
 
             <ToastContainer toasts={toasts} />
