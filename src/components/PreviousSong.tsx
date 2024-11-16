@@ -19,8 +19,9 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
   openPreviousSongs,
   setOpenPreviousSongs,
 }) => {
-  const { data: previousSongDetails } = useSongListId(list.id.toString());
+  const { data: previousSongDetails } = useSongListId(list.id.toString(), 5000);
   const [visibleSongs, setVisibleSongs] = useState(5);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
 
   const sortedPreviousSongDetails =
     previousSongDetails?.sort(

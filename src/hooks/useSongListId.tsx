@@ -13,11 +13,12 @@ const fetchSongListId = async (songListId: string) => {
   return response.data;
 };
 
-export const useSongListId = (songListId: string) => {
+export const useSongListId = (songListId: string, refetchInterval: number) => {
   return useQuery({
     queryKey: ["songListId", songListId],
     queryFn: () => fetchSongListId(songListId),
     enabled: !!songListId,
     retry: false,
+    refetchInterval,
   });
 };
