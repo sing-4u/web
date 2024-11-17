@@ -7,6 +7,7 @@ import getInputErrorClassName from "../utils/className";
 import axiosInstance from "../utils/axiosInstance";
 import { ToastContainer } from "../components/ToastContainer";
 import Navbar from "../components/Navbar";
+import { useTitle } from "../utils/useTitle";
 
 interface PasswordProps {
     newPassword: string;
@@ -14,6 +15,11 @@ interface PasswordProps {
 }
 
 const NewPassword = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("새 비밀번호 설정");
+    }, 100);
     const { state } = useLocation();
     const { accessToken } = state;
     const { showToast, toasts } = useToast();

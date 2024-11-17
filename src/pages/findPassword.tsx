@@ -7,6 +7,10 @@ import { useEffect, useState } from "react";
 import getInputErrorClassName from "../utils/className";
 import { ToastContainer } from "../components/ToastContainer";
 import Navbar from "../components/Navbar";
+import { useModal } from "../hooks/useModal";
+import SNSModalContent from "../components/Modal/SNSModal";
+import { ModalType } from "../types";
+import { useTitle } from "../utils/useTitle";
 
 interface FormValue {
     email: string;
@@ -16,6 +20,12 @@ interface FormValue {
 const MAX_LENGTH = 6;
 
 const FindPassword = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("비밀번호 찾기");
+    }, 100);
+
     const navigate = useNavigate();
     const { showToast, toasts } = useToast();
     const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
@@ -24,8 +34,11 @@ const FindPassword = () => {
         register,
         handleSubmit,
         watch,
+        setError,
         formState: { errors, dirtyFields }
     } = useForm<FormValue>();
+
+    const { openModal } = useModal();
 
     const isEmailValid = dirtyFields.email && !errors.email;
 
@@ -64,6 +77,15 @@ const FindPassword = () => {
     const handleAuthenticationCodeClick = async () => {
         const email = watch("email");
         if (timeLeft === 0) return;
+        if (isEmailFromGoogleDomain(email)) {
+            openModal({
+                title: "SNS로 간편 가입된 계정입니다.",
+                Content: SNSModalContent,
+                type: ModalType.ERROR,
+                buttonBackgroundColor: "#7846dd"
+            });
+            return;
+        }
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/get-email-code`,
@@ -71,6 +93,7 @@ const FindPassword = () => {
                     email
                 }
             );
+
             showToast("success", "인증 번호가 전송되었습니다.");
             setIsAuthenticationCodeRequested(true);
             setTimeLeft(MINUTES_IN_MS);
@@ -79,17 +102,26 @@ const FindPassword = () => {
         }
     };
 
+    const isEmailFromGoogleDomain = (email: string): boolean =>
+        ["gmail.com", "googlemail.com"].includes(
+            email.split("@")[1].toLowerCase()
+        );
+
     const onSubmit = async ({ email, code }: FormValue) => {
         try {
             const res = await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/verify-email-code`,
                 { email, code }
             );
+
             const { data: accessToken } = res;
             navigate("/new-password", { state: accessToken });
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
-                showToast("error", "인증 번호가 일치하지 않습니다.");
+                setError("code", {
+                    type: "manual",
+                    message: "인증 번호가 일치하지 않습니다."
+                });
             }
         }
     };
