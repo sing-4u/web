@@ -1,16 +1,10 @@
 import { createContext, useState, ReactNode, ComponentType } from "react";
 // import MainModal from "./MainModal";
 import Modal from "./Modal";
-import { ModalContentProps, ModalType } from "../../types";
+import { BaseModalProps, ModalContentProps } from "../../types";
 
-interface ModalContextProps {
-    openModal: <T>(config: {
-        type: ModalType;
-        title?: string;
-        Content: ComponentType<ModalContentProps<T>>;
-        data?: T;
-        buttonBackgroundColor: string;
-    }) => void;
+export interface ModalContextProps {
+    openModal: <T>(config: BaseModalProps<T>) => void;
 
     closeModal: () => void;
 }
@@ -20,13 +14,8 @@ export const ModalContext = createContext<ModalContextProps | undefined>(
 );
 
 export const ModalProvider = ({ children }: { children: ReactNode }) => {
-    const [modalConfig, setModalConfig] = useState<{
-        type: ModalType;
-        title?: string;
-        Content: ComponentType<ModalContentProps<unknown>>;
-        data?: unknown;
-        buttonBackgroundColor?: string;
-    } | null>(null);
+    const [modalConfig, setModalConfig] =
+        useState<BaseModalProps<unknown> | null>(null);
 
     const openModal = <T,>({
         type,
@@ -34,17 +23,11 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         Content,
         data,
         buttonBackgroundColor
-    }: {
-        type: ModalType;
-        title?: string;
-        Content: ComponentType<ModalContentProps<T>>;
-        data?: T;
-        buttonBackgroundColor: string;
-    }) => {
+    }: BaseModalProps<T>) => {
         setModalConfig({
             type,
             title,
-            Content: Content as ComponentType<ModalContentProps<unknown>>,
+            Content: Content as ComponentType<ModalContentProps<unknown>>, // Content는 ComponentType<ModalContentProps<unknown>>로 변환
             data,
             buttonBackgroundColor
         });

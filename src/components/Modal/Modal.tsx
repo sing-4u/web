@@ -1,14 +1,8 @@
-import { ComponentType } from "react";
-import { ModalContentProps, ModalType } from "../../types";
+import { BaseModalProps, ModalType } from "../../types";
 import CloseButton from "../../../src/assets/btn_close.svg";
 
-interface ModalProps<T> {
+interface ModalExtendedProps<T> extends BaseModalProps<T> {
     onClose?: () => void;
-    title?: string;
-    Content?: ComponentType<ModalContentProps<T>>;
-    type: ModalType;
-    data?: T;
-    buttonBackgroundColor?: string;
 }
 
 export const Modal = <T,>({
@@ -18,7 +12,7 @@ export const Modal = <T,>({
     data,
     type,
     buttonBackgroundColor
-}: ModalProps<T>) => {
+}: ModalExtendedProps<T>) => {
     if (!Content) return null;
 
     const buttonClassName = `w-full py-3 ${buttonBackgroundColor} text-textColor rounded-lg mt-4`;
@@ -26,6 +20,7 @@ export const Modal = <T,>({
     const onClickModal = (event: React.MouseEvent<HTMLElement>) => {
         if (event.target === event.currentTarget) onClose?.();
     };
+
     return (
         <div
             className="fixed inset-0 bg-transparent p-0"
@@ -58,12 +53,8 @@ export const Modal = <T,>({
                         buttonBackgroundColor={buttonBackgroundColor}
                     />
 
-                    {type === ModalType.ERROR && (
-                        <button onClick={onClose} className={buttonClassName}>
-                            확인
-                        </button>
-                    )}
-                    {type === ModalType.DEFAULT && (
+                    {(type === ModalType.ERROR ||
+                        type === ModalType.SUCCESS) && (
                         <button onClick={onClose} className={buttonClassName}>
                             확인
                         </button>
