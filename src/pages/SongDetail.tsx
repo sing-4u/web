@@ -14,6 +14,7 @@ import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal
 import EmailInputModal from "../components/Modal/EmailInputModal";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ModalType } from "../types";
+import { useTitle } from "../utils/useTitle";
 
 interface SongDetailForm {
     artist: string;
@@ -21,6 +22,12 @@ interface SongDetailForm {
 }
 
 const SongDetail = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("신청곡 상세");
+    }, 100);
+
     const [searchParams] = useSearchParams();
     const formId = searchParams.get("id");
     const navigate = useNavigate();

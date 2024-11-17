@@ -14,6 +14,8 @@ import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../assets/logo.svg";
 import { ToastContainer } from "../components/ToastContainer";
+import { useTitle } from "../utils/useTitle";
+
 interface FormValues {
     name: string;
     email: string;
@@ -28,6 +30,12 @@ interface CheckboxState {
 }
 
 const Join = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("회원가입");
+    }, 100);
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";

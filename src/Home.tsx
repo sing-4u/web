@@ -3,6 +3,7 @@ import SearchIcon from "../src/assets/ic_Search.svg";
 import Card from "../src/assets/card.svg";
 import Navbar from "./components/Navbar";
 import { useNavigate } from "react-router-dom";
+import { useTitle } from "./utils/useTitle";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -20,6 +21,12 @@ export default function Home() {
             setLoading(false);
         }, 1000);
     };
+
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("홈");
+    }, 100);
 
     useEffect(() => {
         const observer = new IntersectionObserver(

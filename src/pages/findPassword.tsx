@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar";
 import { useModal } from "../hooks/useModal";
 import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
+import { useTitle } from "../utils/useTitle";
 
 interface FormValue {
     email: string;
@@ -19,6 +20,12 @@ interface FormValue {
 const MAX_LENGTH = 6;
 
 const FindPassword = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("비밀번호 찾기");
+    }, 100);
+
     const navigate = useNavigate();
     const { showToast, toasts } = useToast();
     const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
