@@ -83,7 +83,7 @@ export default function Home() {
                                 <img
                                     src={Card}
                                     alt={`Card ${index + 1}`}
-                                    className="w-full h-full hover:cursor-pointer rounded-[16px] object-cover"
+                                    className="w-full h-full hover:cursor-pointer rounded-2xl object-cover"
                                 />
                                 {isReceipted && (
                                     <div className="absolute top-2 left-2 bg-yellow-300 text-xs font-bold py-1 px-2 rounded-md border border-black">
