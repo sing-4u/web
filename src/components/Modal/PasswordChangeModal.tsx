@@ -69,6 +69,7 @@ const PasswordChangeModal = ({
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-4 rounded-[10px]"
         >
+            <ToastContainer toasts={toasts} />
             <div>
                 <label className="mb-2 block text-sm text-gray-700">
                     현재 비밀번호
@@ -205,7 +206,6 @@ const PasswordChangeModal = ({
             >
                 {isLoading ? "변경 중" : "변경하기"}
             </button>
-            <ToastContainer toasts={toasts} />
         </form>
     );
 };

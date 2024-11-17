@@ -49,6 +49,7 @@ const EmailChangeModal = ({
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-4 rounded-[10px]"
         >
+            <ToastContainer toasts={toasts} />
             <div>
                 <label className="block *:text-sm text-gray-700">
                     새 이메일
@@ -125,8 +126,6 @@ const EmailChangeModal = ({
             >
                 {isLoading ? "변경 중" : "변경하기"}
             </button>
-
-            <ToastContainer toasts={toasts} />
         </form>
     );
 };

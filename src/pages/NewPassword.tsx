@@ -63,6 +63,7 @@ const NewPassword = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="w-full max-w-[376px] mx-auto p-6"
         >
+            <ToastContainer toasts={toasts} />
             <Navbar />
             <div className="">
                 <div className="text-2xl font-bold text-center mt-[22px]">
@@ -143,7 +144,6 @@ const NewPassword = () => {
                 >
                     비밀번호 변경하기
                 </button>
-                <ToastContainer toasts={toasts} />
             </div>
         </form>
     );
