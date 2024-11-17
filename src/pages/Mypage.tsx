@@ -29,8 +29,8 @@ const Mypage = () => {
 
   const handleLogout = () => {
     logout();
+    localStorage.removeItem("accessToken");
     refetch();
-    navigate("/");
   };
 
   const { openModal } = useModal();

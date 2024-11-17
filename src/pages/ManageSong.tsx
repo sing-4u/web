@@ -13,13 +13,11 @@ import ChevronUp from "../components/ChevronUp";
 import axiosInstance from "../utils/axiosInstance";
 import PreviousSongList from "../components/PreviousSong";
 import PullToRefreshComponent from "../components/PullToRefresh";
+import { NonListNow, NonListPrevious } from "../components/NonListMessage";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
   const [userId, setUserId] = useState("");
-
-  const refetchInterval = 10000;
-
   const { data: userData } = useUserData();
   const profileImage = userData?.image;
   const nickname = userData?.name;
@@ -46,7 +44,7 @@ const ManageSong = () => {
   const endReceivingMutation = useEndReceiving();
   const { data: songList } = useSongList(true);
   const songListId = songList?.[0]?.id;
-  const { data: songListDetails } = useSongListId(songListId, refetchInterval);
+  const { data: songListDetails } = useSongListId(songListId);
 
   useEffect(() => {
     if (isReceivingOpen) {
@@ -98,9 +96,14 @@ const ManageSong = () => {
   };
 
   const handleRefresh = async () => {
-    await queryClient.invalidateQueries({
-      queryKey: ["userData", "songList", "songListId"],
-    });
+    try {
+      await queryClient.invalidateQueries({
+        queryKey: ["userData", "songList", "songListId"],
+      });
+      console.log("새로고침 완료");
+    } catch (error) {
+      console.error("새로고침 중 오류 발생:", error);
+    }
   };
 
   const handleShowMoreSongs = () => {
@@ -233,19 +236,11 @@ const ManageSong = () => {
             )}
           </div>
         ) : (
-          <div className="relative border-2 border-solid rounded-[8px] mt-6">
-            <div className="p-3 w-[327px] h-[178px] font-semibold text-[18px] leading-[21.48px]">
-              현재 신청 곡 순위
-              <div className="flex absolute top-[55px] left-[20px] justify-center items-center text-center w-[287px] h-[97px] text-[12px] leading-[16px] border-2 opacity-50">
-                신청곡 게시물이 없습니다.
-                <br /> 신청곡을 받아보세요
-              </div>
-            </div>
-          </div>
+          <NonListNow />
         )}
-        {previousSongLists?.length > 0 && (
+        {previousSongLists?.length > 0 ? (
           <div className="w-[327px] mt-4 flex flex-col justify-center items-center mb-10">
-            {previousSongLists?.map(
+            {previousSongLists.map(
               (
                 list: {
                   id: number;
@@ -255,7 +250,7 @@ const ManageSong = () => {
                 idx: number
               ) => (
                 <PreviousSongList
-                  key={list?.id?.toString()}
+                  key={list.id.toString()}
                   list={list}
                   idx={idx}
                   openPreviousSongs={openPreviousSongs}
@@ -264,6 +259,8 @@ const ManageSong = () => {
               )
             )}
           </div>
+        ) : (
+          <NonListPrevious />
         )}
       </div>
     </PullToRefreshComponent>
