@@ -6,6 +6,7 @@ import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
 import { useState } from "react";
+import { useModal } from "../../hooks/useModal";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -22,6 +23,8 @@ const EmailChangeModal = ({
         }
     });
 
+    const { closeModal } = useModal();
+
     const [isLoading, setIsLoading] = useState(false);
 
     const { showToast, toasts } = useToast();
@@ -34,6 +37,7 @@ const EmailChangeModal = ({
             await axiosInstance().patch("/users/me/email", { email, password });
 
             showToast("success", "이메일 변경 완료");
+            closeModal();
         } catch {
             // error handling
         } finally {

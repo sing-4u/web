@@ -6,6 +6,7 @@ import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
 import { useState } from "react";
+import { useModal } from "../../hooks/useModal";
 
 const PasswordChangeModal = ({
     buttonBackgroundColor
@@ -18,6 +19,8 @@ const PasswordChangeModal = ({
     } = useForm({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
+
+    const { closeModal } = useModal();
 
     const [isLoading, setIsLoading] = useState(false);
 
@@ -39,6 +42,7 @@ const PasswordChangeModal = ({
                 newPassword
             });
             showToast("success", "비밀번호 변경 완료");
+            closeModal();
         } catch {
             // error handling
         } finally {
