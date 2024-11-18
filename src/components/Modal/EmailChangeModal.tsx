@@ -6,6 +6,7 @@ import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
 import { useState } from "react";
+import { useModal } from "../../hooks/useModal";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -22,6 +23,8 @@ const EmailChangeModal = ({
         }
     });
 
+    const { closeModal } = useModal();
+
     const [isLoading, setIsLoading] = useState(false);
 
     const { showToast, toasts } = useToast();
@@ -34,6 +37,7 @@ const EmailChangeModal = ({
             await axiosInstance().patch("/users/me/email", { email, password });
 
             showToast("success", "이메일 변경 완료");
+            closeModal();
         } catch {
             // error handling
         } finally {
@@ -49,6 +53,7 @@ const EmailChangeModal = ({
             onSubmit={handleSubmit(onSubmit)}
             className="flex flex-col gap-y-4 rounded-[10px]"
         >
+            <ToastContainer toasts={toasts} />
             <div>
                 <label className="block *:text-sm text-gray-700">
                     새 이메일
@@ -125,8 +130,6 @@ const EmailChangeModal = ({
             >
                 {isLoading ? "변경 중" : "변경하기"}
             </button>
-
-            <ToastContainer toasts={toasts} />
         </form>
     );
 };

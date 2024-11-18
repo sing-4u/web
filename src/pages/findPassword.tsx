@@ -35,12 +35,11 @@ const FindPassword = () => {
         handleSubmit,
         watch,
         setError,
-        formState: { errors, dirtyFields }
+        formState: { errors }
     } = useForm<FormValue>();
 
     const { openModal } = useModal();
-
-    const isEmailValid = dirtyFields.email && !errors.email;
+    const email = watch("email");
 
     const MINUTES_IN_MS = 3 * 60 * 1000;
     const INTERVAL = 1000;
@@ -75,8 +74,15 @@ const FindPassword = () => {
     }, [timeLeft, isAuthenticationCodeRequested]);
 
     const handleAuthenticationCodeClick = async () => {
-        const email = watch("email");
         if (timeLeft === 0) return;
+        const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        if (!emailRegex.test(email)) {
+            setError("email", {
+                type: "manual",
+                message: "이메일 형식에 맞지 않습니다."
+            });
+            return;
+        }
         if (isEmailFromGoogleDomain(email)) {
             openModal({
                 title: "SNS로 간편 가입된 계정입니다.",
@@ -86,6 +92,7 @@ const FindPassword = () => {
             });
             return;
         }
+
         try {
             await axios.post(
                 `${import.meta.env.VITE_API_URL}/auth/get-email-code`,
@@ -98,8 +105,23 @@ const FindPassword = () => {
             setIsAuthenticationCodeRequested(true);
             setTimeLeft(MINUTES_IN_MS);
         } catch (error) {
-            if (error instanceof Error) throw new Error(error.message);
+            if (axios.isAxiosError(error) && error.response?.status === 404) {
+                setError("email", {
+                    type: "manual",
+                    message:
+                        "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
+                });
+            }
         }
+    };
+
+    const handleEmailKeyPress = async (
+        event: React.KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+        return;
     };
 
     const isEmailFromGoogleDomain = (email: string): boolean =>
@@ -127,13 +149,14 @@ const FindPassword = () => {
     };
 
     return (
-        <div className="w-full max-w-[376px] mx-auto">
+        <div className="w-full max-w-[376px] mx-auto relative">
+            <ToastContainer toasts={toasts} />
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md mx-auto p-6"
             >
                 <Navbar />
-                <div className="text-2xl font-bold text-center mt-[22px]">
+                <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     비밀번호 찾기
                 </div>
 
@@ -144,28 +167,25 @@ const FindPassword = () => {
                     <input
                         id="email"
                         {...register("email", {
-                            required: "이메일은 필수입니다",
-                            pattern: {
-                                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                message: "올바른 이메일 주소를 입력해주세요"
-                            }
+                            required: "이메일은 필수입니다"
                         })}
+                        onKeyDown={handleEmailKeyPress}
                         placeholder="가입한 이메일 주소"
-                        className={`mb-[22px] ${getInputErrorClassName(
-                            errors.email
-                        )}`}
+                        className={`${
+                            errors.email ? `mb-2` : `mb-[22px]`
+                        } ${getInputErrorClassName(errors.email)}`}
                     />
                     {errors.email && (
-                        <span className="text-red-500 text-sm">
+                        <span className="text-red-500 text-sm mb-[22px]">
                             {errors.email.message}
                         </span>
                     )}
                     <button
                         type="button"
-                        disabled={!isEmailValid}
+                        disabled={!email}
                         className={`absolute inset-y-11 end-3 cursor-pointer text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
-                                isEmailValid
+                                email !== ""
                                     ? "bg-black text-textColor hover:text-gray-400"
                                     : "bg-customGray text-textColor"
                             }`}
@@ -197,7 +217,9 @@ const FindPassword = () => {
                             }
                         })}
                         placeholder="인증번호 6자리 입력"
-                        className={getInputErrorClassName(errors.code)}
+                        className={`mb-2 ${getInputErrorClassName(
+                            errors.code
+                        )}`}
                     />
                     {errors.code && (
                         <span className="text-red-500 text-sm">
@@ -218,7 +240,6 @@ const FindPassword = () => {
                     다음
                 </button>
             </form>
-            <ToastContainer toasts={toasts} />
         </div>
     );
 };

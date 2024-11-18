@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from "react";
-import SearchIcon from "../src/assets/ic_Search.svg";
-import Card from "../src/assets/card.svg";
-import Navbar from "./components/Navbar";
+import SearchIcon from "../assets/ic_Search.svg";
+import Card from "../assets/card.svg";
+import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import { useTitle } from "./utils/useTitle";
+import { useTitle } from "../utils/useTitle";
 
 export default function Home() {
     const navigate = useNavigate();
@@ -56,7 +56,7 @@ export default function Home() {
     };
 
     return (
-        <div className="w-full max-w-md mx-auto p-6 space-y-4">
+        <div className="w-full extraSmall:max-w-md lg:max-w-[1058px] mx-auto p-6 space-y-4">
             <div className="flex justify-between">
                 <Navbar />
             </div>
@@ -72,18 +72,18 @@ export default function Home() {
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
                 />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid extraSmall:grid-cols-2 gap-4 lg:mx-auto lg:grid-cols-4">
                 {items.map((_, index) => (
                     <div key={index} className="flex flex-col">
                         <div className="relative rounded-[20px] p-[5px] bg-gradient-to-br from-yellow-200 via-pink-200 to-blue-200 flex flex-col justify-center">
                             <div
-                                className="relative aspect-square"
+                                className="relative aspect-square w-full h-0 pb-[100%]"
                                 onClick={handleSongDetailClick}
                             >
                                 <img
                                     src={Card}
                                     alt={`Card ${index + 1}`}
-                                    className="w-full h-full hover:cursor-pointer rounded-[16px] object-cover"
+                                    className="absolute inset-0 w-full h-full object-cover rounded-2xl"
                                 />
                                 {isReceipted && (
                                     <div className="absolute top-2 left-2 bg-yellow-300 text-xs font-bold py-1 px-2 rounded-md border border-black">

@@ -6,7 +6,7 @@ interface ToastProps {
 
 export const ToastContainer = ({ toasts }: { toasts: ToastProps[] }) => {
     return (
-        <div className="fixed top-4 right-[40%] space-y-2 z-50">
+        <div className="fixed top-4 left-1/2 transform -translate-x-1/2 space-y-2 z-50">
             {toasts.map((toast) => (
                 <Toast key={toast.id} {...toast} />
             ))}
@@ -24,7 +24,7 @@ const Toast = ({ type, message }: ToastProps) => {
 
     return (
         <div
-            className={`p-4 rounded-md text-white shadow-lg transition animate-bounceIn ${bgColorClass}`}
+            className={`p-4 rounded-md text-white shadow-lg transition ${bgColorClass}`}
         >
             {message}
         </div>

@@ -189,6 +189,7 @@ const Join = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="extraSmall:w-96 extraSmall:mx-auto lg:mx-auto"
         >
+            <ToastContainer toasts={toasts} />
             <div className="">
                 <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
                 <div className="text-2xl font-bold text-center mb-[67px]">
@@ -384,7 +385,6 @@ const Join = () => {
                     </button>
                 </div>
             </div>
-            <ToastContainer toasts={toasts} />
         </form>
     );
 };
