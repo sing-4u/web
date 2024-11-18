@@ -115,6 +115,15 @@ const FindPassword = () => {
         }
     };
 
+    const handleEmailKeyPress = async (
+        event: React.KeyboardEvent<HTMLInputElement>
+    ) => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+        }
+        return;
+    };
+
     const isEmailFromGoogleDomain = (email: string): boolean =>
         ["gmail.com", "googlemail.com"].includes(
             email.split("@")[1].toLowerCase()
@@ -160,6 +169,7 @@ const FindPassword = () => {
                         {...register("email", {
                             required: "이메일은 필수입니다"
                         })}
+                        onKeyDown={handleEmailKeyPress}
                         placeholder="가입한 이메일 주소"
                         className={`${
                             errors.email ? `mb-2` : `mb-[22px]`
