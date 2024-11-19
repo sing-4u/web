@@ -7,6 +7,7 @@ import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
 import { useState } from "react";
 import { useModal } from "../../hooks/useModal";
+import axios from "axios";
 
 const PasswordChangeModal = ({
     buttonBackgroundColor
@@ -15,7 +16,8 @@ const PasswordChangeModal = ({
         register,
         handleSubmit,
         formState: { errors },
-        watch
+        watch,
+        setError
     } = useForm({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
@@ -43,8 +45,13 @@ const PasswordChangeModal = ({
             });
             showToast("success", "비밀번호 변경 완료");
             closeModal();
-        } catch {
-            // error handling
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                setError("oldPassword", {
+                    type: "manual",
+                    message: "현재 비밀번호가 일치하지 않습니다."
+                });
+            }
         } finally {
             setIsLoading(false);
         }
