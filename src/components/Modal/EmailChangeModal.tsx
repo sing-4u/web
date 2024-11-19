@@ -7,6 +7,7 @@ import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
 import { useState } from "react";
 import { useModal } from "../../hooks/useModal";
+import axios from "axios";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -14,7 +15,8 @@ const EmailChangeModal = ({
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        setError
     } = useForm({
         defaultValues: {
             email: "",
@@ -38,8 +40,13 @@ const EmailChangeModal = ({
 
             showToast("success", "이메일 변경 완료");
             closeModal();
-        } catch {
-            // error handling
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                setError("password", {
+                    type: "manual",
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
         } finally {
             setIsLoading(false);
         }
