@@ -16,6 +16,7 @@ import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 import { ModalType } from "../types";
 
 const Mypage = () => {
+
     const { data: userData, refetch } = useUserData();
     const [nickname, setNickname] = useState(userData?.name || "");
 
