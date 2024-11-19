@@ -1,5 +1,5 @@
 const SNSModalContent = () => {
-    return <div className="flex flex-col items-center"></div>;
+    return <div className="flex items-center"></div>;
 };
 
 export default SNSModalContent;

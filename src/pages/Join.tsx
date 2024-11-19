@@ -10,12 +10,12 @@ import GoogleIcon from "../components/GoogleIcon";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
-import { ToastContainer } from "../components/ToastContainer";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
-import { useModal } from "../hooks/useModal";
 import Logo from "../assets/logo.svg";
-import SNSModalContent from "../components/Modal/SNSModal";
+import { ToastContainer } from "../components/ToastContainer";
+import { useTitle } from "../utils/useTitle";
+
 interface FormValues {
     name: string;
     email: string;
@@ -30,6 +30,12 @@ interface CheckboxState {
 }
 
 const Join = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("회원가입");
+    }, 100);
+
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -48,17 +54,11 @@ const Join = () => {
         register,
         handleSubmit,
         watch,
-
+        setError,
         formState: { errors }
     } = useForm<FormValues>();
 
     const watchPassword = watch("password");
-
-    const isEmailFromGoogleDomain = (email: string): boolean => {
-        const googleDomains = ["gmail.com", "googlemail.com"];
-        const domain = email.split("@")[1];
-        return googleDomains.includes(domain.toLowerCase());
-    };
 
     const {
         passwordState: password,
@@ -71,8 +71,6 @@ const Join = () => {
         handleToggle: handleConfirmToggle,
         handleEyeIconToggle: handleConfirmEyeIconToggle
     } = usePasswordToggle();
-
-    const { openModal } = useModal();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -175,16 +173,11 @@ const Join = () => {
         } catch (e) {
             if (axios.isAxiosError(e) && e.response) {
                 if (e.response.status === 409) {
-                    if (isEmailFromGoogleDomain(email)) {
-                        openModal({
-                            title: "SNS로 가입된 계정입니다.",
-                            Content: SNSModalContent,
-                            errorMessage: "",
-                            buttonBackgroundColor: "#7846dd"
-                        });
-                    } else {
-                        return;
-                    }
+                    // return;
+                    setError("email", {
+                        type: "manual",
+                        message: "이미 존재하는 이메일입니다."
+                    });
                 }
             }
             if (e instanceof Error) throw new Error(e.message);
@@ -192,41 +185,51 @@ const Join = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="px-4">
-            <div className="w-full max-w-md mx-auto">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="extraSmall:w-96 extraSmall:mx-auto lg:mx-auto"
+        >
+            <ToastContainer toasts={toasts} />
+            <div className="">
                 <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
-                <div className="text-2xl font-bold text-center mb-6 font-pretendard">
+                <div className="text-2xl font-bold text-center mb-[67px]">
                     회원가입
                 </div>
-                <div className="space-y-4">
-                    <div className="w-full h-[48px] rounded-[10px] border border-black">
+
+                <div className="">
+                    <div className="w-full h-[48px] rounded-[10px] border border-black mb-10">
                         <button
                             type="button"
                             onClick={handleGoogleClick}
                             className="w-full h-full flex items-center justify-center font-bold text-sm"
                         >
                             <GoogleIcon />
-                            <span className="ml-2">Google로 회원가입</span>
+                            <span className="ml-2">Google로 회원가입</span>{" "}
                         </button>
+                    </div>
+                    <div className="flex items-center my-10">
+                        <span className="w-full border-b"></span>
                     </div>
 
                     <div className="space-y-4">
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2">닉네임</label>
-                            <input
-                                {...register("name", {
-                                    required: "닉네임을 입력해주세요.",
-                                    maxLength: {
-                                        value: 50,
-                                        message:
-                                            "최대 50자까지 입력 가능합니다."
-                                    }
-                                })}
-                                className={`border border-inputBorderColor h-[48px] px-4 text-sm  text-inputTextColor ${getInputErrorClassName(
-                                    errors.name
-                                )}`}
-                                placeholder="별명"
-                            />
+                            <label className="text-sm mb-2 flex flex-col">
+                                닉네임
+                                <input
+                                    {...register("name", {
+                                        required: "닉네임을 입력해주세요.",
+                                        maxLength: {
+                                            value: 50,
+                                            message:
+                                                "최대 50자까지 입력 가능합니다."
+                                        }
+                                    })}
+                                    className={`border border-[#e1e1e1] mt-2 ${getInputErrorClassName(
+                                        errors.name
+                                    )}`}
+                                    placeholder="별명"
+                                />
+                            </label>
                             {errors.name && (
                                 <p className="text-red-500 text-xs mt-1">
                                     {errors.name.message}
@@ -235,87 +238,95 @@ const Join = () => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2">이메일</label>
-                            <input
-                                {...register("email", {
-                                    required: "이메일을 입력해주세요",
-                                    pattern: {
-                                        value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                        message:
-                                            "올바른 이메일 형식이 아닙니다."
-                                    }
-                                })}
-                                className={`border border-inputBorderColor h-[48px] px-4 text-sm text-inputTextColor ${getInputErrorClassName(
-                                    errors.email
-                                )}`}
-                                placeholder="abc@email.com"
-                            />
+                            <label className="text-sm mb-2 flex flex-col">
+                                이메일
+                                <input
+                                    {...register("email", {
+                                        required: "이메일을 입력해주세요",
+                                        pattern: {
+                                            value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                                            message:
+                                                "올바른 이메일 형식이 아닙니다."
+                                        }
+                                    })}
+                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 ${getInputErrorClassName(
+                                        errors.email
+                                    )}`}
+                                    placeholder="abc@email.com"
+                                />
+                            </label>
+
                             <ErrorMessage field="email" errors={errors} />
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2">비밀번호</label>
-                            <div className="relative">
-                                <input
-                                    type={password.type}
-                                    {...register("password", {
-                                        required: "비밀번호를 입력해주세요",
-                                        pattern: {
-                                            value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                            message:
-                                                "영문, 숫자를 포함한 8자 이상의 비밀번호"
-                                        }
-                                    })}
-                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12 text-inputTextColor ${getInputErrorClassName(
-                                        errors.password
-                                    )}`}
-                                    placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleToggle}
-                                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                                >
-                                    <img
-                                        src={handleEyeIconToggle()}
-                                        alt="Toggle Password Visibility"
-                                        className="w-5 h-5"
+                            <label className="text-sm mb-2">
+                                비밀번호
+                                <div className="relative top-2">
+                                    <input
+                                        type={password.type}
+                                        {...register("password", {
+                                            required: "비밀번호를 입력해주세요",
+                                            pattern: {
+                                                value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                                                message:
+                                                    "영문, 숫자를 포함한 8자 이상의 비밀번호"
+                                            }
+                                        })}
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12  ${getInputErrorClassName(
+                                            errors.password
+                                        )}`}
+                                        placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
-                                </button>
-                            </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleToggle}
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                                    >
+                                        <img
+                                            src={handleEyeIconToggle()}
+                                            alt="Toggle Password Visibility"
+                                            className="w-5 h-5"
+                                        />
+                                    </button>
+                                </div>
+                            </label>
+
                             <ErrorMessage field="password" errors={errors} />
                         </div>
 
                         <div className="flex flex-col">
                             <label className="text-sm mb-2">
                                 비밀번호 확인
-                            </label>
-                            <div className="relative">
-                                <input
-                                    type={confirmPassword.type}
-                                    {...register("confirmPassword", {
-                                        required: "비밀번호 확인을 해주세요",
-                                        validate: (value) =>
-                                            value === watchPassword ||
-                                            "비밀번호가 일치하지 않습니다."
-                                    })}
-                                    className={`border border-inputBorderColor w-full h-[48px] px-4 text-sm pr-12 text-inputTextColor ${getInputErrorClassName(
-                                        errors.confirmPassword
-                                    )}`}
-                                    placeholder="비밀번호 확인"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={handleConfirmToggle}
-                                    className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                                >
-                                    <img
-                                        src={handleConfirmEyeIconToggle()}
-                                        alt="Toggle Password Visibility"
-                                        className="w-5 h-5"
+                                <div className="relative">
+                                    <input
+                                        type={confirmPassword.type}
+                                        {...register("confirmPassword", {
+                                            required:
+                                                "비밀번호 확인을 해주세요",
+                                            validate: (value) =>
+                                                value === watchPassword ||
+                                                "비밀번호가 일치하지 않습니다."
+                                        })}
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 ${getInputErrorClassName(
+                                            errors.confirmPassword
+                                        )}`}
+                                        placeholder="비밀번호 확인"
                                     />
-                                </button>
-                            </div>
+                                    <button
+                                        type="button"
+                                        onClick={handleConfirmToggle}
+                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
+                                    >
+                                        <img
+                                            src={handleConfirmEyeIconToggle()}
+                                            alt="Toggle Password Visibility"
+                                            className="w-5 h-5"
+                                        />
+                                    </button>
+                                </div>
+                            </label>
+
                             <ErrorMessage
                                 field="confirmPassword"
                                 errors={errors}
@@ -323,7 +334,7 @@ const Join = () => {
                         </div>
                     </div>
 
-                    <div className="space-y-4 mt-6">
+                    <div className="space-y-4 mt-[30px]">
                         <div className="text-sm">약관동의</div>
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
@@ -367,14 +378,13 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="relative top-12 w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8 font-pretendard"
+                        className="w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8"
                         type="submit"
                     >
                         회원가입
                     </button>
                 </div>
             </div>
-            <ToastContainer toasts={toasts} />
         </form>
     );
 };

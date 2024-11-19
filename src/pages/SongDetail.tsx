@@ -13,6 +13,8 @@ import SongRequestFailModal from "../components/Modal/SongRequestFailModal";
 import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal";
 import EmailInputModal from "../components/Modal/EmailInputModal";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { ModalType } from "../types";
+import { useTitle } from "../utils/useTitle";
 
 interface SongDetailForm {
     artist: string;
@@ -20,8 +22,14 @@ interface SongDetailForm {
 }
 
 const SongDetail = () => {
+    const setTitle = useTitle();
+
+    setTimeout(() => {
+        setTitle("신청곡 상세");
+    }, 100);
+
     const [searchParams] = useSearchParams();
-    const formId = searchParams.get("formId");
+    const formId = searchParams.get("id")!;
     const navigate = useNavigate();
     const { data: userData } = useUserData();
     const profileImage = userData?.image;
@@ -57,21 +65,20 @@ const SongDetail = () => {
 
     const handlePostSong = async () => {
         const { artist, title } = getValues();
-        const { email } = userData ?? {
-            email: ""
-        };
+        const { email } = userData ?? { email: "" };
 
-        await axiosInstance().post("/songs", {
-            userId: formId,
-            email,
-            artist,
-            title
-        });
-        if (artist && title) {
+        if (isLoggedIn && artist && title) {
+            await axiosInstance().post("/songs", {
+                userId: formId,
+                email,
+                artist,
+                title
+            });
             openModal({
+                title: "신청 완료",
+                type: ModalType.SUCCESS,
                 Content: SongRequestSuccessModal,
-                errorMessage: "",
-                data: { artist, title, formId },
+                data: { artist, title, formId, email },
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
@@ -82,9 +89,13 @@ const SongDetail = () => {
                     <EmailInputModal
                         {...props}
                         navigate={navigate}
-                        modalData={{ artist, title, formId, email }}
+                        modalData={{ artist, title, formId, userData }}
                     />
-                )
+                ),
+                title: "싱포유 회원이시면",
+                type: ModalType.DEFAULT,
+                buttonBackgroundColor:
+                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
         }
     };
@@ -97,8 +108,9 @@ const SongDetail = () => {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
                     openModal({
+                        title: "신청 실패",
+                        type: ModalType.ERROR,
                         Content: SongRequestFailModal,
-                        errorMessage: "",
                         data: { artist, title, userId, email },
                         buttonBackgroundColor:
                             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
@@ -110,7 +122,7 @@ const SongDetail = () => {
     };
 
     const inputLabelClass =
-        "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
+        "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2";
 
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
@@ -149,13 +161,13 @@ const SongDetail = () => {
                     accept="image/*"
                     className="hidden"
                 />
-                <div className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
+                {/* <div className="w-[90px] h-[16px] font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
                     이미지삭제
-                </div>
-                <span className="font-bold text-lg">{userData?.name}</span>
+                </div> */}
+                <span className="font-bold text-lg mt-4">{userData?.name}</span>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col space-y-6"
+                    className="flex flex-col mt-[22px]"
                 >
                     <div className="flex flex-col gap-1">
                         <label htmlFor="가수" className={inputLabelClass}>
@@ -164,7 +176,7 @@ const SongDetail = () => {
                         <input
                             type="text"
                             placeholder="가수이름"
-                            className={`rounded-md px-4 h-[48px] text-sm ${getInputErrorClassName(
+                            className={`rounded-md px-4 h-[48px] text-sm mb-11 ${getInputErrorClassName(
                                 errors.artist
                             )}`}
                             {...register("artist", {
@@ -197,7 +209,7 @@ const SongDetail = () => {
                             </span>
                         )}
                     </div>
-                    <div className="flex justify-center items-center gap-2">
+                    <div className="flex justify-center items-center gap-2 my-[22px]">
                         <img src={TriangleFill} alt="warning" />
                         <span className="font-pretendard text-sm">
                             제출 후 수정이 불가능합니다.

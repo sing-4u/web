@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import getInputErrorClassName from "../../utils/className";
 import { NavigateFunction } from "react-router-dom";
 import { useModal } from "../../hooks/useModal";
-import useUserData from "../../hooks/useUserData";
 import axiosInstance from "../../utils/axiosInstance";
+import { UserData } from "../../hooks/useUserData";
 
 interface SongData {
     artist: string;
     title: string;
+    formId: string | null;
+    userData?: UserData;
 }
 
 interface EmailInputModalProps<T extends SongData> {
@@ -19,15 +21,12 @@ export default function EmailInputModal<T extends SongData>({
     navigate,
     modalData
 }: EmailInputModalProps<T>) {
+    console.log(modalData);
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const { closeModal } = useModal();
 
-    const { data: userData } = useUserData();
-    const { id, email: userEmail } = userData ?? {
-        id: "",
-        userEmail: ""
-    };
+    const formId = modalData?.formId;
 
     const handleClickLogin = () => {
         navigate("/login");
@@ -40,8 +39,8 @@ export default function EmailInputModal<T extends SongData>({
             return;
         }
         await axiosInstance().post("/songs", {
-            userId: id,
-            email: userEmail,
+            userId: formId,
+            email,
             artist: modalData?.artist,
             title: modalData?.title
         });

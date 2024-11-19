@@ -1,13 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
-interface UserData {
-  id: string;
-  name: string;
-  email: string;
-  image: string;
-  isOpened: true;
-  provider: "EMAIL" | string;
+
+export interface UserData {
+    id: string;
+    name: string;
+    email: string;
+    image: string;
+    isOpened: true;
+    provider: "EMAIL" | string;
 }
 
 const useUserData = () => {

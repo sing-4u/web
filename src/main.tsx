@@ -4,15 +4,16 @@ import "./index.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./Home";
+import Home from "./pages/Home";
 import Join from "./pages/Join";
 import CompleteJoin from "./pages/CompleteJoin";
 import { ModalProvider } from "./components/Modal/ModalProvider";
 import NewPassword from "./pages/NewPassword";
 import Mypage from "./pages/Mypage";
 import ManageSong from "./pages/ManageSong";
-import FindPassword from "./pages/findPassword";
+
 import SongDetail from "./pages/SongDetail";
+import FindPassword from "./pages/findPassword";
 
 const queryClient = new QueryClient();
 
