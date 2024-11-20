@@ -1,5 +1,3 @@
-import React from "react";
-
 interface ChangeButtonProps {
     isLoading: boolean;
     isValid: boolean;

@@ -24,14 +24,6 @@ const PasswordChangeModal = ({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
 
-    // const watchFields = watch([
-    //     "oldPassword",
-    //     "newPassword",
-    //     "confirmPassword"
-    // ]);
-
-    // const isFormFilled = watchFields.every((field) => field !== "");
-
     const { isValid } = useFormValidation({
         watch,
         fields: ["oldPassword", "newPassword", "confirmPassword"],
