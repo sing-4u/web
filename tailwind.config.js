@@ -5,7 +5,8 @@ export default {
         extend: {
             screens: {
                 extraSmall: "375px",
-                tablet: "768px"
+                tablet: "768px",
+                pc: "1440px"
             },
             fontFamily: {
                 sans: ["Pretendard", "system-ui", "sans-serif"], // 기본 폰트로 Pretendard 설정
