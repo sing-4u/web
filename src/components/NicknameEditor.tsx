@@ -39,10 +39,10 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
   const inputLabelClass =
     "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
   const inputClass =
-    "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
-  const changeButtonClass =
-    "bg-customGray absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
+    "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black md:w-[380px]";
 
+  const changeButtonClass =
+    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF] md:right-4 md:w-[70px] md:h-[35px] md:text-[14px]";
   return (
     <div className="flex flex-col gap-y-2">
       <label htmlFor="nickname" className={inputLabelClass}>
@@ -60,7 +60,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
         <button
           type="button"
           className={`${changeButtonClass} ${
-            isEditing ? "bg-gray-800" : "bg-customGray"
+            isEditing ? " bg-customGray" : "bg-gray-800"
           }`}
           onClick={handleNameChange}
         >
