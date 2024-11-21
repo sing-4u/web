@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
 import ImgProfileL from "../components/ImgProfileL";
@@ -12,8 +12,8 @@ import DeleteAccountModal from "../utils/DeleteAccountModal";
 import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
 import EmailChangeModal from "../components/Modal/EmailChangeModal";
-import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 import { ModalType } from "../types";
+import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 
 const Mypage = () => {
   const { data: userData, refetch } = useUserData();

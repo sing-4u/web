@@ -7,6 +7,9 @@ import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
 import { useState } from "react";
 import { useModal } from "../../hooks/useModal";
+import axios from "axios";
+import { useFormValidation } from "../../hooks/useFormValidaiton";
+import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -14,13 +17,21 @@ const EmailChangeModal = ({
     const {
         register,
         handleSubmit,
-        formState: { errors }
+        formState: { errors },
+        setError,
+        watch
     } = useForm({
         defaultValues: {
             email: "",
             password: "",
             confirmPassword: ""
         }
+    });
+
+    const { isValid } = useFormValidation({
+        watch,
+        fields: ["email", "password"],
+        isLoading: false
     });
 
     const { closeModal } = useModal();
@@ -38,8 +49,13 @@ const EmailChangeModal = ({
 
             showToast("success", "이메일 변경 완료");
             closeModal();
-        } catch {
-            // error handling
+        } catch (error) {
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                setError("password", {
+                    type: "manual",
+                    message: "비밀번호가 일치하지 않습니다."
+                });
+            }
         } finally {
             setIsLoading(false);
         }
@@ -124,12 +140,11 @@ const EmailChangeModal = ({
                 </label>
             </div>
 
-            <button
-                type="submit"
-                className={`mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium  ${buttonBackgroundColor} text-white hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
-            >
-                {isLoading ? "변경 중" : "변경하기"}
-            </button>
+            <ChangeButtonInModal
+                isLoading={isLoading}
+                isValid={!isValid}
+                buttonBackgroundColor={buttonBackgroundColor}
+            />
         </form>
     );
 };

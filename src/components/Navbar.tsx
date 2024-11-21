@@ -18,7 +18,7 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
         typeof userData?.image === "string" ? userData.image : undefined;
 
     return (
-        <div className="w-full max-w-[376px] mx-auto lg:max-w-[1058px]">
+        <div className="w-full">
             <div className="flex justify-between items-center w-full h-[60px] border-b-[0.5px] border-inputBorderColor px-6">
                 <div
                     onClick={() => navigate("/")}
