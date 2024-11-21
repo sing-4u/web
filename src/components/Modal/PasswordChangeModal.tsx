@@ -8,6 +8,8 @@ import { ModalContentProps } from "../../types";
 import { useState } from "react";
 import { useModal } from "../../hooks/useModal";
 import axios from "axios";
+import { useFormValidation } from "../../hooks/useFormValidaiton";
+import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 
 const PasswordChangeModal = ({
     buttonBackgroundColor
@@ -20,6 +22,12 @@ const PasswordChangeModal = ({
         setError
     } = useForm({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
+    });
+
+    const { isValid } = useFormValidation({
+        watch,
+        fields: ["oldPassword", "newPassword", "confirmPassword"],
+        isLoading: false
     });
 
     const { closeModal } = useModal();
@@ -56,6 +64,7 @@ const PasswordChangeModal = ({
             setIsLoading(false);
         }
     };
+    // const isValid = isLoading || !isFormFilled;
 
     const {
         passwordState: oldPasswordState,
@@ -210,13 +219,11 @@ const PasswordChangeModal = ({
                 </label>
             </div>
 
-            <button
-                type="submit"
-                disabled={isLoading}
-                className={`mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white ${buttonBackgroundColor} hover:opacity-80 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
-            >
-                {isLoading ? "변경 중" : "변경하기"}
-            </button>
+            <ChangeButtonInModal
+                isLoading={isLoading}
+                isValid={!isValid}
+                buttonBackgroundColor={buttonBackgroundColor}
+            />
         </form>
     );
 };

@@ -4,7 +4,8 @@ export default {
     theme: {
         extend: {
             screens: {
-                extraSmall: "375px"
+                extraSmall: "375px",
+                tablet: "768px"
             },
             fontFamily: {
                 sans: ["Pretendard", "system-ui", "sans-serif"], // 기본 폰트로 Pretendard 설정
