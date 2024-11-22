@@ -8,6 +8,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { ToastContainer } from "../components/ToastContainer";
 import Navbar from "../components/Navbar";
 import { useTitle } from "../utils/useTitle";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface PasswordProps {
     newPassword: string;
@@ -122,11 +123,12 @@ const NewPassword = () => {
                                 "비밀번호가 일치하지 않습니다."
                         })}
                     />
-                    {errors.confirmPassword ? (
+                    {/* {errors.confirmPassword ? (
                         <span className="text-red-500 text-sm">
                             {errors.confirmPassword.message}
                         </span>
-                    ) : null}
+                    ) : null} */}
+                    <ErrorMessage field="confirmPassword" errors={errors} />
 
                     <span className="flex justify-end items-center">
                         <img

@@ -4,6 +4,7 @@ import { NavigateFunction } from "react-router-dom";
 import { useModal } from "../../hooks/useModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { UserData } from "../../hooks/useUserData";
+import ErrorMessage from "../ErrorMessage";
 
 interface SongData {
     artist: string;
@@ -89,7 +90,7 @@ export default function EmailInputModal<T extends SongData>({
                         error ? "border-red-500" : ""
                     } ${getInputErrorClassName} placeholder:text-[14px] mt-2`}
                 />
-                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                <ErrorMessage errors={error} />
                 <button
                     onClick={handleClickSongDetail}
                     className="bg-colorPurple w-full h-12 rounded-md mt-10 text-white text-[14px] font-semibold"

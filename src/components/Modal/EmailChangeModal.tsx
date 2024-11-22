@@ -10,6 +10,7 @@ import { useModal } from "../../hooks/useModal";
 import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
+import ErrorMessage from "../ErrorMessage";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -118,12 +119,7 @@ const EmailChangeModal = ({
                                 )}`}
                                 placeholder="비밀번호를 입력해주세요."
                             />
-                            {errors.password ? (
-                                <p className="text-red-500">
-                                    {errors.password.message}
-                                </p>
-                            ) : null}
-
+                            <ErrorMessage field="password" errors={errors} />
                             <button
                                 type="button"
                                 disabled={isLoading}

@@ -10,6 +10,7 @@ import { useModal } from "../../hooks/useModal";
 import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
+import ErrorMessage from "../ErrorMessage";
 
 const PasswordChangeModal = ({
     buttonBackgroundColor
@@ -159,11 +160,7 @@ const PasswordChangeModal = ({
                                 )}`}
                                 placeholder="새 비밀번호 입력"
                             />
-                            {errors.newPassword && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.newPassword.message}
-                                </p>
-                            )}
+                            <ErrorMessage field="newPassword" errors={errors} />
                             <button
                                 type="button"
                                 className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
