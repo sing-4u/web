@@ -96,6 +96,7 @@ const PasswordChangeModal = ({
                     <div className="flex flex-col">
                         <div className="relative">
                             <input
+                                type={oldPasswordState.type}
                                 {...register("oldPassword", {
                                     required: "비밀번호를 입력해 주세요.",
                                     pattern: {
@@ -104,7 +105,6 @@ const PasswordChangeModal = ({
                                             "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
                                     }
                                 })}
-                                type={oldPasswordState.type}
                                 className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
                                     errors.oldPassword
                                 )}`}
@@ -137,6 +137,7 @@ const PasswordChangeModal = ({
                     <div className="flex flex-col">
                         <div className="relative">
                             <input
+                                type={newPasswordState.type}
                                 {...register("newPassword", {
                                     required: "비밀번호를 입력해 주세요.",
                                     pattern: {
@@ -153,7 +154,6 @@ const PasswordChangeModal = ({
                                         }
                                     }
                                 })}
-                                type={newPasswordState.type}
                                 className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
                                     errors.newPassword
                                 )}`}
