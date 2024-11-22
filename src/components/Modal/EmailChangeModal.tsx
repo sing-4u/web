@@ -104,7 +104,8 @@ const EmailChangeModal = ({
                         <div className="relative">
                             <input
                                 {...register("password", {
-                                    required: "비밀번호는 필수값입니다.",
+                                    required:
+                                        "본인임을 인증하기 위해 비밀번호를 입력해주세요.",
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:

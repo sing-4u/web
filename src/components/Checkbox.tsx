@@ -16,10 +16,6 @@ const Checkbox = ({
     onToggle,
     onChevronClick
 }: CheckboxProps) => {
-    const handleCheckboxClick = (e: MouseEvent) => {
-        e.stopPropagation();
-        onToggle();
-    };
     const handleChevronClick = (e: MouseEvent) => {
         e.stopPropagation();
         if (onChevronClick) {
@@ -28,20 +24,23 @@ const Checkbox = ({
     };
 
     return (
-        <div className="flex justify-between items-center space-x-2">
-            <div
-                className="flex items-center space-x-2 cursor-pointer"
-                onClick={handleCheckboxClick}
-            >
+        <div className="flex justify-between items-center">
+            <label className="flex items-center cursor-pointer">
+                <input
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={onToggle}
+                    className="hidden"
+                />
                 <img
                     src={isChecked ? CheckedBox : CheckboxOutline}
                     alt=""
-                    className="mr-1"
+                    className="w-5 h-5 mr-2"
                 />
-                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                <span className="text-sm font-medium leading-none">
                     {label}
-                </label>
-            </div>
+                </span>
+            </label>
             <img
                 src={ChevronRight}
                 alt="chevron"
