@@ -25,7 +25,7 @@ const Checkbox = ({
 
     return (
         <div className="flex justify-between items-center">
-            <label className="flex items-center cursor-pointer">
+            <label className="flex items-center">
                 <input
                     type="checkbox"
                     checked={isChecked}
@@ -44,7 +44,7 @@ const Checkbox = ({
             <img
                 src={ChevronRight}
                 alt="chevron"
-                className="w-5 h-5 cursor-pointer"
+                className="w-5 h-5"
                 onClick={handleChevronClick}
             />
         </div>

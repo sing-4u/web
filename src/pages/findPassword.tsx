@@ -184,7 +184,7 @@ const FindPassword = () => {
                     <button
                         type="button"
                         disabled={!email}
-                        className={`absolute inset-y-11 end-3 cursor-pointer text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
+                        className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
                                 email !== ""
                                     ? "bg-black text-textColor hover:text-gray-400"

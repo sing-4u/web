@@ -100,7 +100,7 @@ const NewPassword = () => {
                         <img
                             src={handleEyeIconToggle()}
                             alt="Toggle Password Visibility"
-                            className="absolute inset-y-12 end-3 cursor-pointer"
+                            className="absolute inset-y-12 end-3"
                             onClick={handleToggle}
                         />
                     </span>
@@ -134,7 +134,7 @@ const NewPassword = () => {
                         <img
                             src={handleConfirmEyeIconToggle()}
                             alt="Toggle Password Visibility"
-                            className="absolute inset-y-12 end-3 cursor-pointer"
+                            className="absolute inset-y-12 end-3"
                             onClick={handleConfirmToggle}
                         />
                     </span>

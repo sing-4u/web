@@ -161,9 +161,7 @@ const SongDetail = () => {
                     accept="image/*"
                     className="hidden"
                 />
-                {/* <div className="w-[90px] h-[16px] font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray">
-                    이미지삭제
-                </div> */}
+
                 <span className="font-bold text-lg mt-4">{userData?.name}</span>
                 <form
                     onSubmit={handleSubmit(onSubmit)}
