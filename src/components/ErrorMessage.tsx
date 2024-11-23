@@ -1,4 +1,4 @@
-import { FieldErrors, FieldName } from "react-hook-form";
+import { FieldErrors } from "react-hook-form";
 
 interface FormValues {
     name: string;
@@ -10,15 +10,12 @@ interface FormValues {
     code: string;
 }
 
-interface ErrorMessageProps<T extends FieldName<FormValues>> {
-    field?: T;
+interface ErrorMessageProps {
+    field?: keyof FormValues;
     errors: FieldErrors<FormValues> | string;
 }
 
-const ErrorMessage = <T extends FieldName<FormValues>>({
-    field,
-    errors
-}: ErrorMessageProps<T>) => {
+const ErrorMessage = ({ field, errors }: ErrorMessageProps) => {
     if (typeof errors === "string") {
         return <p className="text-red-500">{errors}</p>;
     }
