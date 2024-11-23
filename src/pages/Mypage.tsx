@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
 import ImgProfileL from "../components/ImgProfileL";
@@ -12,8 +12,8 @@ import DeleteAccountModal from "../utils/DeleteAccountModal";
 import { useModal } from "../hooks/useModal";
 import NicknameEditor from "../components/NicknameEditor";
 import EmailChangeModal from "../components/Modal/EmailChangeModal";
-import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 import { ModalType } from "../types";
+import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
 
 const Mypage = () => {
   const { data: userData, refetch } = useUserData();
@@ -31,7 +31,6 @@ const Mypage = () => {
   const handleLogout = () => {
     logout();
     localStorage.removeItem("accessToken");
-    navigate("/");
   };
 
   const { openModal } = useModal();
@@ -117,15 +116,15 @@ const Mypage = () => {
   const inputLabelClass =
     "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
   const inputClass =
-    "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black";
+    "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black md:w-[380px]";
   const changeButtonClass =
-    "bg-customGray absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF]";
+    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF] md:right-4 md:w-[70px] md:h-[35px] md:text-[14px]";
 
   return (
     <div className="min-h-screen flex flex-col items-center">
       <Navbar profileImage={profileImage} />
-      <form className="flex flex-col items-center w-full max-w-md mt-2 flex-grow">
-        <div className="flex flex-col w-[328px] h-[413px] gap-y-6">
+      <form className="flex flex-col items-center w-full max-w-md mt-10 flex-grow ">
+        <div className="flex flex-col w-[328px] h-[413px] gap-y-6 md:w-[380px] md:h-[635px]">
           <div className="relative flex flex-col w-full justify-center items-center">
             <div
               className="relative w-[90px] h-[90px] cursor-pointer mt-3"
@@ -216,7 +215,7 @@ const Mypage = () => {
             <div className="flex justify-center w-full mt-6">
               <button
                 onClick={handleLogout}
-                className="w-[328px] h-[52px] rounded-[10px] py-3.5 px-[18px] font-bold text-[14px] leading-[16.71px] bg-gray-200 text-customGray"
+                className="w-[328px] h-[52px] rounded-[10px] py-3.5 px-[18px] font-bold text-[14px] leading-[16.71px] bg-gray-200 text-customGray md:w-[380px]"
               >
                 로그아웃
               </button>
@@ -234,8 +233,10 @@ const Mypage = () => {
       {isModalOpen && (
         <DeleteAccountModal closeModal={() => setIsModalOpen(false)} />
       )}
-      <div className="">
-        <Footer />
+      <div className="w-full ">
+        <div className="max-w-[1440px] mx-auto">
+          <Footer />
+        </div>
       </div>
     </div>
   );
