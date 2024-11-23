@@ -89,7 +89,7 @@ const FindPassword = () => {
                 title: "SNS로 간편 가입된 계정입니다.",
                 Content: SNSModalContent,
                 type: ModalType.ERROR,
-                buttonBackgroundColor: "bg-#7846dd"
+                buttonBackgroundColor: "bg-[#7846dd]"
             });
             return;
         }
