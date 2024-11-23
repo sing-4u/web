@@ -10,6 +10,7 @@ import { useModal } from "../../hooks/useModal";
 import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
+import ErrorMessage from "../ErrorMessage";
 
 const PasswordChangeModal = ({
     buttonBackgroundColor
@@ -96,6 +97,7 @@ const PasswordChangeModal = ({
                     <div className="flex flex-col">
                         <div className="relative">
                             <input
+                                type={oldPasswordState.type}
                                 {...register("oldPassword", {
                                     required: "비밀번호를 입력해 주세요.",
                                     pattern: {
@@ -104,7 +106,6 @@ const PasswordChangeModal = ({
                                             "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
                                     }
                                 })}
-                                type={oldPasswordState.type}
                                 className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
                                     errors.oldPassword
                                 )}`}
@@ -137,6 +138,7 @@ const PasswordChangeModal = ({
                     <div className="flex flex-col">
                         <div className="relative">
                             <input
+                                type={newPasswordState.type}
                                 {...register("newPassword", {
                                     required: "비밀번호를 입력해 주세요.",
                                     pattern: {
@@ -153,17 +155,12 @@ const PasswordChangeModal = ({
                                         }
                                     }
                                 })}
-                                type={newPasswordState.type}
                                 className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
                                     errors.newPassword
                                 )}`}
                                 placeholder="새 비밀번호 입력"
                             />
-                            {errors.newPassword && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.newPassword.message}
-                                </p>
-                            )}
+                            <ErrorMessage field="newPassword" errors={errors} />
                             <button
                                 type="button"
                                 className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"

@@ -11,6 +11,7 @@ import { useModal } from "../hooks/useModal";
 import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
 import { useTitle } from "../utils/useTitle";
+import ErrorMessage from "../components/ErrorMessage";
 
 interface FormValue {
     email: string;
@@ -183,7 +184,7 @@ const FindPassword = () => {
                     <button
                         type="button"
                         disabled={!email}
-                        className={`absolute inset-y-11 end-3 cursor-pointer text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
+                        className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
                                 email !== ""
                                     ? "bg-black text-textColor hover:text-gray-400"
@@ -221,12 +222,11 @@ const FindPassword = () => {
                             errors.code
                         )}`}
                     />
-                    {errors.code && (
-                        <span className="text-red-500 text-sm">
-                            {errors.code.message ||
-                                "인증번호가 일치하지 않습니다."}
-                        </span>
-                    )}
+
+                    <ErrorMessage
+                        field="code"
+                        errors={errors || "인증번호가 일치하지 않습니다."}
+                    />
                     {timeLeft !== 0 && (
                         <span className="absolute inset-y-12 end-3 text-red-500">
                             {minutes}:{second}
