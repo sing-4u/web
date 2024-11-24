@@ -8,7 +8,6 @@ import axiosInstance from "../utils/axiosInstance";
 import { ToastContainer } from "../components/ToastContainer";
 import Navbar from "../components/Navbar";
 import { useTitle } from "../utils/useTitle";
-import ErrorMessage from "../components/ErrorMessage";
 
 interface PasswordProps {
     newPassword: string;
@@ -79,7 +78,7 @@ const NewPassword = () => {
                         type={newPassword.type}
                         id="newPassword"
                         placeholder="새 비밀번호"
-                        className={`mb-[22px] ${getInputErrorClassName(
+                        className={`mb-2 ${getInputErrorClassName(
                             errors.newPassword
                         )}`}
                         {...register("newPassword", {
@@ -92,7 +91,7 @@ const NewPassword = () => {
                         })}
                     />
                     {errors.newPassword ? (
-                        <span className="text-red-500 text-sm">
+                        <span className="text-red-500 text-[12px]">
                             {errors.newPassword.message}
                         </span>
                     ) : null}
@@ -106,16 +105,16 @@ const NewPassword = () => {
                     </span>
                 </div>
                 <div className="relative flex flex-col">
-                    <label htmlFor="confirmPassword" className="text-left mb-2">
+                    <label htmlFor="confirmPassword" className="text-left my-2">
                         새 비밀번호 확인
                     </label>
                     <input
                         id="confirmPassword"
                         type={confirmPassword.type}
                         placeholder="새 비밀번호 확인"
-                        className={getInputErrorClassName(
+                        className={`mb-2 ${getInputErrorClassName(
                             errors.confirmPassword
-                        )}
+                        )}`}
                         {...register("confirmPassword", {
                             required: "비밀번호를 입력해주세요",
                             validate: (value) =>
@@ -123,12 +122,11 @@ const NewPassword = () => {
                                 "비밀번호가 일치하지 않습니다."
                         })}
                     />
-                    {/* {errors.confirmPassword ? (
-                        <span className="text-red-500 text-sm">
+                    {errors.confirmPassword ? (
+                        <span className="text-red-500 text-[12px]">
                             {errors.confirmPassword.message}
                         </span>
-                    ) : null} */}
-                    <ErrorMessage field="confirmPassword" errors={errors} />
+                    ) : null}
 
                     <span className="flex justify-end items-center">
                         <img
