@@ -40,6 +40,18 @@ export default function Home() {
     }, [users.length]);
 
     useEffect(() => {
+        async function fetchAndSetUser() {
+            await axiosInstance().get(`${import.meta.env.VITE_API_URL}/users`, {
+                params: {
+                    size: 10,
+                    index: users.length
+                }
+            });
+        }
+        fetchAndSetUser();
+    }, []);
+
+    useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 const first = entries[0];
