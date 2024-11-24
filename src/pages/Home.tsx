@@ -1,26 +1,66 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import SearchIcon from "../assets/ic_Search.svg";
 import Card from "../assets/card.svg";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useTitle } from "../utils/useTitle";
+import axiosInstance from "../utils/axiosInstance";
+
+interface UserProps {
+    id: string;
+    name: string;
+    image: string;
+    isOpened: boolean;
+}
 
 export default function Home() {
     const navigate = useNavigate();
-    const [items, setItems] = useState(Array(10).fill(0));
+    const [users, setUsers] = useState<UserProps[]>([]);
     const [loading, setLoading] = useState(false);
     const loaderRef = useRef(null);
 
-    const [isReceipted, setIsReceipted] = useState(true);
-
-    const loadMoreItems = () => {
+    const loadMoreItems = useCallback(async () => {
         setLoading(true);
-        // TODO : 추후에 수정 필요
-        setTimeout(() => {
-            setItems((prevItems) => [...prevItems, ...Array(10).fill(0)]);
+        try {
+            const response = await axiosInstance().get(
+                `${import.meta.env.VITE_API_URL}/users`,
+                {
+                    params: {
+                        size: 10,
+                        index: users.length
+                    }
+                }
+            );
+            setUsers((prevUsers) => [...prevUsers, ...response.data]);
+        } catch (error) {
+            console.error("데이터를 불러오는 중 오류가 발생했습니다:", error);
+        } finally {
             setLoading(false);
-        }, 1000);
-    };
+        }
+    }, [users.length]);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const first = entries[0];
+                if (first.isIntersecting) {
+                    loadMoreItems();
+                }
+            },
+            { threshold: 1 }
+        );
+
+        const currentLoaderRef = loaderRef.current;
+        if (currentLoaderRef) {
+            observer.observe(currentLoaderRef);
+        }
+
+        return () => {
+            if (currentLoaderRef) {
+                observer.unobserve(currentLoaderRef);
+            }
+        };
+    }, [loadMoreItems]);
 
     const setTitle = useTitle();
 
@@ -72,27 +112,27 @@ export default function Home() {
                 />
             </div>
             <div className="grid extraSmall:grid-cols-2 w-full gap-4 lg:grid-cols-4 tablet:grid-cols-3">
-                {items.map((_, index) => (
-                    <div key={index} className="flex flex-col">
+                {users.map((user, index) => (
+                    <div key={`${user.id}_${index}`} className="flex flex-col">
                         <div className="relative rounded-[20px] p-[5px] bg-gradient-to-br from-yellow-200 via-pink-200 to-blue-200 flex flex-col justify-center">
                             <div
                                 className="relative aspect-square w-full h-0 pb-[100%]"
                                 onClick={handleSongDetailClick}
                             >
                                 <img
-                                    src={Card}
-                                    alt={`Card ${index + 1}`}
+                                    src={user.image || Card}
+                                    alt={`${user.name}의 프로필 이미지`}
                                     className="absolute inset-0 w-full h-full object-cover rounded-2xl"
                                 />
-                                {isReceipted && (
-                                    <div className="absolute top-2 left-2 bg-yellow-300 text-xs font-bold py-1 px-2 rounded-md border border-black">
-                                        접수 중
+                                {user.isOpened && (
+                                    <div className="absolute top-2 left-2 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-md border border-black">
+                                        신청곡 받는 중
                                     </div>
                                 )}
                             </div>
                         </div>
                         <span className="mt-2 text-center font-bold">
-                            아이유
+                            {user.name}
                         </span>
                     </div>
                 ))}
