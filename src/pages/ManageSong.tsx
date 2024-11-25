@@ -103,7 +103,7 @@ const ManageSong = () => {
   return (
     <div className="w-[376px] mx-auto flex flex-col items-center md:w-full lg:w-full">
       <Navbar />
-      <div className="flex flex-col justify-center items-center md:flex-row md:justify-between md:w-[672px] md:border md:border-inputBorderColor md:rounded-[8px] md:p-4 md:mt-4">
+      <div className="flex flex-col justify-center items-center md:flex-row md:justify-between md:w-[672px] md:border md:border-inputBorderColor md:rounded-[8px] md:p-4 md:mt-10">
         <div className="flex flex-col extraSmall:mt-4 md:mt-0 items-center md:flex-row">
           <div className="relative w-[90px] h-[90px]">
             <div
