@@ -227,7 +227,7 @@ const FindPassword = () => {
                         field="code"
                         errors={errors || "인증번호가 일치하지 않습니다."}
                     />
-                    {timeLeft !== 0 && (
+                    {timeLeft !== 0 && isAuthenticationCodeRequested && (
                         <span className="absolute inset-y-12 end-3 text-red-500">
                             {minutes}:{second}
                         </span>
