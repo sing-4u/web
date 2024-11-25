@@ -97,9 +97,6 @@ const ManageSong = () => {
     setVisibleSongs((prev) => prev + 5);
   };
 
-  console.log("visibleSongs:", visibleSongs);
-  console.log("Total Songs:", songListDetails);
-
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
 
@@ -167,7 +164,7 @@ const ManageSong = () => {
           </div>
         </div>
       </div>
-      <div className="md:flex">
+      <div className="md:flex md:flex-1">
         <div>
           {receivingSong && nowSongList ? (
             <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-indigo-500/50 p-4 mt-8">
@@ -234,9 +231,9 @@ const ManageSong = () => {
             <NonListNow />
           )}
         </div>
-        <div>
+        <div className="md:flex md:flex-1 extraSmall:ml-0 md:ml-4">
           {previousSongLists?.length > 0 ? (
-            <div className="w-[327px] mt-4 flex flex-col justify-center items-center mb-10">
+            <div className="w-[327px] extraSmall:mt-4 md:mt-0 flex flex-col justify-center items-center mb-10">
               {previousSongLists.map(
                 (
                   list: {
