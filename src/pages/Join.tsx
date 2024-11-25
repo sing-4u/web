@@ -216,6 +216,7 @@ const Join = () => {
                             <label className="text-sm mb-2 flex flex-col">
                                 닉네임
                                 <input
+                                    type="text"
                                     {...register("name", {
                                         required: "닉네임을 입력해주세요.",
                                         maxLength: {
@@ -241,6 +242,7 @@ const Join = () => {
                             <label className="text-sm mb-2 flex flex-col">
                                 이메일
                                 <input
+                                    type="email"
                                     {...register("email", {
                                         required: "이메일을 입력해주세요",
                                         pattern: {

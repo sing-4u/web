@@ -1,22 +1,27 @@
-import { FieldErrors, FieldName } from "react-hook-form";
+import { FieldErrors } from "react-hook-form";
 
 interface FormValues {
     name: string;
     email: string;
     password: string;
     confirmPassword?: string;
+    oldPassword: string;
+    newPassword: string;
+    code: string;
 }
 
-interface ErrorMessageProps<T extends FieldName<FormValues>> {
-    field: T;
-    errors: FieldErrors<FormValues>;
+interface ErrorMessageProps {
+    field?: keyof FormValues;
+    errors: FieldErrors<FormValues> | string;
 }
 
-const ErrorMessage = <T extends FieldName<FormValues>>({
-    field,
-    errors
-}: ErrorMessageProps<T>) => {
-    return <p className="text-red-500">{errors[field]?.message}</p>;
+const ErrorMessage = ({ field, errors }: ErrorMessageProps) => {
+    if (typeof errors === "string") {
+        return <p className="text-red-500">{errors}</p>;
+    }
+
+    if (!field || !errors[field]) return null;
+    return <p className="text-red-500">{errors[field]?.message || ""}</p>;
 };
 
 export default ErrorMessage;

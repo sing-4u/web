@@ -10,6 +10,7 @@ import { useModal } from "../../hooks/useModal";
 import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
+import ErrorMessage from "../ErrorMessage";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -75,6 +76,7 @@ const EmailChangeModal = ({
                     새 이메일
                     <div className="flex flex-col">
                         <input
+                            type="email"
                             {...register("email", {
                                 required: "이메일은 필수값입니다.",
                                 pattern: {
@@ -82,17 +84,12 @@ const EmailChangeModal = ({
                                     message: "올바른 이메일 형식이 아닙니다."
                                 }
                             })}
-                            type="email"
                             className={`my-2 ${getInputErrorClassName(
                                 errors.email
                             )}`}
                             placeholder="이메일 입력"
                         />
-                        {errors.email ? (
-                            <p className="text-red-500">
-                                {errors.email.message}
-                            </p>
-                        ) : null}
+                        <ErrorMessage field="email" errors={errors} />
                     </div>
                 </label>
             </div>
@@ -103,26 +100,22 @@ const EmailChangeModal = ({
                     <div className="flex flex-col">
                         <div className="relative">
                             <input
+                                type={passwordState.type}
                                 {...register("password", {
-                                    required: "비밀번호는 필수값입니다.",
+                                    required:
+                                        "본인임을 인증하기 위해 비밀번호를 입력해주세요.",
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:
                                             "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
                                     }
                                 })}
-                                type={passwordState.type}
                                 className={`w-full my-2 ${getInputErrorClassName(
                                     errors.password
                                 )}`}
                                 placeholder="비밀번호를 입력해주세요."
                             />
-                            {errors.password ? (
-                                <p className="text-red-500">
-                                    {errors.password.message}
-                                </p>
-                            ) : null}
-
+                            <ErrorMessage field="password" errors={errors} />
                             <button
                                 type="button"
                                 disabled={isLoading}

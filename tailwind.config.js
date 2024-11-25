@@ -6,6 +6,7 @@ export default {
       screens: {
         extraSmall: "375px",
         tablet: "768px",
+        pc: "1440px",
       },
       fontFamily: {
         sans: ["Pretendard", "system-ui", "sans-serif"], // 기본 폰트로 Pretendard 설정
@@ -19,11 +20,6 @@ export default {
         buttonColor2: "#D9D9D9",
         colorPurple: "#7846DD",
         textColor: "#ffffff",
-      },
-      customGradient: {
-        start: "#7B92C7",
-        middle: "#7846DD",
-        end: "#BB7FA0",
       },
     },
   },
