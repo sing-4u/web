@@ -186,7 +186,10 @@ const Join = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="mx-auto w-[380px]">
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mx-auto w-[380px] p-6"
+        >
             <ToastContainer toasts={toasts} />
             <div className="">
                 <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
@@ -228,7 +231,7 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] mt-2 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                    className={`font-thin text-base scale-[0.875] origin-left w-[114.285714%] border border-[#e1e1e1] h-[48px] px-4 mt-2 ${getInputErrorClassName(
                                         errors.name
                                     )}`}
                                     placeholder="별명"
