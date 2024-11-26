@@ -137,11 +137,11 @@ const Join = () => {
     const checkboxLabels = {
         age: "[필수] 만 14세 이상입니다",
         terms: "[필수] 이용약관에 동의합니다",
-        privacy: "[선택] 개인정보 처리방침에 동의합니다"
+        privacy: "[필수] 개인정보 처리방침에 동의합니다"
     };
 
     const validateTerms = (): boolean => {
-        if (!checkboxes.age || !checkboxes.terms) {
+        if (!checkboxes.age || !checkboxes.terms || !checkboxes.privacy) {
             setTermsError("필수 이용약관에 동의해주세요");
             return false;
         }
