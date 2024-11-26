@@ -5,7 +5,8 @@ export default {
         extend: {
             screens: {
                 extraSmall: "375px",
-                tablet: "768px",
+                mobile: "767px",
+                tablet: "1439px",
                 pc: "1440px"
             },
             fontFamily: {
@@ -25,6 +26,21 @@ export default {
                 start: "#7B92C7",
                 middle: "#7846DD",
                 end: "#BB7FA0"
+            },
+            keyframes: {
+                fadeIn: {
+                    "0%": {
+                        opacity: "0",
+                        transform: "translate(-50%, -90%)"
+                    },
+                    "100%": {
+                        opacity: "1",
+                        transform: "translate(-50%, -100%)"
+                    }
+                }
+            },
+            animation: {
+                fadeIn: "fadeIn 0.3s ease-in-out"
             }
         }
     },
