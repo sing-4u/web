@@ -365,6 +365,9 @@ const Join = () => {
                                                 key as keyof CheckboxState
                                             ]
                                         }
+                                        type={
+                                            key as "age" | "terms" | "privacy"
+                                        }
                                         onToggle={() =>
                                             handleCheckboxToggle(
                                                 key as keyof CheckboxState
