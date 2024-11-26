@@ -50,9 +50,7 @@ const Checkbox = ({
                     alt=""
                     className="w-5 h-5 mr-2"
                 />
-                <span className="text-sm font-medium leading-none">
-                    {label}
-                </span>
+                <span className="text-sm leading-none font-bold">{label}</span>
             </label>
             {
                 <a href="">
