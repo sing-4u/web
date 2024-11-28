@@ -31,6 +31,7 @@ const FindPassword = () => {
     const { showToast, toasts } = useToast();
     const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
         useState(false);
+    const [lastRequestTime, setLastRequestTime] = useState<number | null>(null);
     const {
         register,
         handleSubmit,
@@ -74,8 +75,7 @@ const FindPassword = () => {
         };
     }, [timeLeft, isAuthenticationCodeRequested]);
 
-    const handleAuthenticationCodeClick = async () => {
-        if (timeLeft === 0) return;
+    const isRegexEmail = (email: string) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         if (!emailRegex.test(email)) {
             setError("email", {
@@ -84,6 +84,34 @@ const FindPassword = () => {
             });
             return;
         }
+    };
+
+    const checkRequestCoolDown = (
+        lastRequestTime: number | null,
+        cooldownDuration: number = 3000
+    ) => {
+        if (
+            lastRequestTime &&
+            Date.now() - lastRequestTime < cooldownDuration
+        ) {
+            openModal({
+                title: "잠시 후 다시 시도해주세요.",
+                Content: () => (
+                    <div className="flex flex-col gap-y-4 rounded-[10px]"></div>
+                ),
+                type: ModalType.ERROR,
+                buttonBackgroundColor: "bg-[#7846dd]"
+            });
+            return;
+        }
+    };
+
+    const handleAuthenticationCodeClick = async () => {
+        if (timeLeft === 0) return;
+
+        isRegexEmail(email);
+        checkRequestCoolDown(lastRequestTime);
+
         if (isEmailFromGoogleDomain(email)) {
             openModal({
                 title: "SNS로 간편 가입된 계정입니다.",
@@ -105,6 +133,7 @@ const FindPassword = () => {
             showToast("success", "인증 번호가 전송되었습니다.");
             setIsAuthenticationCodeRequested(true);
             setTimeLeft(MINUTES_IN_MS);
+            setLastRequestTime(Date.now());
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 setError("email", {
@@ -227,7 +256,7 @@ const FindPassword = () => {
                         field="code"
                         errors={errors || "인증번호가 일치하지 않습니다."}
                     />
-                    {timeLeft !== 0 && (
+                    {timeLeft !== 0 && isAuthenticationCodeRequested && (
                         <span className="absolute inset-y-12 end-3 text-red-500">
                             {minutes}:{second}
                         </span>

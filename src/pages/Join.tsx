@@ -15,6 +15,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../assets/logo.svg";
 import { ToastContainer } from "../components/ToastContainer";
 import { useTitle } from "../utils/useTitle";
+import Tooltip from "../assets/tootip.svg";
 
 interface FormValues {
     name: string;
@@ -137,11 +138,11 @@ const Join = () => {
     const checkboxLabels = {
         age: "[필수] 만 14세 이상입니다",
         terms: "[필수] 이용약관에 동의합니다",
-        privacy: "[선택] 개인정보 처리방침에 동의합니다"
+        privacy: "[필수] 개인정보 처리방침에 동의합니다"
     };
 
     const validateTerms = (): boolean => {
-        if (!checkboxes.age || !checkboxes.terms) {
+        if (!checkboxes.age || !checkboxes.terms || !checkboxes.privacy) {
             setTermsError("필수 이용약관에 동의해주세요");
             return false;
         }
@@ -187,7 +188,7 @@ const Join = () => {
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className="extraSmall:w-96 extraSmall:mx-auto lg:mx-auto"
+            className="mx-auto w-[380px] p-6"
         >
             <ToastContainer toasts={toasts} />
             <div className="">
@@ -196,16 +197,21 @@ const Join = () => {
                     회원가입
                 </div>
 
-                <div className="">
-                    <div className="w-full h-[48px] rounded-[10px] border border-black mb-10">
+                <div>
+                    <div className="relative group w-full h-[48px] rounded-[10px] border border-black mb-10">
                         <button
                             type="button"
                             onClick={handleGoogleClick}
                             className="w-full h-full flex items-center justify-center font-bold text-sm"
                         >
                             <GoogleIcon />
-                            <span className="ml-2">Google로 회원가입</span>{" "}
+                            <span className="ml-2">Google로 회원가입</span>
                         </button>
+                        <img
+                            src={Tooltip}
+                            alt="Google Sign Up"
+                            className="w-[90px] h-auto absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
+                        />
                     </div>
                     <div className="flex items-center my-10">
                         <span className="w-full border-b"></span>
@@ -213,7 +219,7 @@ const Join = () => {
 
                     <div className="space-y-4">
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2 flex flex-col">
+                            <label className="text-sm flex flex-col font-bold">
                                 닉네임
                                 <input
                                     type="text"
@@ -225,7 +231,7 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] mt-2 ${getInputErrorClassName(
+                                    className={`font-thin text-base scale-[0.875] origin-left w-[114.285714%] border border-[#e1e1e1] h-[48px] px-4 mt-2 ${getInputErrorClassName(
                                         errors.name
                                     )}`}
                                     placeholder="별명"
@@ -237,9 +243,10 @@ const Join = () => {
                                 </p>
                             )}
                         </div>
+                        <div className="pc:my-[30px]"></div>
 
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2 flex flex-col">
+                            <label className="text-sm flex flex-col font-bold">
                                 이메일
                                 <input
                                     type="email"
@@ -251,7 +258,7 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 ${getInputErrorClassName(
+                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal ${getInputErrorClassName(
                                         errors.email
                                     )}`}
                                     placeholder="abc@email.com"
@@ -260,9 +267,9 @@ const Join = () => {
 
                             <ErrorMessage field="email" errors={errors} />
                         </div>
-
+                        <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2">
+                            <label className="text-sm mb-2 font-bold">
                                 비밀번호
                                 <div className="relative top-2">
                                     <input
@@ -275,7 +282,7 @@ const Join = () => {
                                                     "영문, 숫자를 포함한 8자 이상의 비밀번호"
                                             }
                                         })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12  ${getInputErrorClassName(
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
                                             errors.password
                                         )}`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
@@ -296,11 +303,11 @@ const Join = () => {
 
                             <ErrorMessage field="password" errors={errors} />
                         </div>
-
+                        <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2">
+                            <label className="text-sm font-bold">
                                 비밀번호 확인
-                                <div className="relative">
+                                <div className="relative top-2">
                                     <input
                                         type={confirmPassword.type}
                                         {...register("confirmPassword", {
@@ -310,7 +317,7 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 ${getInputErrorClassName(
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
                                             errors.confirmPassword
                                         )}`}
                                         placeholder="비밀번호 확인"
@@ -334,10 +341,11 @@ const Join = () => {
                                 errors={errors}
                             />
                         </div>
+                        <div className="pc:my-[30px]"></div>
                     </div>
 
                     <div className="space-y-4 mt-[30px]">
-                        <div className="text-sm">약관동의</div>
+                        <div className="text-sm font-bold">약관동의</div>
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
                             onClick={handleAllCheckboxes}
@@ -351,7 +359,7 @@ const Join = () => {
                                 alt=""
                                 className="w-5 h-5"
                             />
-                            <span className="text-sm">전체동의</span>
+                            <span className="text-sm font-bold">전체동의</span>
                         </div>
                         <div className="w-full border-t border-gray-200 my-4"></div>
                         <div className="space-y-4">
@@ -364,6 +372,9 @@ const Join = () => {
                                             checkboxes[
                                                 key as keyof CheckboxState
                                             ]
+                                        }
+                                        type={
+                                            key as "age" | "terms" | "privacy"
                                         }
                                         onToggle={() =>
                                             handleCheckboxToggle(

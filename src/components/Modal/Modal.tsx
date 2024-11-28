@@ -15,7 +15,7 @@ export const Modal = <T,>({
 }: ModalExtendedProps<T>) => {
     if (!Content) return null;
 
-    const buttonClassName = `w-full py-3 bg-[${buttonBackgroundColor}] text-textColor rounded-lg mt-4`;
+    const buttonClassName = `w-full py-3 ${buttonBackgroundColor} text-textColor rounded-lg mt-4`;
 
     const onClickModal = (event: React.MouseEvent<HTMLElement>) => {
         if (event.target === event.currentTarget) onClose?.();

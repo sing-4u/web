@@ -131,7 +131,7 @@ const Login = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
-          className="form-container w-full max-w-md mx-auto p-6 space-y-6 h-full relative
+          className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative
   md:w-[380px] md:h-[601px]"
         >
           <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
@@ -142,9 +142,7 @@ const Login = () => {
           <div className="absolute w-[326px] h-[22px] top-[181px] left-[25px] font-medium text-[13px] leading-[22px] text-center">
             지금 가입하면, 당신의 신청곡으로 특별한 노래를 선물해드릴게요
           </div>
-          <div className="space-x-2 mt-4 flex items-center">
-            <span className="w-full border-b"></span>
-          </div>
+          <div className="space-x-2 mt-4 flex items-center"></div>
           <div className="absolute w-[327px] h-[52px] top-[278px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
             <button
               type="button"
@@ -158,9 +156,9 @@ const Login = () => {
           <div className="absolute w-[250px] h-[12px] top-[370px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
           </div>
-          <div className="flex flex-col space-y-4 ">
+          <div className="flex flex-col space-y-4">
             <div
-              className={`relative w-[327px] top-[365px]  ${
+              className={`relative w-[327px] top-[365px] ${
                 errors.email ? "mb-4" : "mb-0"
               }`}
             >
