@@ -3,7 +3,7 @@ import SearchIcon from "../assets/ic_Search.svg";
 import Card from "../assets/card.svg";
 import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
-import { useTitle } from "../utils/useTitle";
+import { useTitle } from "../hooks/useTitle";
 import axiosInstance from "../utils/axiosInstance";
 import { baseURL } from "../utils/apiUrl";
 
@@ -41,7 +41,6 @@ export default function Home() {
             }
         } catch (error) {
             console.error("초기 데이터 로드 중 오류 발생:", error);
-            setHasMore(false);
         } finally {
             setLoading(false);
         }
@@ -49,7 +48,6 @@ export default function Home() {
 
     const loadMoreItems = useCallback(async () => {
         if (loading || !hasMore) return;
-        const currentIndex = Math.floor(users.length / 10); // 현재 페이지 인덱스 계산
 
         setLoading(true);
         try {
