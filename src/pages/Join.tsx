@@ -211,7 +211,7 @@ const Join = () => {
                         <img
                             src={Tooltip}
                             alt="Google Sign Up"
-                            className="w-[90px] h-auto absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
+                            className="absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
                         />
                     </div>
                     <div className="flex items-center my-10">
