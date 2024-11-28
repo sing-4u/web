@@ -88,7 +88,6 @@ const ManageSong = () => {
 
     navigator.clipboard.writeText(requestUrl).then(() => {
       setIsCopied(true);
-      setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
       }, 2000);
