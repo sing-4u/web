@@ -17,6 +17,7 @@ import { ToastContainer } from "../components/ToastContainer";
 import { useTitle } from "../utils/useTitle";
 import Tooltip from "../assets/tootip.svg";
 import Navbar from "../components/Navbar";
+import { baseURL } from "../utils/apiUrl";
 
 interface FormValues {
     name: string;
@@ -81,7 +82,7 @@ const Join = () => {
             const processGoogleLogin = async () => {
                 try {
                     const response = await axios.post(
-                        `${import.meta.env.VITE_API_URL}/auth/login/social`,
+                        `${baseURL}/auth/login/social`,
                         {
                             provider: "GOOGLE",
                             providerCode
@@ -157,15 +158,16 @@ const Join = () => {
         }
 
         try {
-            await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/register/email`,
-                { email, password, name }
-            );
+            await axios.post(`${baseURL}/auth/register/email`, {
+                email,
+                password,
+                name
+            });
 
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/login/email`,
-                { email, password }
-            );
+            const res = await axios.post(`${baseURL}/auth/login/email`, {
+                email,
+                password
+            });
             const { accessToken, refreshToken } = res.data;
             storeToken(accessToken, refreshToken);
             showToast("success", "회원가입이 완료되었습니다.");

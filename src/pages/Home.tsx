@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useTitle } from "../utils/useTitle";
 import axiosInstance from "../utils/axiosInstance";
+import { baseURL } from "../utils/apiUrl";
 
 interface UserProps {
     id: string;
@@ -24,16 +25,13 @@ export default function Home() {
     const loadInitialData = useCallback(async () => {
         setLoading(true);
         try {
-            const response = await axiosInstance().get(
-                `${import.meta.env.VITE_API_URL}/users`,
-                {
-                    params: {
-                        size: 10,
-                        index: 0
-                    }
+            const response = await axiosInstance().get(`${baseURL}/users`, {
+                params: {
+                    size: 10,
+                    index: 0
                 }
-            );
-            console.log(response.data);
+            });
+
             setUsers(response.data);
             setPage((prevPage) => prevPage + 1);
             setHasMore(response.data.length === 10);
@@ -55,15 +53,12 @@ export default function Home() {
 
         setLoading(true);
         try {
-            const response = await axiosInstance().get(
-                `${import.meta.env.VITE_API_URL}/users`,
-                {
-                    params: {
-                        size: 10,
-                        index: page
-                    }
+            const response = await axiosInstance().get(`${baseURL}/users`, {
+                params: {
+                    size: 10,
+                    index: page
                 }
-            );
+            });
 
             if (response.data.length > 0) {
                 setUsers((prevUsers) => [...prevUsers, ...response.data]);
@@ -101,7 +96,6 @@ export default function Home() {
             },
             { threshold: 0.1, rootMargin: "100px" }
         );
-        console.log(observer);
 
         const currentLoaderRef = loaderRef.current;
         if (currentLoaderRef) {
@@ -111,8 +105,8 @@ export default function Home() {
         return () => {
             if (currentLoaderRef) {
                 observer.unobserve(currentLoaderRef);
-                observer.disconnect();
             }
+            observer.disconnect();
         };
     }, [loadMoreItems, loading, hasMore]);
 

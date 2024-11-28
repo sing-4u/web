@@ -12,6 +12,7 @@ import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
 import { useTitle } from "../utils/useTitle";
 import ErrorMessage from "../components/ErrorMessage";
+import { baseURL } from "../utils/apiUrl";
 
 interface FormValue {
     email: string;
@@ -123,12 +124,9 @@ const FindPassword = () => {
         }
 
         try {
-            await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/get-email-code`,
-                {
-                    email
-                }
-            );
+            await axios.post(`${baseURL}/auth/get-email-code`, {
+                email
+            });
 
             showToast("success", "인증 번호가 전송되었습니다.");
             setIsAuthenticationCodeRequested(true);
@@ -161,10 +159,10 @@ const FindPassword = () => {
 
     const onSubmit = async ({ email, code }: FormValue) => {
         try {
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/verify-email-code`,
-                { email, code }
-            );
+            const res = await axios.post(`${baseURL}/auth/verify-email-code`, {
+                email,
+                code
+            });
 
             const { data: accessToken } = res;
             navigate("/new-password", { state: accessToken });
