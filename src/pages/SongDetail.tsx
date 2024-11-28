@@ -14,7 +14,7 @@ import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal
 import EmailInputModal from "../components/Modal/EmailInputModal";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ModalType } from "../types";
-import { useTitle } from "../utils/useTitle";
+import { useTitle } from "../hooks/useTitle";
 
 interface SongDetailForm {
     artist: string;

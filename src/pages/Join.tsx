@@ -14,8 +14,10 @@ import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../assets/logo.svg";
 import { ToastContainer } from "../components/ToastContainer";
-import { useTitle } from "../utils/useTitle";
+import { useTitle } from "../hooks/useTitle";
 import Tooltip from "../assets/tootip.svg";
+import Navbar from "../components/Navbar";
+import { baseURL } from "../utils/apiUrl";
 
 interface FormValues {
     name: string;
@@ -80,7 +82,7 @@ const Join = () => {
             const processGoogleLogin = async () => {
                 try {
                     const response = await axios.post(
-                        `${import.meta.env.VITE_API_URL}/auth/login/social`,
+                        `${baseURL}/auth/login/social`,
                         {
                             provider: "GOOGLE",
                             providerCode
@@ -156,15 +158,16 @@ const Join = () => {
         }
 
         try {
-            await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/register/email`,
-                { email, password, name }
-            );
+            await axios.post(`${baseURL}/auth/register/email`, {
+                email,
+                password,
+                name
+            });
 
-            const res = await axios.post(
-                `${import.meta.env.VITE_API_URL}/auth/login/email`,
-                { email, password }
-            );
+            const res = await axios.post(`${baseURL}/auth/login/email`, {
+                email,
+                password
+            });
             const { accessToken, refreshToken } = res.data;
             storeToken(accessToken, refreshToken);
             showToast("success", "회원가입이 완료되었습니다.");
@@ -191,8 +194,8 @@ const Join = () => {
             className="mx-auto w-[380px] p-6"
         >
             <ToastContainer toasts={toasts} />
-            <div className="">
-                <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
+            <div>
+                <Navbar />
                 <div className="text-2xl font-bold text-center mb-[67px]">
                     회원가입
                 </div>
@@ -210,7 +213,7 @@ const Join = () => {
                         <img
                             src={Tooltip}
                             alt="Google Sign Up"
-                            className="w-[90px] h-auto absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
+                            className="absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
                         />
                     </div>
                     <div className="flex items-center my-10">
