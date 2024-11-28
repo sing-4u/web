@@ -18,8 +18,10 @@ export default function Home() {
     const [users, setUsers] = useState<UserProps[]>([]);
     const [loading, setLoading] = useState(false);
     const loaderRef = useRef(null);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
 
-    const loadMoreItems = useCallback(async () => {
+    const loadInitialData = useCallback(async () => {
         setLoading(true);
         try {
             const response = await axiosInstance().get(
@@ -27,52 +29,57 @@ export default function Home() {
                 {
                     params: {
                         size: 10,
-                        index: users.length
+                        index: 0
                     }
                 }
             );
-            setUsers((prevUsers) => [...prevUsers, ...response.data]);
+            console.log(response.data);
+            setUsers(response.data);
+            setPage((prevPage) => prevPage + 1);
+            setHasMore(response.data.length === 10);
+
+            if (response.data.length < 10) {
+                setHasMore(false);
+            }
         } catch (error) {
-            console.error("데이터를 불러오는 중 오류가 발생했습니다:", error);
+            console.error("초기 데이터 로드 중 오류 발생:", error);
+            setHasMore(false);
         } finally {
             setLoading(false);
         }
-    }, [users.length]);
-
-    useEffect(() => {
-        async function fetchAndSetUser() {
-            await axiosInstance().get(`${import.meta.env.VITE_API_URL}/users`, {
-                params: {
-                    size: 10,
-                    index: users.length
-                }
-            });
-        }
-        fetchAndSetUser();
     }, []);
 
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const first = entries[0];
-                if (first.isIntersecting) {
-                    loadMoreItems();
+    const loadMoreItems = useCallback(async () => {
+        if (loading || !hasMore) return;
+        const currentIndex = Math.floor(users.length / 10); // 현재 페이지 인덱스 계산
+
+        setLoading(true);
+        try {
+            const response = await axiosInstance().get(
+                `${import.meta.env.VITE_API_URL}/users`,
+                {
+                    params: {
+                        size: 10,
+                        index: page
+                    }
                 }
-            },
-            { threshold: 1 }
-        );
+            );
 
-        const currentLoaderRef = loaderRef.current;
-        if (currentLoaderRef) {
-            observer.observe(currentLoaderRef);
-        }
-
-        return () => {
-            if (currentLoaderRef) {
-                observer.unobserve(currentLoaderRef);
+            if (response.data.length > 0) {
+                setUsers((prevUsers) => [...prevUsers, ...response.data]);
+                setPage((prevPage) => prevPage + 1);
             }
-        };
-    }, [loadMoreItems]);
+
+            if (response.data.length < 10) {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error("추가 데이터 로드 중 오류 발생:", error);
+            setHasMore(false);
+        } finally {
+            setLoading(false);
+        }
+    }, [loading, hasMore, page]);
 
     const setTitle = useTitle();
 
@@ -81,15 +88,20 @@ export default function Home() {
     }, 100);
 
     useEffect(() => {
+        loadInitialData();
+    }, [loadInitialData]);
+
+    useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 const first = entries[0];
-                if (first.isIntersecting) {
+                if (first.isIntersecting && !loading && hasMore) {
                     loadMoreItems();
                 }
             },
-            { threshold: 1 }
+            { threshold: 0.1, rootMargin: "100px" }
         );
+        console.log(observer);
 
         const currentLoaderRef = loaderRef.current;
         if (currentLoaderRef) {
@@ -99,9 +111,10 @@ export default function Home() {
         return () => {
             if (currentLoaderRef) {
                 observer.unobserve(currentLoaderRef);
+                observer.disconnect();
             }
         };
-    }, []);
+    }, [loadMoreItems, loading, hasMore]);
 
     const handleSongDetailClick = () => {
         navigate("/song-detail");
@@ -150,16 +163,21 @@ export default function Home() {
                 ))}
             </div>
 
-            <div ref={loaderRef} className="text-center">
+            <div
+                ref={loaderRef}
+                className="w-full h-20 flex items-center justify-center mt-4"
+            >
                 {loading ? (
                     <p>Loading...</p>
-                ) : (
+                ) : hasMore ? (
                     <button
                         className="w-full bg-black text-white rounded-[10px] h-[52px]"
                         onClick={loadMoreItems}
                     >
                         더보기
                     </button>
+                ) : (
+                    <p>더 이상 불러올 데이터가 없습니다</p>
                 )}
             </div>
         </div>
