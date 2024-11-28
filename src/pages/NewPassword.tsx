@@ -7,7 +7,7 @@ import getInputErrorClassName from "../utils/className";
 import axiosInstance from "../utils/axiosInstance";
 import { ToastContainer } from "../components/ToastContainer";
 import Navbar from "../components/Navbar";
-import { useTitle } from "../utils/useTitle";
+import { useTitle } from "../hooks/useTitle";
 
 interface PasswordProps {
     newPassword: string;
