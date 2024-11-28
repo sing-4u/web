@@ -12,12 +12,12 @@ import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
-import Logo from "../assets/logo.svg";
 import { ToastContainer } from "../components/ToastContainer";
 import { useTitle } from "../hooks/useTitle";
 import Tooltip from "../assets/tootip.svg";
 import Navbar from "../components/Navbar";
 import { baseURL } from "../utils/apiUrl";
+import Logo from "../components/Logo";
 
 interface FormValues {
     name: string;
@@ -194,9 +194,15 @@ const Join = () => {
             className="mx-auto w-[380px] p-6"
         >
             <ToastContainer toasts={toasts} />
+
             <div>
-                <Navbar />
-                <div className="text-2xl font-bold text-center mb-[67px]">
+                <div
+                    onClick={() => navigate("/")}
+                    className="w-[64px] h-[22.5px]"
+                >
+                    <Logo />
+                </div>
+                <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     회원가입
                 </div>
 
