@@ -16,6 +16,7 @@ import Logo from "../assets/logo.svg";
 import { ToastContainer } from "../components/ToastContainer";
 import { useTitle } from "../utils/useTitle";
 import Tooltip from "../assets/tootip.svg";
+import Navbar from "../components/Navbar";
 
 interface FormValues {
     name: string;
@@ -191,8 +192,8 @@ const Join = () => {
             className="mx-auto w-[380px] p-6"
         >
             <ToastContainer toasts={toasts} />
-            <div className="">
-                <img src={Logo} alt="logo" className="w-16 h-16 mb-2" />
+            <div>
+                <Navbar />
                 <div className="text-2xl font-bold text-center mb-[67px]">
                     회원가입
                 </div>
