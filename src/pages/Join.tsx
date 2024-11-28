@@ -14,7 +14,7 @@ import { useAuthRedirect } from "../hooks/useAuthRedirect";
 import ErrorMessage from "../components/ErrorMessage";
 import Logo from "../assets/logo.svg";
 import { ToastContainer } from "../components/ToastContainer";
-import { useTitle } from "../utils/useTitle";
+import { useTitle } from "../hooks/useTitle";
 import Tooltip from "../assets/tootip.svg";
 import Navbar from "../components/Navbar";
 import { baseURL } from "../utils/apiUrl";

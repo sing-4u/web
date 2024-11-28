@@ -10,7 +10,7 @@ import Navbar from "../components/Navbar";
 import { useModal } from "../hooks/useModal";
 import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
-import { useTitle } from "../utils/useTitle";
+import { useTitle } from "../hooks/useTitle";
 import ErrorMessage from "../components/ErrorMessage";
 import { baseURL } from "../utils/apiUrl";
 
