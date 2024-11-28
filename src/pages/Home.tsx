@@ -136,21 +136,21 @@ export default function Home() {
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
                 />
             </div>
-            <div className="grid extraSmall:grid-cols-2 w-full gap-4 lg:grid-cols-4 tablet:grid-cols-3">
+            <div className="grid mobile:grid-cols-2 w-full gap-4 pc:grid-cols-4 tablet:grid-cols-3">
                 {users.map((user, index) => (
                     <div key={`${user.id}_${index}`} className="flex flex-col">
-                        <div className="relative rounded-[20px] p-[5px] bg-gradient-to-br from-yellow-200 via-pink-200 to-blue-200 flex flex-col justify-center">
+                        <div className="relative rounded-[20px] border-[4px] border-[#e1e1e1] overflow-hidden">
                             <div
-                                className="relative aspect-square w-full h-0 pb-[100%]"
+                                className="relative aspect-square w-full"
                                 onClick={handleSongDetailClick}
                             >
                                 <img
                                     src={user.image || Card}
                                     alt={`${user.name}의 프로필 이미지`}
-                                    className="absolute inset-0 w-full h-full object-cover rounded-2xl"
+                                    className="w-full h-full object-cover"
                                 />
                                 {user.isOpened && (
-                                    <div className="absolute top-2 left-2 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-md border border-black">
+                                    <div className="absolute top-2 left-2 bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-md border border-black">
                                         신청곡 받는 중
                                     </div>
                                 )}
