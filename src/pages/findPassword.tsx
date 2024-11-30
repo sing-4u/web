@@ -89,8 +89,6 @@ const FindPassword = () => {
     };
 
     const handleAuthenticationCodeClick = async () => {
-        if (timeLeft === 0) return;
-
         isRegexEmail(email);
         if (lastRequestTime && Date.now() - lastRequestTime < 30000) {
             openModal({
