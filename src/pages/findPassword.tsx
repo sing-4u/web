@@ -46,6 +46,7 @@ const FindPassword = () => {
 
     const MINUTES_IN_MS = 3 * 60 * 1000;
     const INTERVAL = 1000;
+    const COOLDOWN_DURATION = 30000;
     const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
     const minutes = String(
@@ -87,14 +88,11 @@ const FindPassword = () => {
         }
     };
 
-    const checkRequestCoolDown = (
-        lastRequestTime: number | null,
-        cooldownDuration: number = 3000
-    ) => {
-        if (
-            lastRequestTime &&
-            Date.now() - lastRequestTime < cooldownDuration
-        ) {
+    const handleAuthenticationCodeClick = async () => {
+        if (timeLeft === 0) return;
+
+        isRegexEmail(email);
+        if (lastRequestTime && Date.now() - lastRequestTime < 30000) {
             openModal({
                 title: "잠시 후 다시 시도해주세요.",
                 Content: () => (
@@ -105,13 +103,6 @@ const FindPassword = () => {
             });
             return;
         }
-    };
-
-    const handleAuthenticationCodeClick = async () => {
-        if (timeLeft === 0) return;
-
-        isRegexEmail(email);
-        checkRequestCoolDown(lastRequestTime);
 
         if (isEmailFromGoogleDomain(email)) {
             openModal({
