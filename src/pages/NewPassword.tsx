@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useToast } from "../hooks/useToast";
 import { useForm } from "react-hook-form";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import getInputErrorClassName from "../utils/className";
 import axiosInstance from "../utils/axiosInstance";
@@ -23,6 +23,7 @@ const NewPassword = () => {
     const { state } = useLocation();
     const { accessToken } = state;
     const { showToast, toasts } = useToast();
+    const navigate = useNavigate();
 
     const {
         register,
@@ -49,6 +50,7 @@ const NewPassword = () => {
                 newPassword
             });
             showToast("success", "비밀번호가 변경되었습니다.");
+            navigate("/login");
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
             // 401 에러 처리
