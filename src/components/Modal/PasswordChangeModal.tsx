@@ -11,10 +11,12 @@ import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 import ErrorMessage from "../ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
 const PasswordChangeModal = ({
     buttonBackgroundColor
 }: ModalContentProps<unknown>) => {
+    const navigate = useNavigate();
     const {
         register,
         handleSubmit,
@@ -54,6 +56,7 @@ const PasswordChangeModal = ({
             });
             showToast("success", "비밀번호 변경 완료");
             closeModal();
+            navigate("/login");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("oldPassword", {
