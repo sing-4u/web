@@ -105,7 +105,7 @@ const NewPassword = () => {
                     </span>
                 </div>
                 <div className="relative flex flex-col">
-                    <label htmlFor="confirmPassword" className="text-left my-2">
+                    <label htmlFor="confirmPassword" className="text-left mb-2">
                         새 비밀번호 확인
                     </label>
                     <input
