@@ -18,6 +18,7 @@ import { useTitle } from "../hooks/useTitle";
 import Tooltip from "../assets/tootip.svg";
 import Navbar from "../components/Navbar";
 import { baseURL } from "../utils/apiUrl";
+import { jwtDecode } from "jwt-decode";
 
 interface FormValues {
     name: string;
@@ -30,6 +31,11 @@ interface CheckboxState {
     age: boolean;
     terms: boolean;
     privacy: boolean;
+}
+
+export interface DecodedToken {
+    email: string;
+    provider: string;
 }
 
 const Join = () => {
@@ -76,27 +82,51 @@ const Join = () => {
     } = usePasswordToggle();
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const providerCode = urlParams.get("code");
-        if (providerCode) {
-            const processGoogleLogin = async () => {
-                try {
+        const saveAccessToken = async () => {
+            const hash = window.location.hash;
+            const params = new URLSearchParams(hash.substring(1));
+            const accessToken = params.get("access_token");
+
+            if (accessToken) {
+                localStorage.setItem("providerAccessToken", accessToken);
+                return accessToken;
+            }
+            return null;
+        };
+
+        const processGoogleLogin = async () => {
+            try {
+                const providerAccessToken = await saveAccessToken();
+
+                if (providerAccessToken) {
                     const response = await axios.post(
                         `${baseURL}/auth/login/social`,
                         {
                             provider: "GOOGLE",
-                            providerCode
+                            providerAccessToken
                         }
                     );
+
                     const { accessToken, refreshToken } = response.data;
+                    const decodedToken = jwtDecode<DecodedToken>(accessToken);
+
+                    localStorage.setItem(
+                        "userInfo",
+                        JSON.stringify({
+                            email: decodedToken.email,
+                            provider: decodedToken.provider
+                        })
+                    );
+
                     storeToken(accessToken, refreshToken);
                     navigate(from, { replace: true });
-                } catch (error) {
-                    if (error) {
-                        showToast("error", "Google 로그인에 실패했습니다.");
-                    }
                 }
-            };
+            } catch (error) {
+                console.error("Google 로그인 처리 중 오류 발생:", error);
+            }
+        };
+
+        if (window.location.hash) {
             processGoogleLogin();
         }
     }, [navigate, from, showToast]);
@@ -110,21 +140,6 @@ const Join = () => {
     const handleCheckboxToggle = (name: keyof CheckboxState) => {
         setCheckboxes((prev) => ({ ...prev, [name]: !prev[name] }));
         setTermsError("");
-    };
-
-    const handleGoogleClick = async () => {
-        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-        const params = new URLSearchParams({
-            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-            response_type: "code",
-            scope: [
-                "https://www.googleapis.com/auth/userinfo.profile",
-                "https://www.googleapis.com/auth/userinfo.email"
-            ].join(" "),
-            include_granted_scopes: "true"
-        });
-        window.location.href = `${oauth2Endpoint}?${params.toString()}`;
     };
 
     const handleAllCheckboxes = () => {
@@ -202,14 +217,17 @@ const Join = () => {
 
                 <div>
                     <div className="relative group w-full h-[48px] rounded-[10px] border border-black mb-10">
-                        <button
-                            type="button"
-                            onClick={handleGoogleClick}
+                        <a
+                            href={`https://accounts.google.com/o/oauth2/auth?client_id=${
+                                import.meta.env.VITE_GOOGLE_CLIENT_ID
+                            }&redirect_uri=${
+                                import.meta.env.VITE_GOOGLE_REDIRECT_URI
+                            }&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email`}
                             className="w-full h-full flex items-center justify-center font-bold text-sm"
                         >
                             <GoogleIcon />
                             <span className="ml-2">Google로 회원가입</span>
-                        </button>
+                        </a>
                         <img
                             src={Tooltip}
                             alt="Google Sign Up"
@@ -241,7 +259,7 @@ const Join = () => {
                                 />
                             </label>
                             {errors.name && (
-                                <p className="text-red-500 text-xs mt-1">
+                                <p className="text-errorTextColor text-sm mt-2">
                                     {errors.name.message}
                                 </p>
                             )}
@@ -268,7 +286,11 @@ const Join = () => {
                                 />
                             </label>
 
-                            <ErrorMessage field="email" errors={errors} />
+                            {errors.email && (
+                                <p className="text-errorTextColor text-sm mt-2">
+                                    {errors.email.message}
+                                </p>
+                            )}
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
@@ -286,7 +308,7 @@ const Join = () => {
                                             pattern: {
                                                 value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                                 message:
-                                                    "영문, 숫자를 포함한 8자 이상의 비밀번호"
+                                                    "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                             }
                                         })}
                                         className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
@@ -305,44 +327,50 @@ const Join = () => {
                                 </div>
                             </label>
 
-                            <ErrorMessage field="password" errors={errors} />
+                            {errors.password && (
+                                <p className="text-errorTextColor text-sm mt-2">
+                                    {errors.password.message}
+                                </p>
+                            )}
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
                             <label
                                 htmlFor="confirmPassword"
-                                className="text-sm font-bold"
+                                className="text-sm font-bold mb-2"
                             >
                                 비밀번호 확인
+                                <div className="relative top-2">
+                                    <input
+                                        type={confirmPassword.type}
+                                        id="confirmPassword"
+                                        {...register("confirmPassword", {
+                                            required:
+                                                "비밀번호 확인을 해주세요",
+                                            validate: (value) =>
+                                                value === watchPassword ||
+                                                "비밀번호가 일치하지 않습니다."
+                                        })}
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                            errors.confirmPassword
+                                        )}`}
+                                        placeholder="비밀번호 확인"
+                                    />
+
+                                    <img
+                                        src={handleConfirmEyeIconToggle()}
+                                        alt="Toggle Password Visibility"
+                                        className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                        onClick={handleConfirmToggle}
+                                    />
+                                </div>
                             </label>
-                            <div className="relative top-2">
-                                <input
-                                    type={confirmPassword.type}
-                                    id="confirmPassword"
-                                    {...register("confirmPassword", {
-                                        required: "비밀번호 확인을 해주세요",
-                                        validate: (value) =>
-                                            value === watchPassword ||
-                                            "비밀번호가 일치하지 않습니다."
-                                    })}
-                                    className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
-                                        errors.confirmPassword
-                                    )}`}
-                                    placeholder="비밀번호 확인"
-                                />
 
-                                <img
-                                    src={handleConfirmEyeIconToggle()}
-                                    alt="Toggle Password Visibility"
-                                    className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
-                                    onClick={handleConfirmToggle}
-                                />
-                            </div>
-
-                            <ErrorMessage
-                                field="confirmPassword"
-                                errors={errors}
-                            />
+                            {errors.confirmPassword && (
+                                <p className="text-errorTextColor text-sm mt-2">
+                                    {errors.confirmPassword.message}
+                                </p>
+                            )}
                         </div>
                         <div className="pc:my-[30px]"></div>
                     </div>
