@@ -128,10 +128,16 @@ export default function Home() {
                     className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5"
                 />
             </div>
-            <div className="grid mobile:grid-cols-2 w-full gap-4 pc:grid-cols-4 tablet:grid-cols-3">
+            <div className="grid mobile:grid-cols-2 w-full gap-4 pc:grid-cols-4 tablet:grid-cols-3 max-w-6xl">
                 {users.map((user, index) => (
                     <div key={`${user.id}_${index}`} className="flex flex-col">
-                        <div className="relative rounded-[20px] border-[4px] border-[#e1e1e1] overflow-hidden">
+                        <div
+                            className={`relative rounded-lg border-[4px]  ${
+                                user.isOpened
+                                    ? "border-transparent bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                                    : "border-[#e1e1e1]"
+                            } overflow-hidden`}
+                        >
                             <div
                                 className="relative aspect-square w-full"
                                 onClick={handleSongDetailClick}
@@ -142,7 +148,7 @@ export default function Home() {
                                     className="w-full h-full object-cover"
                                 />
                                 {user.isOpened && (
-                                    <div className="absolute top-2 left-2 bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-md border border-black">
+                                    <div className="text-textColor text-[12px] absolute top-2 left-2 bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-md">
                                         신청곡 받는 중
                                     </div>
                                 )}
