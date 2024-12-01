@@ -36,7 +36,7 @@ const Mypage = () => {
   const { openModal } = useModal();
 
   useEffect(() => {
-    if (!userData) {
+    if (!userData === null) {
       navigate("/", { replace: true });
     }
   }, [userData, navigate]);
