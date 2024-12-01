@@ -32,7 +32,8 @@ const FindPassword = () => {
     const { showToast, toasts } = useToast();
     const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
         useState(false);
-    const [lastRequestTime, setLastRequestTime] = useState<number | null>(null);
+    const [lastRequestTime, setLastRequestTime] = useState(0);
+    const [isRequesting, setIsRequesting] = useState(false);
     const {
         register,
         handleSubmit,
@@ -77,7 +78,7 @@ const FindPassword = () => {
         };
     }, [timeLeft, isAuthenticationCodeRequested]);
 
-    const isRegexEmail = (email: string) => {
+    const checkRegexEmail = (email: string) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         if (!emailRegex.test(email)) {
             setError("email", {
@@ -88,9 +89,8 @@ const FindPassword = () => {
         }
     };
 
-    const handleAuthenticationCodeClick = async () => {
-        isRegexEmail(email);
-        if (lastRequestTime && Date.now() - lastRequestTime < 30000) {
+    const retryRequestAuthenticationNumber = (time: number) => {
+        if (time && Date.now() - time < COOLDOWN_DURATION) {
             openModal({
                 title: "잠시 후 다시 시도해주세요.",
                 Content: () => (
@@ -101,6 +101,25 @@ const FindPassword = () => {
             });
             return;
         }
+    };
+
+    const handleAuthenticationCodeClick = async () => {
+        checkRegexEmail(email);
+        // if (
+        //     lastRequestTime &&
+        //     Date.now() - lastRequestTime < COOLDOWN_DURATION
+        // ) {
+        //     openModal({
+        //         title: "잠시 후 다시 시도해주세요.",
+        //         Content: () => (
+        //             <div className="flex flex-col gap-y-4 rounded-[10px]"></div>
+        //         ),
+        //         type: ModalType.ERROR,
+        //         buttonBackgroundColor: "bg-[#7846dd]"
+        //     });
+        //     return;
+        // }
+        retryRequestAuthenticationNumber(lastRequestTime);
 
         if (isEmailFromGoogleDomain(email)) {
             openModal({
@@ -112,15 +131,16 @@ const FindPassword = () => {
             return;
         }
 
+        setIsRequesting(true);
+        setIsAuthenticationCodeRequested(true);
+        showToast("success", "인증 번호가 전송되었습니다.");
+        setTimeLeft(MINUTES_IN_MS);
+        setLastRequestTime(Date.now());
+
         try {
             await axios.post(`${baseURL}/auth/get-email-code`, {
                 email
             });
-
-            showToast("success", "인증 번호가 전송되었습니다.");
-            setIsAuthenticationCodeRequested(true);
-            setTimeLeft(MINUTES_IN_MS);
-            setLastRequestTime(Date.now());
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 setError("email", {
@@ -129,6 +149,8 @@ const FindPassword = () => {
                         "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
                 });
             }
+        } finally {
+            setIsRequesting(false);
         }
     };
 
@@ -165,6 +187,12 @@ const FindPassword = () => {
         }
     };
 
+    const buttonText = isRequesting
+        ? "요청 중..."
+        : isAuthenticationCodeRequested
+        ? "재요청"
+        : "인증번호 요청";
+
     return (
         <div className="w-full max-w-[376px] mx-auto relative">
             <ToastContainer toasts={toasts} />
@@ -199,7 +227,7 @@ const FindPassword = () => {
                     )}
                     <button
                         type="button"
-                        disabled={!email}
+                        disabled={!email || isRequesting}
                         className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
                                 email !== ""
@@ -213,9 +241,7 @@ const FindPassword = () => {
 
                             rounded-[4px] flex flex-col justify-center disabled:text-textColor hover:text-gray-400"
                         >
-                            {isAuthenticationCodeRequested
-                                ? "재요청"
-                                : "인증번호 요청"}
+                            {buttonText}
                         </span>
                     </button>
                 </div>
