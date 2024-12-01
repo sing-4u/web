@@ -13,10 +13,10 @@ import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 import ErrorMessage from "../ErrorMessage";
 import { useNavigate } from "react-router-dom";
 
-const PasswordChangeModal = ({
+const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
+    navigate,
     buttonBackgroundColor
-}: ModalContentProps<unknown>) => {
-    const navigate = useNavigate();
+}) => {
     const {
         register,
         handleSubmit,
@@ -56,7 +56,7 @@ const PasswordChangeModal = ({
             });
             showToast("success", "비밀번호 변경 완료");
             closeModal();
-            navigate("/login");
+            navigate?.("/login");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("oldPassword", {
@@ -153,7 +153,7 @@ const PasswordChangeModal = ({
                                         if (value === "") {
                                             return "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다.";
                                         }
-                                        if (value !== watchOldPassword) {
+                                        if (value === watchOldPassword) {
                                             return "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요.";
                                         }
                                     }

@@ -1,4 +1,5 @@
 import { ComponentType } from "react";
+import { NavigateFunction } from "react-router-dom";
 
 export interface SongRequestData {
     artist: string;
@@ -10,6 +11,7 @@ export interface ModalContentProps<T> {
     errorMessage?: string;
     data?: T;
     buttonBackgroundColor: string;
+    navigate: NavigateFunction | undefined;
 }
 
 export enum ModalType {
