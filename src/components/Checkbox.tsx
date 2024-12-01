@@ -37,13 +37,15 @@ const Checkbox = ({
     };
 
     return (
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center" tabIndex={0}>
             <label className="flex items-center">
                 <input
                     type="checkbox"
                     checked={isChecked}
                     onChange={onToggle}
-                    className="hidden"
+                    className="opacity-0 cursor-pointer"
+                    role="checkbox"
+                    aria-checked={isChecked}
                 />
                 <img
                     src={isChecked ? CheckedBox : CheckboxOutline}
@@ -52,16 +54,14 @@ const Checkbox = ({
                 />
                 <span className="text-sm leading-none font-bold">{label}</span>
             </label>
-            {
-                <a href="">
-                    <img
-                        src={ChevronRight}
-                        alt="chevron"
-                        className="w-5 h-5"
-                        onClick={handleChevronClick}
-                    />
-                </a>
-            }
+
+            <img
+                src={ChevronRight}
+                alt="chevron"
+                className="w-5 h-5 cursor-pointer"
+                onClick={handleChevronClick}
+                tabIndex={0}
+            />
         </div>
     );
 };

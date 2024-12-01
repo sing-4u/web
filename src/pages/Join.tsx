@@ -272,11 +272,15 @@ const Join = () => {
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2 font-bold">
+                            <label
+                                htmlFor="password"
+                                className="text-sm mb-2 font-bold"
+                            >
                                 비밀번호
                                 <div className="relative top-2">
                                     <input
                                         type={password.type}
+                                        id="password"
                                         {...register("password", {
                                             required: "비밀번호를 입력해주세요",
                                             pattern: {
@@ -290,17 +294,14 @@ const Join = () => {
                                         )}`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
-                                    <button
-                                        type="button"
+
+                                    <img
+                                        src={handleEyeIconToggle()}
+                                        alt="Toggle Password Visibility"
+                                        className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                         onClick={handleToggle}
-                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                                    >
-                                        <img
-                                            src={handleEyeIconToggle()}
-                                            alt="Toggle Password Visibility"
-                                            className="w-5 h-5"
-                                        />
-                                    </button>
+                                        tabIndex={-1}
+                                    />
                                 </div>
                             </label>
 
@@ -308,36 +309,35 @@ const Join = () => {
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label className="text-sm font-bold">
+                            <label
+                                htmlFor="confirmPassword"
+                                className="text-sm font-bold"
+                            >
                                 비밀번호 확인
-                                <div className="relative top-2">
-                                    <input
-                                        type={confirmPassword.type}
-                                        {...register("confirmPassword", {
-                                            required:
-                                                "비밀번호 확인을 해주세요",
-                                            validate: (value) =>
-                                                value === watchPassword ||
-                                                "비밀번호가 일치하지 않습니다."
-                                        })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
-                                            errors.confirmPassword
-                                        )}`}
-                                        placeholder="비밀번호 확인"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={handleConfirmToggle}
-                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                                    >
-                                        <img
-                                            src={handleConfirmEyeIconToggle()}
-                                            alt="Toggle Password Visibility"
-                                            className="w-5 h-5"
-                                        />
-                                    </button>
-                                </div>
                             </label>
+                            <div className="relative top-2">
+                                <input
+                                    type={confirmPassword.type}
+                                    id="confirmPassword"
+                                    {...register("confirmPassword", {
+                                        required: "비밀번호 확인을 해주세요",
+                                        validate: (value) =>
+                                            value === watchPassword ||
+                                            "비밀번호가 일치하지 않습니다."
+                                    })}
+                                    className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                        errors.confirmPassword
+                                    )}`}
+                                    placeholder="비밀번호 확인"
+                                />
+
+                                <img
+                                    src={handleConfirmEyeIconToggle()}
+                                    alt="Toggle Password Visibility"
+                                    className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                    onClick={handleConfirmToggle}
+                                />
+                            </div>
 
                             <ErrorMessage
                                 field="confirmPassword"
@@ -351,8 +351,22 @@ const Join = () => {
                         <div className="text-sm font-bold">약관동의</div>
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
+                            role="checkbox"
+                            tabIndex={0}
+                            aria-checked={isAllChecked}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    handleAllCheckboxes();
+                                }
+                            }}
                             onClick={handleAllCheckboxes}
                         >
+                            <input
+                                type="checkbox"
+                                className="sr-only"
+                                checked={isAllChecked}
+                                onChange={handleAllCheckboxes}
+                            />
                             <img
                                 src={
                                     isAllChecked
@@ -364,6 +378,7 @@ const Join = () => {
                             />
                             <span className="text-sm font-bold">전체동의</span>
                         </div>
+
                         <div className="w-full border-t border-gray-200 my-4"></div>
                         <div className="space-y-4">
                             {Object.entries(checkboxLabels).map(
