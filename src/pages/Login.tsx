@@ -138,8 +138,8 @@ const Login = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
-          className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative
-  md:w-[380px] md:h-[601px]"
+          className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative mobile:w-[375px]
+  tablet:w-[380px] tablet:h-[601px]"
         >
           <div className="cursor-pointer absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
             <div
