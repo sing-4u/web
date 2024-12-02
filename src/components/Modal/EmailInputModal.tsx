@@ -89,7 +89,7 @@ export default function EmailInputModal<T extends SongData>({
         <div>
             <button
                 onClick={handleClickLogin}
-                className="bg-colorPurple w-full h-12 rounded-md text-white text-[14px] font-semibold"
+                className="bg-colorPurple w-full h-12 rounded-lg text-white text-[14px] font-semibold"
             >
                 로그인
             </button>
@@ -119,7 +119,7 @@ export default function EmailInputModal<T extends SongData>({
                 <ErrorMessage errors={error} />
                 <button
                     onClick={handleClickSongDetail}
-                    className="bg-black w-full h-12 rounded-md mt-10 text-white text-[14px] font-semibold"
+                    className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold"
                 >
                     비회원으로 신청하기
                 </button>
