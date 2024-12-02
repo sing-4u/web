@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Router } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -134,8 +134,13 @@ const Login = () => {
           className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative
   md:w-[380px] md:h-[601px]"
         >
-          <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
-            <div className="flex justify-center items-center w-[100px] h-[35.15px]">
+          <div className="cursor-pointer absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
+            <div
+              onClick={() => {
+                navigate("/");
+              }}
+              className="flex justify-center items-center w-[100px] h-[35.15px]"
+            >
               <Logo />
             </div>
           </div>
