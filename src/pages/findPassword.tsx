@@ -13,6 +13,8 @@ import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
 import ErrorMessage from "../components/ErrorMessage";
 import { baseURL } from "../utils/apiUrl";
+import { DecodedToken } from "./Join";
+import { jwtDecode } from "jwt-decode";
 
 interface FormValue {
     email: string;
@@ -104,36 +106,13 @@ const FindPassword = () => {
     };
 
     const handleAuthenticationCodeClick = async () => {
+        setIsAuthenticationCodeRequested(true);
         checkRegexEmail(email);
-        // if (
-        //     lastRequestTime &&
-        //     Date.now() - lastRequestTime < COOLDOWN_DURATION
-        // ) {
-        //     openModal({
-        //         title: "잠시 후 다시 시도해주세요.",
-        //         Content: () => (
-        //             <div className="flex flex-col gap-y-4 rounded-[10px]"></div>
-        //         ),
-        //         type: ModalType.ERROR,
-        //         buttonBackgroundColor: "bg-[#7846dd]"
-        //     });
-        //     return;
-        // }
+
         retryRequestAuthenticationNumber(lastRequestTime);
 
-        if (isEmailFromGoogleDomain(email)) {
-            openModal({
-                title: "SNS로 간편 가입된 계정입니다.",
-                Content: SNSModalContent,
-                type: ModalType.ERROR,
-                buttonBackgroundColor: "bg-[#7846dd]"
-            });
-            return;
-        }
-
         setIsRequesting(true);
-        setIsAuthenticationCodeRequested(true);
-        showToast("success", "인증 번호가 전송되었습니다.");
+
         setTimeLeft(MINUTES_IN_MS);
         setLastRequestTime(Date.now());
 
@@ -141,6 +120,7 @@ const FindPassword = () => {
             await axios.post(`${baseURL}/auth/get-email-code`, {
                 email
             });
+            showToast("success", "인증번호가 전송되었습니다.");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 setError("email", {
@@ -148,6 +128,15 @@ const FindPassword = () => {
                     message:
                         "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
                 });
+            }
+            if (axios.isAxiosError(error) && error.response?.status === 403) {
+                openModal({
+                    title: "SNS로 간편 가입된 계정입니다.",
+                    Content: SNSModalContent,
+                    type: ModalType.ERROR,
+                    buttonBackgroundColor: "bg-[#7846dd]"
+                });
+                return;
             }
         } finally {
             setIsRequesting(false);
@@ -162,11 +151,6 @@ const FindPassword = () => {
         }
         return;
     };
-
-    const isEmailFromGoogleDomain = (email: string): boolean =>
-        ["gmail.com", "googlemail.com"].includes(
-            email.split("@")[1].toLowerCase()
-        );
 
     const onSubmit = async ({ email, code }: FormValue) => {
         try {
