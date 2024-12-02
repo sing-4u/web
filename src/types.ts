@@ -11,7 +11,7 @@ export interface ModalContentProps<T> {
     errorMessage?: string;
     data?: T;
     buttonBackgroundColor: string;
-    navigate: NavigateFunction | undefined;
+    navigate?: NavigateFunction | undefined;
 }
 
 export enum ModalType {
