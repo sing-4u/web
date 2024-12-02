@@ -3,7 +3,11 @@ import { useModal } from "../../hooks/useModal";
 import { BaseModalProps } from "../../types";
 
 interface SongRequestSuccessModalProps
-    extends BaseModalProps<{ artist: string; title: string; formId: string }> {}
+    extends BaseModalProps<{
+        artist?: string;
+        title?: string;
+        formId?: string | null;
+    }> {}
 
 export const SongRequestSuccessModal = ({
     title,
@@ -38,12 +42,12 @@ export const SongRequestSuccessModal = ({
                     </div>
                 </div>
             </div>
-            <button
+            {/* <button
                 onClick={closeModal}
                 className={`mt-6 rounded-md py-4 font-semibold text-white ${buttonBackgroundColor} w-full`}
             >
                 확인
-            </button>
+            </button> */}
         </div>
     );
 };
