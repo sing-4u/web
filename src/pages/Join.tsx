@@ -231,7 +231,7 @@ const Join = () => {
                         <img
                             src={Tooltip}
                             alt="Google Sign Up"
-                            className="absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
+                            className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
                         />
                     </div>
                     <div className="flex items-center my-10">
@@ -304,7 +304,8 @@ const Join = () => {
                                         type={password.type}
                                         id="password"
                                         {...register("password", {
-                                            required: "비밀번호를 입력해주세요",
+                                            required:
+                                                "비밀번호를 입력해주세요.",
                                             pattern: {
                                                 value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                                 message:
@@ -346,7 +347,7 @@ const Join = () => {
                                         id="confirmPassword"
                                         {...register("confirmPassword", {
                                             required:
-                                                "비밀번호 확인을 해주세요",
+                                                "비밀번호 확인을 해주세요.",
                                             validate: (value) =>
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
