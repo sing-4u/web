@@ -220,11 +220,7 @@ const FindPassword = () => {
                             }`}
                         onClick={handleAuthenticationCodeClick}
                     >
-                        <span
-                            className="
-
-                            rounded-[4px] flex flex-col justify-center disabled:text-textColor hover:text-gray-400"
-                        >
+                        <span className="flex flex-col justify-center disabled:text-textColor hover:text-gray-400">
                             {buttonText}
                         </span>
                     </button>
@@ -260,7 +256,7 @@ const FindPassword = () => {
                     )}
                 </div>
                 <button
-                    className="w-full bg-colorPurple text-textColor rounded-[10px] h-[52px] mt-10"
+                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10 hover:bg-colorPurpleHover"
                     type="submit"
                 >
                     다음
