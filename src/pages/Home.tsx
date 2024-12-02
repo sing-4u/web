@@ -108,8 +108,17 @@ export default function Home() {
         };
     }, [loadMoreItems, loading, hasMore]);
 
-    const handleSongDetailClick = () => {
-        navigate("/song-detail");
+    const handleSongDetailClick = (user: UserProps) => {
+        navigate(`/song-detail?formId=${user.id}`, {
+            state: {
+                user: {
+                    id: user.id,
+                    name: user.name,
+                    image: user.image,
+                    isOpened: user.isOpened
+                }
+            }
+        });
     };
 
     return (
@@ -140,7 +149,7 @@ export default function Home() {
                         >
                             <div
                                 className="relative aspect-square w-full"
-                                onClick={handleSongDetailClick}
+                                onClick={() => handleSongDetailClick(user)}
                             >
                                 <img
                                     src={user.image || Card}
@@ -167,15 +176,15 @@ export default function Home() {
             >
                 {loading ? (
                     <p>Loading...</p>
-                ) : hasMore ? (
-                    <button
-                        className="w-full bg-black text-white rounded-[10px] h-[52px]"
-                        onClick={loadMoreItems}
-                    >
-                        더보기
-                    </button>
                 ) : (
-                    <p>더 이상 불러올 데이터가 없습니다</p>
+                    hasMore && (
+                        <button
+                            className="w-full bg-black text-white rounded-[10px] h-[52px]"
+                            onClick={loadMoreItems}
+                        >
+                            더보기
+                        </button>
+                    )
                 )}
             </div>
         </div>
