@@ -235,7 +235,7 @@ const Join = () => {
                         />
                     </div>
                     <div className="flex items-center my-10">
-                        <span className="w-full border-b"></span>
+                        <span className="w-full border-b border-[#f3f3f3]"></span>
                     </div>
 
                     <div className="space-y-4">
@@ -438,7 +438,7 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8"
+                        className="w-full bg-colorPurple text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
                         type="submit"
                     >
                         회원가입
