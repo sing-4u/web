@@ -120,6 +120,7 @@ const FindPassword = () => {
                 email
             });
             showToast("success", "인증번호가 전송되었습니다.");
+            setShowTimer(true);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 setError("email", {
