@@ -57,6 +57,12 @@ const EmailChangeModal = ({
                     message: "비밀번호가 일치하지 않습니다."
                 });
             }
+            if (axios.isAxiosError(error) && error.response?.status === 409) {
+                setError("email", {
+                    type: "manual",
+                    message: "이미 존재하는 이메일입니다."
+                });
+            }
         } finally {
             setIsLoading(false);
         }
@@ -78,7 +84,7 @@ const EmailChangeModal = ({
                         <input
                             type="email"
                             {...register("email", {
-                                required: "이메일은 필수값입니다.",
+                                required: "이메일 주소를 입력해주세요.",
                                 pattern: {
                                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                     message: "올바른 이메일 형식이 아닙니다."
@@ -99,20 +105,15 @@ const EmailChangeModal = ({
             </div>
 
             <div>
-                <label className="block text-sm text-gray-700">
+                <label className="block mb-2 text-sm text-gray-700">
                     비밀번호
                     <div className="flex flex-col">
-                        <div className="relative">
+                        <div className="relative top-2">
                             <input
                                 type={passwordState.type}
                                 {...register("password", {
                                     required:
-                                        "본인임을 인증하기 위해 비밀번호를 입력해주세요.",
-                                    pattern: {
-                                        value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                        message:
-                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
-                                    }
+                                        "본인임을 인증하기 위해 비밀번호를 입력해주세요."
                                 })}
                                 className={`w-full my-2 ${getInputErrorClassName(
                                     errors.password
@@ -123,7 +124,7 @@ const EmailChangeModal = ({
                             <button
                                 type="button"
                                 disabled={isLoading}
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleToggle}
                             >
                                 <img
