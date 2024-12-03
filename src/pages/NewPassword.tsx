@@ -66,7 +66,6 @@ const NewPassword = () => {
             className="w-full max-w-[376px] mx-auto p-6"
         >
             <ToastContainer toasts={toasts} />
-            <Navbar />
             <div className="">
                 <div className="text-2xl font-bold text-center mt-[22px]">
                     비밀번호 재설정
@@ -84,11 +83,11 @@ const NewPassword = () => {
                             errors.newPassword
                         )}`}
                         {...register("newPassword", {
-                            required: "비밀번호를 입력해주세요",
+                            required: "비밀번호를 입력해주세요.",
                             pattern: {
                                 value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                 message:
-                                    "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                    "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                             }
                         })}
                     />
@@ -118,7 +117,7 @@ const NewPassword = () => {
                             errors.confirmPassword
                         )}`}
                         {...register("confirmPassword", {
-                            required: "비밀번호를 입력해주세요",
+                            required: "비밀번호를 입력해주세요.",
                             validate: (value) =>
                                 value === watch("newPassword") ||
                                 "비밀번호가 일치하지 않습니다."

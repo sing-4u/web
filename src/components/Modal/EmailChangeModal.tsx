@@ -111,7 +111,7 @@ const EmailChangeModal = ({
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:
-                                            "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                     }
                                 })}
                                 className={`w-full my-2 ${getInputErrorClassName(

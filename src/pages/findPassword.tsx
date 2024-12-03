@@ -185,7 +185,6 @@ const FindPassword = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md mx-auto p-6"
             >
-                <Navbar />
                 <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     비밀번호 찾기
                 </div>

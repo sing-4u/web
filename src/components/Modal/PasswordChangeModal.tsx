@@ -106,7 +106,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:
-                                            "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                     }
                                 })}
                                 className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
@@ -147,11 +147,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:
-                                            "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                     },
                                     validate: (value) => {
                                         if (value === "") {
-                                            return "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다.";
+                                            return "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요.";
                                         }
                                         if (value === watchOldPassword) {
                                             return "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요.";
@@ -163,6 +163,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 )}`}
                                 placeholder="새 비밀번호 입력"
                             />
+
                             {errors.newPassword && (
                                 <p className="mt-1 text-sm text-errorTextColor">
                                     {errors.newPassword.message}
