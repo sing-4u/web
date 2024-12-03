@@ -102,14 +102,9 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <input
                                 type={oldPasswordState.type}
                                 {...register("oldPassword", {
-                                    required: "비밀번호를 입력해 주세요.",
-                                    pattern: {
-                                        value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                        message:
-                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
-                                    }
+                                    required: "비밀번호를 입력해 주세요."
                                 })}
-                                className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
+                                className={`w-full my-2 ${getInputErrorClassName(
                                     errors.oldPassword
                                 )}`}
                                 placeholder="비밀번호 입력"
@@ -119,17 +114,12 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                     {errors.oldPassword.message}
                                 </p>
                             )}
-                            <button
-                                type="button"
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+                            <img
+                                src={handleOldEyeIconToggle()}
+                                alt="toggle password visibility"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleOldToggle}
-                            >
-                                <img
-                                    src={handleOldEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
-                                />
-                            </button>
+                            />
                         </div>
                     </div>
                 </label>
@@ -158,7 +148,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
+                                className={`w-full my-2 ${getInputErrorClassName(
                                     errors.newPassword
                                 )}`}
                                 placeholder="새 비밀번호 입력"
@@ -169,17 +159,13 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                     {errors.newPassword.message}
                                 </p>
                             )}
-                            <button
-                                type="button"
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+
+                            <img
+                                src={handleNewEyeIconToggle()}
+                                alt="toggle password visibility"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleNewToggle}
-                            >
-                                <img
-                                    src={handleNewEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
-                                />
-                            </button>
+                            />
                         </div>
                     </div>
                 </label>
@@ -193,12 +179,17 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <input
                                 {...register("confirmPassword", {
                                     required: "비밀번호는 필수값입니다.",
+                                    pattern: {
+                                        value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
+                                        message:
+                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
+                                    },
                                     validate: (value) =>
                                         value === watchPassword ||
                                         "비밀번호가 일치하지 않습니다."
                                 })}
                                 type={confirmPasswordState.type}
-                                className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
+                                className={`w-full my-2 ${getInputErrorClassName(
                                     errors.confirmPassword
                                 )}`}
                                 placeholder="새 비밀번호 확인"
@@ -208,17 +199,13 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                     {errors.confirmPassword.message}
                                 </p>
                             )}
-                            <button
-                                type="button"
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+
+                            <img
+                                src={handleConfirmEyeIconToggle()}
+                                alt="toggle password visibility"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleConfirmToggle}
-                            >
-                                <img
-                                    src={handleConfirmEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
-                                />
-                            </button>
+                            />
                         </div>
                     </div>
                 </label>
