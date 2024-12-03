@@ -31,12 +31,14 @@ const Mypage = () => {
   const handleLogout = () => {
     logout();
     localStorage.removeItem("accessToken");
+    navigate("/", { replace: true });
+    window.location.reload();
   };
 
   const { openModal } = useModal();
 
   useEffect(() => {
-    if (!userData === null) {
+    if (userData === null) {
       navigate("/", { replace: true });
     }
   }, [userData, navigate]);
