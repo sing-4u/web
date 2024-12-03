@@ -36,7 +36,7 @@ const Mypage = () => {
   const { openModal } = useModal();
 
   useEffect(() => {
-    if (!userData) {
+    if (!userData === null) {
       navigate("/", { replace: true });
     }
   }, [userData, navigate]);
@@ -123,7 +123,12 @@ const Mypage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center">
       <Navbar profileImage={profileImage} />
-      <form className="flex flex-col items-center w-full max-w-md mt-10 flex-grow ">
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+        className="flex flex-col items-center w-full max-w-md mt-10 flex-grow "
+      >
         <div className="flex flex-col w-[328px] h-[413px] gap-y-6 md:w-[380px] md:h-[635px]">
           <div className="relative flex flex-col w-full justify-center items-center">
             <div

@@ -14,7 +14,6 @@ import axiosInstance from "../utils/axiosInstance";
 import PreviousSongList from "../components/PreviousSong";
 import { NonListNow, NonListPrevious } from "../components/NonListMessage";
 import { WaitingSongMessage } from "../components/NonListMessage";
-import { set } from "react-hook-form";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
@@ -36,7 +35,7 @@ const ManageSong = () => {
     async function fetchRequestForm() {
       const data = await axiosInstance().get(`/users/form/${userData?.id}`);
 
-      setUserId(data.data.id);
+      setUserId(data?.data?.id);
     }
     fetchRequestForm();
   }, [userData?.id]);
@@ -104,7 +103,7 @@ const ManageSong = () => {
   return (
     <div className="w-[376px] mx-auto flex flex-col items-center tablet:w-full lg:w-full">
       <Navbar />
-      <div className="pc:w-full pc:max-w-6xl pc:flex">
+      <div className="pc:w-full pc:max-w-6xl pc:flex pc:ml-14">
         <div className="flex flex-col justify-center items-center tablet:flex-row tablet:justify-between tablet:w-[672px] tablet:border tablet:border-inputBorderColor tablet:rounded-[8px] tablet:p-4 tablet:mt-10 mobile:mt-4 pc:w-[270ox] pc:h-[328px] pc:border-2 pc:border-inputBorderColor pc:rounded pc:mt-10 pc:p-4">
           <div className="flex flex-col tablet:mt-0 items-center tablet:flex-row">
             <div className="pc:mb-10 tablet:flex tablet:items-center">

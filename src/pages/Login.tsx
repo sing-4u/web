@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, Router } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -8,6 +8,7 @@ import { checkAuth } from "../utils/Auth";
 import GoogleIcon from "../components/GoogleIcon";
 import storeToken from "../utils/storeToken";
 import Logo from "../components/Logo";
+import usePasswordToggle from "../hooks/usePasswordToggle";
 
 interface LoginFormValue {
   email: string;
@@ -51,12 +52,12 @@ const Login = () => {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         setLoginState({
           loading: false,
-          error: "존재하지 않는 유저입니다.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       } else if (error.response?.status === 401) {
         setLoginState({
           loading: false,
-          error: "비밀번호가 일치하지 않습니다.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       } else {
         setLoginState({
@@ -127,15 +128,26 @@ const Login = () => {
     navigate("/find-password");
   };
 
+  const {
+    passwordState: password,
+    handleToggle,
+    handleEyeIconToggle,
+  } = usePasswordToggle();
+
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
-          className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative
-  md:w-[380px] md:h-[601px]"
+          className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative mobile:w-[375px]
+  tablet:w-[380px] tablet:h-[601px]"
         >
-          <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
-            <div className="flex justify-center items-center w-[100px] h-[35.15px]">
+          <div className="cursor-pointer absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
+            <div
+              onClick={() => {
+                navigate("/");
+              }}
+              className="flex justify-center items-center w-[100px] h-[35.15px]"
+            >
               <Logo />
             </div>
           </div>
@@ -169,7 +181,7 @@ const Login = () => {
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                 {...register("email", {
-                  required: "이메일을 입력해주세요",
+                  required: "이메일 주소를 입력해주세요.",
                 })}
                 type="text"
                 placeholder="이메일 주소"
@@ -193,11 +205,18 @@ const Login = () => {
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                 {...register("password", {
-                  required: "비밀번호를 입력해주세요",
+                  required: "비밀번호를 입력해주세요.",
                 })}
-                type="password"
+                type={password.type}
                 placeholder="비밀번호"
               />
+              <button
+                type="button"
+                onClick={handleToggle}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2"
+              >
+                <img src={handleEyeIconToggle()} className="w-5 h-5" />
+              </button>
               {errors.password && (
                 <span className="text-red-500 text-[12px] leading-[14.32px] absolute top-[56px] left-0">
                   {errors.password.message}

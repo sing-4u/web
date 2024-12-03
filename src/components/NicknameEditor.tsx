@@ -36,6 +36,13 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleNameChange();
+    }
+  };
+
   const inputLabelClass =
     "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black";
   const inputClass =
@@ -54,6 +61,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
           id="nickname"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
+          onKeyDown={handleKeyDown}
           disabled={!isEditing}
           className={inputClass}
         />
