@@ -57,14 +57,14 @@ const Checkbox = ({
                     type="checkbox"
                     checked={isChecked}
                     onChange={onToggle}
-                    className="opacity-0 cursor-pointer"
+                    className="hidden cursor-pointer"
                     role="checkbox"
                     aria-checked={isChecked}
                 />
                 <img
                     src={isChecked ? CheckedBox : CheckboxOutline}
                     alt=""
-                    className="w-5 h-5 mr-2"
+                    className="w-5 h-5 mr-2 cursor-pointer"
                 />
                 <span className="text-sm leading-none font-bold">{label}</span>
             </label>

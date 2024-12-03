@@ -396,12 +396,6 @@ const Join = () => {
                             }}
                             onClick={handleAllCheckboxes}
                         >
-                            <input
-                                type="checkbox"
-                                className="sr-only"
-                                checked={isAllChecked}
-                                onChange={handleAllCheckboxes}
-                            />
                             <img
                                 src={
                                     isAllChecked
