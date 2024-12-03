@@ -223,6 +223,7 @@ const Mypage = () => {
                                 type="password"
                                 id="password"
                                 className={inputClass}
+                                disabled
                             />
                             <button
                                 type="button"
