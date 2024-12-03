@@ -4,6 +4,7 @@ import useUserData from "../hooks/useUserData";
 import CameraImg from "../components/CameraImg";
 import ImgProfileL from "../components/ImgProfileL";
 import TriangleFill from "../assets/ic_TriangleFill.svg";
+import TriangleFillRed from "../assets/ic_TriangleFill_red.svg";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../utils/axiosInstance";
 import getInputErrorClassName from "../utils/className";
@@ -12,7 +13,7 @@ import axios from "axios";
 import SongRequestFailModal from "../components/Modal/SongRequestFailModal";
 import SongRequestSuccessModal from "../components/Modal/SongRequestSuccessModal";
 import EmailInputModal from "../components/Modal/EmailInputModal";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
 
@@ -21,7 +22,18 @@ interface SongDetailForm {
     title: string;
 }
 
+interface User {
+    id: string;
+    name: string;
+    image: string | null;
+    isOpened: boolean;
+}
+
 const SongDetail = () => {
+    const location = useLocation();
+    const user = location.state as { user: User };
+    const [fetchedUser, setFetchedUser] = useState<User | null>(null);
+
     const setTitle = useTitle();
 
     setTimeout(() => {
@@ -29,12 +41,11 @@ const SongDetail = () => {
     }, 100);
 
     const [searchParams] = useSearchParams();
-    const formId = searchParams.get("id")!;
     const navigate = useNavigate();
+    const formId = searchParams.get("formId");
     const { data: userData } = useUserData();
-    const profileImage = userData?.image;
-
-    const [userId, setUserId] = useState<string>("");
+    const profileImage =
+        user?.user?.image || fetchedUser?.image || userData?.image;
 
     const { openModal } = useModal();
 
@@ -49,14 +60,17 @@ const SongDetail = () => {
 
     useEffect(() => {
         async function fetchRequestForm() {
-            if (formId) {
-                try {
-                    const { data: id } = await axiosInstance().get(
-                        `/users/form/${formId}`
-                    );
-                    setUserId(id);
-                } catch {
-                    throw new Error("Failed to fetch user form");
+            if (typeof formId === "string") {
+                if (formId) {
+                    try {
+                        const { data } = await axiosInstance().get(
+                            `/users/form/${formId}`
+                        );
+
+                        setFetchedUser(data);
+                    } catch {
+                        throw new Error("Failed to fetch user form");
+                    }
                 }
             }
         }
@@ -64,54 +78,81 @@ const SongDetail = () => {
     }, [formId]);
 
     const handlePostSong = async () => {
-        const { artist, title } = getValues();
-        const { email } = userData ?? { email: "" };
-
-        if (isLoggedIn && artist && title) {
-            await axiosInstance().post("/songs", {
-                userId: formId,
-                email,
-                artist,
-                title
-            });
-            openModal({
-                title: "신청 완료",
-                type: ModalType.SUCCESS,
-                Content: SongRequestSuccessModal,
-                data: { artist, title, formId, email },
-                buttonBackgroundColor:
-                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
-            });
-        }
-        if (!isLoggedIn) {
-            openModal({
-                Content: (props) => (
-                    <EmailInputModal
-                        {...props}
-                        navigate={navigate}
-                        modalData={{ artist, title, formId, userData }}
-                    />
-                ),
-                title: "싱포유 회원이시면",
-                type: ModalType.DEFAULT,
-                buttonBackgroundColor:
-                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
-            });
-        }
+        // if (isLoggedIn && artist && title) {
+        //     await axiosInstance().post("/songs", {
+        //         userId: formId,
+        //         email,
+        //         artist,
+        //         title
+        //     });
+        //     openModal({
+        //         title: "신청 완료",
+        //         type: ModalType.SUCCESS,
+        //         Content: SongRequestSuccessModal,
+        //         data: { artist, title, formId, email },
+        //         buttonBackgroundColor:
+        //             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+        //     });
+        // }
+        // if (!isLoggedIn) {
+        //     openModal({
+        //         Content: (props) => (
+        //             <EmailInputModal
+        //                 {...props}
+        //                 navigate={navigate}
+        //                 modalData={{ artist, title, formId, userData }}
+        //             />
+        //         ),
+        //         title: "싱포유 회원이시면",
+        //         type: ModalType.DEFAULT,
+        //         buttonBackgroundColor: ""
+        //     });
+        // }
     };
 
     const onSubmit = async ({ artist, title }: SongDetailForm) => {
         const { email } = userData ?? { email: "" };
+
         try {
-            //
+            if (isLoggedIn && artist && title) {
+                const res = await axiosInstance().post("/songs", {
+                    userId: formId,
+                    email,
+                    artist,
+                    title
+                });
+                console.log(res);
+                openModal({
+                    title: "신청 완료",
+                    type: ModalType.SUCCESS,
+                    Content: SongRequestSuccessModal,
+                    data: { artist, title, formId, email },
+                    buttonBackgroundColor:
+                        "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                });
+            }
+            if (!isLoggedIn) {
+                openModal({
+                    Content: (props) => (
+                        <EmailInputModal
+                            {...props}
+                            navigate={navigate}
+                            modalData={{ artist, title, formId, userData }}
+                        />
+                    ),
+                    title: "싱포유 회원이시면",
+                    type: ModalType.DEFAULT,
+                    buttonBackgroundColor: ""
+                });
+            }
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 if (error.response?.status === 409) {
                     openModal({
-                        title: "신청 실패",
+                        title: "중복 신청",
                         type: ModalType.ERROR,
                         Content: SongRequestFailModal,
-                        data: { artist, title, userId, email },
+                        data: { artist, title, email },
                         buttonBackgroundColor:
                             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
                     });
@@ -121,13 +162,120 @@ const SongDetail = () => {
         }
     };
 
+    const userName = user?.user?.name || fetchedUser?.name;
+
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2";
 
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
             <Navbar />
-            <div className="relative flex flex-col w-full justify-center items-center">
+            {
+                <div className="relative flex flex-col w-full justify-center items-center mt-10">
+                    <div
+                        className="relative w-[90px] h-[90px] cursor-pointer mt-3"
+                        onClick={() =>
+                            document
+                                .getElementById("profileImageInput")
+                                ?.click()
+                        }
+                    >
+                        {profileImage ? (
+                            typeof profileImage === "string" ? (
+                                <img
+                                    src={profileImage}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover rounded-full "
+                                />
+                            ) : (
+                                <img
+                                    src={URL.createObjectURL(profileImage)}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover rounded-full "
+                                />
+                            )
+                        ) : (
+                            <ImgProfileL />
+                        )}
+                        <div className="absolute w-[24px] h-[24px] top-[66px] left-[66px] rounded-full border">
+                            <CameraImg />
+                        </div>
+                    </div>
+                    <input
+                        type="file"
+                        id="profileImageInput"
+                        accept="image/*"
+                        className="hidden"
+                    />
+
+                    <span className="font-bold text-lg mt-4">
+                        {userName || "Loading...."}
+                    </span>
+                    <form
+                        onSubmit={handleSubmit(onSubmit)}
+                        className="flex flex-col mt-[22px]"
+                    >
+                        <div className="flex flex-col gap-1">
+                            <label htmlFor="가수" className={inputLabelClass}>
+                                가수
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="가수이름"
+                                className={`rounded-md px-4 h-[48px] ${
+                                    errors.artist ? "" : "mb-[22px]"
+                                } text-sm ${getInputErrorClassName(
+                                    errors.artist
+                                )}`}
+                                {...register("artist", {
+                                    required: "가수 이름을 입력해주세요."
+                                })}
+                            />
+                            {errors.artist && (
+                                <span className="text-red-500 text-sm mb-[30px]">
+                                    {errors.artist.message}
+                                </span>
+                            )}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                            <label
+                                htmlFor="노래 제목"
+                                className={inputLabelClass}
+                            >
+                                노래 제목
+                            </label>
+                            <input
+                                type="text"
+                                placeholder="가수이름"
+                                className={`rounded-md px-4 h-[48px] ${
+                                    errors.title ? "" : "mb-[22px]"
+                                } text-sm ${getInputErrorClassName(
+                                    errors.title
+                                )}`}
+                                {...register("title", {
+                                    required: "가수 이름을 입력해주세요."
+                                })}
+                            />
+                            {errors.title && (
+                                <span className="text-red-500 text-sm mb-[30px]">
+                                    {errors.title.message}
+                                </span>
+                            )}
+                        </div>
+                        <div className="flex justify-center items-center gap-2 my-[22px]">
+                            <img src={TriangleFillRed} alt="warning" />
+                            <span className="font-pretendard text-sm">
+                                제출 후 수정이 불가능합니다.
+                            </span>
+                        </div>
+                        <button className="flex items-center justify-center gap-2  bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white px-4 py-3 rounded-lg hover:opacity-90 transition-opacity">
+                            신청곡 보내기
+                        </button>
+                    </form>
+                </div>
+            }
+
+            {/* <div className="relative flex flex-col w-full justify-center items-center mt-10">
                 <div
                     className="relative w-[90px] h-[90px] cursor-pointer mt-3"
                     onClick={() =>
@@ -139,7 +287,7 @@ const SongDetail = () => {
                             <img
                                 src={profileImage}
                                 alt="Profile"
-                                className="w-full h-full object-cover rounded-full "
+                                className="w-full h-full object-cover rounded-full"
                             />
                         ) : (
                             <img
@@ -161,66 +309,16 @@ const SongDetail = () => {
                     accept="image/*"
                     className="hidden"
                 />
-
-                <span className="font-bold text-lg mt-4">{userData?.name}</span>
-                <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="flex flex-col mt-[22px]"
-                >
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="가수" className={inputLabelClass}>
-                            가수
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="가수이름"
-                            className={`rounded-md px-4 h-[48px] text-sm mb-11 ${getInputErrorClassName(
-                                errors.artist
-                            )}`}
-                            {...register("artist", {
-                                required: "가수 이름을 입력해주세요."
-                            })}
-                        />
-                        {errors.artist && (
-                            <span className="text-red-500 text-sm">
-                                {errors.artist.message}
-                            </span>
-                        )}
-                    </div>
-                    <div className="flex flex-col gap-1">
-                        <label htmlFor="노래 제목" className={inputLabelClass}>
-                            노래 제목
-                        </label>
-                        <input
-                            type="text"
-                            placeholder="노래 제목"
-                            className={`rounded-md px-4 h-[48px] text-sm ${getInputErrorClassName(
-                                errors.title
-                            )}`}
-                            {...register("title", {
-                                required: "노래 제목을 입력해주세요."
-                            })}
-                        />
-                        {errors.title && (
-                            <span className="text-red-500 text-sm">
-                                {errors.title.message}
-                            </span>
-                        )}
-                    </div>
-                    <div className="flex justify-center items-center gap-2 my-[22px]">
-                        <img src={TriangleFill} alt="warning" />
-                        <span className="font-pretendard text-sm">
-                            제출 후 수정이 불가능합니다.
-                        </span>
-                    </div>
-                    <button
-                        onClick={handlePostSong}
-                        className="flex items-center justify-center gap-2  bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white px-4 py-3 rounded-lg hover:opacity-90 transition-opacity"
-                    >
-                        신청곡 보내기
-                    </button>
-                </form>
-            </div>
+                <span className="font-bold text-lg mt-4">
+                    {userName || "Loading...."}
+                </span>
+                {!user?.user?.isOpened && (
+                    <section className="w-[379px] h-[136px] bg-[#f5f5f5] mt-[38px] flex justify-center items-center text-center rounded-lg">
+                        현재 아티스트가 신청곡을 받고 있지 않습니다. <br />
+                        다음 신청 기간을 기다려 주세요.
+                    </section>
+                )}
+            </div> */}
         </div>
     );
 };
