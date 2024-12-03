@@ -89,7 +89,11 @@ const EmailChangeModal = ({
                             )}`}
                             placeholder="이메일 입력"
                         />
-                        <ErrorMessage field="email" errors={errors} />
+                        {errors.email && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors?.email.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>

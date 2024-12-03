@@ -115,7 +115,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 placeholder="비밀번호 입력"
                             />
                             {errors.oldPassword && (
-                                <p className="mt-1 text-sm text-red-500">
+                                <p className="mt-1 text-sm text-errorTextColor">
                                     {errors.oldPassword.message}
                                 </p>
                             )}
@@ -163,7 +163,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 )}`}
                                 placeholder="새 비밀번호 입력"
                             />
-                            <ErrorMessage field="newPassword" errors={errors} />
+                            {errors.newPassword && (
+                                <p className="mt-1 text-sm text-errorTextColor">
+                                    {errors.newPassword.message}
+                                </p>
+                            )}
                             <button
                                 type="button"
                                 className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
@@ -199,7 +203,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 placeholder="새 비밀번호 확인"
                             />
                             {errors.confirmPassword && (
-                                <p className="mt-1 text-sm text-red-500">
+                                <p className="mt-1 text-sm text-errorTextColor">
                                     {errors.confirmPassword.message}
                                 </p>
                             )}
