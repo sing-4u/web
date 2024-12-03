@@ -143,7 +143,7 @@ export default function Home() {
                         <div className="relative rounded-[20px] border-[4px] border-[#e1e1e1] overflow-hidden">
                             <div
                                 className="relative aspect-square w-full"
-                                onClick={handleSongDetailClick}
+                                onClick={() => handleSongDetailClick(user)}
                             >
                                 <img
                                     src={user.image || Card}
