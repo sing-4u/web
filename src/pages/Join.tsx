@@ -258,7 +258,7 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`placeholder:font-normal font-normal text-base scale-[0.875] origin-left w-[114.285714%] border border-[#e1e1e1] h-[48px] px-4 mt-2 ${getInputErrorClassName(
+                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal ${getInputErrorClassName(
                                         errors.name
                                     )}`}
                                     placeholder="별명"
