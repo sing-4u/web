@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
 import { useToast } from "../hooks/useToast";
 import { useEffect, useState } from "react";
 import getInputErrorClassName from "../utils/className";
@@ -11,7 +10,6 @@ import { useModal } from "../hooks/useModal";
 import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
-import ErrorMessage from "../components/ErrorMessage";
 import { baseURL } from "../utils/apiUrl";
 import { DecodedToken } from "./Join";
 import { jwtDecode } from "jwt-decode";
@@ -43,6 +41,7 @@ const FindPassword = () => {
         setError,
         formState: { errors }
     } = useForm<FormValue>();
+    const [showTimer, setShowTimer] = useState(false);
 
     const { openModal } = useModal();
     const email = watch("email");
@@ -138,6 +137,7 @@ const FindPassword = () => {
                 });
                 return;
             }
+            setShowTimer(false);
         } finally {
             setIsRequesting(false);
         }
@@ -245,11 +245,12 @@ const FindPassword = () => {
                         )}`}
                     />
 
-                    <ErrorMessage
-                        field="code"
-                        errors={errors || "인증번호가 일치하지 않습니다."}
-                    />
-                    {timeLeft !== 0 && isAuthenticationCodeRequested && (
+                    {errors.code && (
+                        <p className="mt-1 text-sm text-errorTextColor">
+                            {errors.code.message}
+                        </p>
+                    )}
+                    {timeLeft !== 0 && showTimer && (
                         <span className="absolute inset-y-12 end-3 text-red-500">
                             {minutes}:{second}
                         </span>
