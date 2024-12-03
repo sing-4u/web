@@ -13,6 +13,7 @@ import { useTitle } from "../hooks/useTitle";
 import { baseURL } from "../utils/apiUrl";
 import { DecodedToken } from "./Join";
 import { jwtDecode } from "jwt-decode";
+import Logo from "../components/Logo";
 
 interface FormValue {
     email: string;
@@ -181,10 +182,17 @@ const FindPassword = () => {
     return (
         <div className="w-full max-w-[376px] mx-auto relative">
             <ToastContainer toasts={toasts} />
+
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md mx-auto p-6"
             >
+                <div
+                    onClick={() => navigate("/")}
+                    className="w-[64px] h-[22.5px] cursor-pointer"
+                >
+                    <Logo />
+                </div>
                 <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     비밀번호 찾기
                 </div>
