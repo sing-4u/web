@@ -20,7 +20,8 @@ export default {
                 buttonColor2: "#D9D9D9",
                 colorPurple: "#7846DD",
                 textColor: "#ffffff",
-                errorTextColor: "#ff4242"
+                errorTextColor: "#ff4242",
+                colorPurpleHover: "#6432c9"
             },
             customGradient: {
                 start: "#7B92C7",
