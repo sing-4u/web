@@ -21,7 +21,7 @@ const usePasswordToggle = () => {
     };
 
     const handleEyeIconToggle = () =>
-        passwordState.type === "password" ? eyeOn : eyeOff;
+        passwordState.type === "password" ? eyeOff : eyeOn;
 
     return {
         passwordState,

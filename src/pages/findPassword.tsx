@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
 import { useToast } from "../hooks/useToast";
 import { useEffect, useState } from "react";
 import getInputErrorClassName from "../utils/className";
@@ -11,8 +10,10 @@ import { useModal } from "../hooks/useModal";
 import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
-import ErrorMessage from "../components/ErrorMessage";
 import { baseURL } from "../utils/apiUrl";
+import { DecodedToken } from "./Join";
+import { jwtDecode } from "jwt-decode";
+import Logo from "../components/Logo";
 
 interface FormValue {
     email: string;
@@ -32,7 +33,9 @@ const FindPassword = () => {
     const { showToast, toasts } = useToast();
     const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
         useState(false);
-    const [lastRequestTime, setLastRequestTime] = useState<number | null>(null);
+    const [lastRequestTime, setLastRequestTime] = useState(0);
+    const [isRequesting, setIsRequesting] = useState(false);
+
     const {
         register,
         handleSubmit,
@@ -40,12 +43,14 @@ const FindPassword = () => {
         setError,
         formState: { errors }
     } = useForm<FormValue>();
+    const [showTimer, setShowTimer] = useState(false);
 
     const { openModal } = useModal();
     const email = watch("email");
 
     const MINUTES_IN_MS = 3 * 60 * 1000;
     const INTERVAL = 1000;
+    const COOLDOWN_DURATION = 30000;
     const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
     const minutes = String(
@@ -76,25 +81,19 @@ const FindPassword = () => {
         };
     }, [timeLeft, isAuthenticationCodeRequested]);
 
-    const isRegexEmail = (email: string) => {
+    const checkRegexEmail = (email: string) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
         if (!emailRegex.test(email)) {
             setError("email", {
                 type: "manual",
-                message: "이메일 형식에 맞지 않습니다."
+                message: "올바른 이메일 형식이 아닙니다."
             });
             return;
         }
     };
 
-    const checkRequestCoolDown = (
-        lastRequestTime: number | null,
-        cooldownDuration: number = 3000
-    ) => {
-        if (
-            lastRequestTime &&
-            Date.now() - lastRequestTime < cooldownDuration
-        ) {
+    const retryRequestAuthenticationNumber = (time: number) => {
+        if (time && Date.now() - time < COOLDOWN_DURATION) {
             openModal({
                 title: "잠시 후 다시 시도해주세요.",
                 Content: () => (
@@ -108,30 +107,22 @@ const FindPassword = () => {
     };
 
     const handleAuthenticationCodeClick = async () => {
-        if (timeLeft === 0) return;
+        setIsAuthenticationCodeRequested(true);
+        checkRegexEmail(email);
 
-        isRegexEmail(email);
-        checkRequestCoolDown(lastRequestTime);
+        retryRequestAuthenticationNumber(lastRequestTime);
 
-        if (isEmailFromGoogleDomain(email)) {
-            openModal({
-                title: "SNS로 간편 가입된 계정입니다.",
-                Content: SNSModalContent,
-                type: ModalType.ERROR,
-                buttonBackgroundColor: "bg-[#7846dd]"
-            });
-            return;
-        }
+        setIsRequesting(true);
 
+        setTimeLeft(MINUTES_IN_MS);
+        setLastRequestTime(Date.now());
+
+        showToast("success", "인증번호가 전송되었습니다.");
         try {
             await axios.post(`${baseURL}/auth/get-email-code`, {
                 email
             });
-
-            showToast("success", "인증 번호가 전송되었습니다.");
-            setIsAuthenticationCodeRequested(true);
-            setTimeLeft(MINUTES_IN_MS);
-            setLastRequestTime(Date.now());
+            setShowTimer(true);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 setError("email", {
@@ -140,6 +131,18 @@ const FindPassword = () => {
                         "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
                 });
             }
+            if (axios.isAxiosError(error) && error.response?.status === 403) {
+                openModal({
+                    title: "SNS로 간편 가입된 계정입니다.",
+                    Content: SNSModalContent,
+                    type: ModalType.ERROR,
+                    buttonBackgroundColor: "bg-[#7846dd]"
+                });
+                return;
+            }
+            setShowTimer(false);
+        } finally {
+            setIsRequesting(false);
         }
     };
 
@@ -151,11 +154,6 @@ const FindPassword = () => {
         }
         return;
     };
-
-    const isEmailFromGoogleDomain = (email: string): boolean =>
-        ["gmail.com", "googlemail.com"].includes(
-            email.split("@")[1].toLowerCase()
-        );
 
     const onSubmit = async ({ email, code }: FormValue) => {
         try {
@@ -170,20 +168,32 @@ const FindPassword = () => {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("code", {
                     type: "manual",
-                    message: "인증 번호가 일치하지 않습니다."
+                    message: "인증번호가 올바르지 않습니다."
                 });
             }
         }
     };
 
+    const buttonText = isRequesting
+        ? "요청 중..."
+        : isAuthenticationCodeRequested
+        ? "재요청"
+        : "인증번호 요청";
+
     return (
         <div className="w-full max-w-[376px] mx-auto relative">
             <ToastContainer toasts={toasts} />
+
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md mx-auto p-6"
             >
-                <Navbar />
+                <div
+                    onClick={() => navigate("/")}
+                    className="w-[64px] h-[22.5px] cursor-pointer"
+                >
+                    <Logo />
+                </div>
                 <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     비밀번호 찾기
                 </div>
@@ -195,7 +205,7 @@ const FindPassword = () => {
                     <input
                         id="email"
                         {...register("email", {
-                            required: "이메일은 필수입니다"
+                            required: "이메일 주소를 입력해주세요."
                         })}
                         onKeyDown={handleEmailKeyPress}
                         placeholder="가입한 이메일 주소"
@@ -210,7 +220,7 @@ const FindPassword = () => {
                     )}
                     <button
                         type="button"
-                        disabled={!email}
+                        disabled={!email || isRequesting}
                         className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
                                 email !== ""
@@ -219,14 +229,8 @@ const FindPassword = () => {
                             }`}
                         onClick={handleAuthenticationCodeClick}
                     >
-                        <span
-                            className="
-
-                            rounded-[4px] flex flex-col justify-center disabled:text-textColor hover:text-gray-400"
-                        >
-                            {isAuthenticationCodeRequested
-                                ? "재요청"
-                                : "인증번호 요청"}
+                        <span className="flex flex-col justify-center disabled:text-textColor hover:text-gray-400">
+                            {buttonText}
                         </span>
                     </button>
                 </div>
@@ -238,7 +242,7 @@ const FindPassword = () => {
                         id="code"
                         type="text"
                         {...register("code", {
-                            required: "인증번호는 필수입니다",
+                            required: "인증번호를 입력해주세요.",
                             maxLength: {
                                 value: MAX_LENGTH,
                                 message: `인증번호는 ${MAX_LENGTH}자리로 입력해주세요.`
@@ -250,18 +254,19 @@ const FindPassword = () => {
                         )}`}
                     />
 
-                    <ErrorMessage
-                        field="code"
-                        errors={errors || "인증번호가 일치하지 않습니다."}
-                    />
-                    {timeLeft !== 0 && isAuthenticationCodeRequested && (
+                    {errors.code && (
+                        <p className="mt-1 text-sm text-errorTextColor">
+                            {errors.code.message}
+                        </p>
+                    )}
+                    {timeLeft !== 0 && showTimer && (
                         <span className="absolute inset-y-12 end-3 text-red-500">
                             {minutes}:{second}
                         </span>
                     )}
                 </div>
                 <button
-                    className="w-full bg-colorPurple text-textColor rounded-[10px] h-[52px] mt-10"
+                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10 hover:bg-colorPurpleHover"
                     type="submit"
                 >
                     다음

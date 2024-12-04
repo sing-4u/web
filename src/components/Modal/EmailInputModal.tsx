@@ -5,12 +5,15 @@ import { useModal } from "../../hooks/useModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { UserData } from "../../hooks/useUserData";
 import ErrorMessage from "../ErrorMessage";
+import { ModalType } from "../../types";
+import SongRequestSuccessModal from "./SongRequestSuccessModal";
 
 interface SongData {
     artist: string;
     title: string;
     formId: string | null;
     userData?: UserData;
+    email?: string;
 }
 
 interface EmailInputModalProps<T extends SongData> {
@@ -25,9 +28,9 @@ export default function EmailInputModal<T extends SongData>({
     console.log(modalData);
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
-    const { closeModal } = useModal();
+    const { openModal, closeModal } = useModal();
 
-    const formId = modalData?.formId;
+    const formId = modalData && modalData.formId;
 
     const handleClickLogin = () => {
         navigate("/login");
@@ -39,12 +42,35 @@ export default function EmailInputModal<T extends SongData>({
             setError("이메일을 입력해주세요.");
             return;
         }
-        await axiosInstance().post("/songs", {
-            userId: formId,
-            email,
-            artist: modalData?.artist,
-            title: modalData?.title
-        });
+        try {
+            await axiosInstance().post("/songs", {
+                userId: formId,
+                email,
+                artist: modalData?.artist,
+                title: modalData?.title
+            });
+            closeModal();
+            // 신청완료 모달 띄우기
+            openModal({
+                title: "신청 완료",
+                type: ModalType.SUCCESS,
+                Content: SongRequestSuccessModal,
+                data: {
+                    artist: modalData?.artist,
+                    title: modalData?.title,
+                    email: modalData?.email,
+                    formId
+                },
+                buttonBackgroundColor:
+                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+            });
+            // 모달 닫기
+            closeModal();
+            // 홈으로 리다이렉트
+            navigate("/");
+        } catch (error) {
+            throw new Error("Failed to fetch user form");
+        }
     };
 
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +89,7 @@ export default function EmailInputModal<T extends SongData>({
         <div>
             <button
                 onClick={handleClickLogin}
-                className="bg-colorPurple w-full h-12 rounded-md text-white text-[14px] font-semibold"
+                className="bg-colorPurple w-full h-12 rounded-lg text-white text-[14px] font-semibold"
             >
                 로그인
             </button>
@@ -93,7 +119,7 @@ export default function EmailInputModal<T extends SongData>({
                 <ErrorMessage errors={error} />
                 <button
                     onClick={handleClickSongDetail}
-                    className="bg-colorPurple w-full h-12 rounded-md mt-10 text-white text-[14px] font-semibold"
+                    className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold"
                 >
                     비회원으로 신청하기
                 </button>

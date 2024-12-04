@@ -18,6 +18,8 @@ import Tooltip from "../assets/tootip.svg";
 import Navbar from "../components/Navbar";
 import { baseURL } from "../utils/apiUrl";
 import Logo from "../components/Logo";
+import { jwtDecode } from "jwt-decode";
+import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
 
 interface FormValues {
     name: string;
@@ -30,6 +32,11 @@ interface CheckboxState {
     age: boolean;
     terms: boolean;
     privacy: boolean;
+}
+
+export interface DecodedToken {
+    email: string;
+    provider: string;
 }
 
 const Join = () => {
@@ -76,27 +83,51 @@ const Join = () => {
     } = usePasswordToggle();
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const providerCode = urlParams.get("code");
-        if (providerCode) {
-            const processGoogleLogin = async () => {
-                try {
+        const saveAccessToken = async () => {
+            const hash = window.location.hash;
+            const params = new URLSearchParams(hash.substring(1));
+            const accessToken = params.get("access_token");
+
+            if (accessToken) {
+                localStorage.setItem("providerAccessToken", accessToken);
+                return accessToken;
+            }
+            return null;
+        };
+
+        const processGoogleLogin = async () => {
+            try {
+                const providerAccessToken = await saveAccessToken();
+
+                if (providerAccessToken) {
                     const response = await axios.post(
                         `${baseURL}/auth/login/social`,
                         {
                             provider: "GOOGLE",
-                            providerCode
+                            providerAccessToken
                         }
                     );
+
                     const { accessToken, refreshToken } = response.data;
+                    const decodedToken = jwtDecode<DecodedToken>(accessToken);
+
+                    localStorage.setItem(
+                        "userInfo",
+                        JSON.stringify({
+                            email: decodedToken.email,
+                            provider: decodedToken.provider
+                        })
+                    );
+
                     storeToken(accessToken, refreshToken);
                     navigate(from, { replace: true });
-                } catch (error) {
-                    if (error) {
-                        showToast("error", "Google 로그인에 실패했습니다.");
-                    }
                 }
-            };
+            } catch (error) {
+                console.error("Google 로그인 처리 중 오류 발생:", error);
+            }
+        };
+
+        if (window.location.hash) {
             processGoogleLogin();
         }
     }, [navigate, from, showToast]);
@@ -110,21 +141,6 @@ const Join = () => {
     const handleCheckboxToggle = (name: keyof CheckboxState) => {
         setCheckboxes((prev) => ({ ...prev, [name]: !prev[name] }));
         setTermsError("");
-    };
-
-    const handleGoogleClick = async () => {
-        const oauth2Endpoint = "https://accounts.google.com/o/oauth2/v2/auth";
-        const params = new URLSearchParams({
-            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-            redirect_uri: import.meta.env.VITE_GOOGLE_REDIRECT_URI,
-            response_type: "code",
-            scope: [
-                "https://www.googleapis.com/auth/userinfo.profile",
-                "https://www.googleapis.com/auth/userinfo.email"
-            ].join(" "),
-            include_granted_scopes: "true"
-        });
-        window.location.href = `${oauth2Endpoint}?${params.toString()}`;
     };
 
     const handleAllCheckboxes = () => {
@@ -189,41 +205,39 @@ const Join = () => {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mx-auto w-[380px] p-6"
-        >
-            <ToastContainer toasts={toasts} />
+        <>
+            <NavbarWithoutLoginButton />
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col items-center mx-auto justify-center w-[380px] p-6"
+            >
+                <ToastContainer toasts={toasts} />
 
-            <div>
-                <div
-                    onClick={() => navigate("/")}
-                    className="w-[64px] h-[22.5px]"
-                >
-                    <Logo />
-                </div>
                 <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     회원가입
                 </div>
 
                 <div>
                     <div className="relative group w-full h-[48px] rounded-[10px] border border-black mb-10">
-                        <button
-                            type="button"
-                            onClick={handleGoogleClick}
+                        <a
+                            href={`https://accounts.google.com/o/oauth2/auth?client_id=${
+                                import.meta.env.VITE_GOOGLE_CLIENT_ID
+                            }&redirect_uri=${
+                                import.meta.env.VITE_GOOGLE_REDIRECT_URI
+                            }&response_type=token&scope=https://www.googleapis.com/auth/userinfo.email`}
                             className="w-full h-full flex items-center justify-center font-bold text-sm"
                         >
                             <GoogleIcon />
                             <span className="ml-2">Google로 회원가입</span>
-                        </button>
+                        </a>
                         <img
                             src={Tooltip}
                             alt="Google Sign Up"
-                            className="absolute hidden group-hover:block -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
+                            className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
                         />
                     </div>
                     <div className="flex items-center my-10">
-                        <span className="w-full border-b"></span>
+                        <span className="w-full border-b border-[#f3f3f3]"></span>
                     </div>
 
                     <div className="space-y-4">
@@ -240,14 +254,14 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`font-thin text-base scale-[0.875] origin-left w-[114.285714%] border border-[#e1e1e1] h-[48px] px-4 mt-2 ${getInputErrorClassName(
+                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal ${getInputErrorClassName(
                                         errors.name
                                     )}`}
                                     placeholder="별명"
                                 />
                             </label>
                             {errors.name && (
-                                <p className="text-red-500 text-xs mt-1">
+                                <p className="text-errorTextColor text-sm mt-2">
                                     {errors.name.message}
                                 </p>
                             )}
@@ -274,21 +288,30 @@ const Join = () => {
                                 />
                             </label>
 
-                            <ErrorMessage field="email" errors={errors} />
+                            {errors.email && (
+                                <p className="text-errorTextColor text-sm mt-2">
+                                    {errors.email.message}
+                                </p>
+                            )}
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label className="text-sm mb-2 font-bold">
+                            <label
+                                htmlFor="password"
+                                className="text-sm mb-2 font-bold"
+                            >
                                 비밀번호
                                 <div className="relative top-2">
                                     <input
                                         type={password.type}
+                                        id="password"
                                         {...register("password", {
-                                            required: "비밀번호를 입력해주세요",
+                                            required:
+                                                "비밀번호를 입력해주세요.",
                                             pattern: {
                                                 value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                                 message:
-                                                    "영문, 숫자를 포함한 8자 이상의 비밀번호"
+                                                    "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                             }
                                         })}
                                         className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
@@ -296,32 +319,37 @@ const Join = () => {
                                         )}`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
-                                    <button
-                                        type="button"
+
+                                    <img
+                                        src={handleEyeIconToggle()}
+                                        alt="Toggle Password Visibility"
+                                        className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                         onClick={handleToggle}
-                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                                    >
-                                        <img
-                                            src={handleEyeIconToggle()}
-                                            alt="Toggle Password Visibility"
-                                            className="w-5 h-5"
-                                        />
-                                    </button>
+                                        tabIndex={-1}
+                                    />
                                 </div>
                             </label>
 
-                            <ErrorMessage field="password" errors={errors} />
+                            {errors.password && (
+                                <p className="text-errorTextColor text-sm mt-2">
+                                    {errors.password.message}
+                                </p>
+                            )}
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label className="text-sm font-bold">
+                            <label
+                                htmlFor="confirmPassword"
+                                className="text-sm font-bold mb-2"
+                            >
                                 비밀번호 확인
                                 <div className="relative top-2">
                                     <input
                                         type={confirmPassword.type}
+                                        id="confirmPassword"
                                         {...register("confirmPassword", {
                                             required:
-                                                "비밀번호 확인을 해주세요",
+                                                "비밀번호 확인을 해주세요.",
                                             validate: (value) =>
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
@@ -331,24 +359,21 @@ const Join = () => {
                                         )}`}
                                         placeholder="비밀번호 확인"
                                     />
-                                    <button
-                                        type="button"
+
+                                    <img
+                                        src={handleConfirmEyeIconToggle()}
+                                        alt="Toggle Password Visibility"
+                                        className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                         onClick={handleConfirmToggle}
-                                        className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                                    >
-                                        <img
-                                            src={handleConfirmEyeIconToggle()}
-                                            alt="Toggle Password Visibility"
-                                            className="w-5 h-5"
-                                        />
-                                    </button>
+                                    />
                                 </div>
                             </label>
 
-                            <ErrorMessage
-                                field="confirmPassword"
-                                errors={errors}
-                            />
+                            {errors.confirmPassword && (
+                                <p className="text-errorTextColor text-sm mt-2">
+                                    {errors.confirmPassword.message}
+                                </p>
+                            )}
                         </div>
                         <div className="pc:my-[30px]"></div>
                     </div>
@@ -357,6 +382,14 @@ const Join = () => {
                         <div className="text-sm font-bold">약관동의</div>
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
+                            role="checkbox"
+                            tabIndex={0}
+                            aria-checked={isAllChecked}
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    handleAllCheckboxes();
+                                }
+                            }}
                             onClick={handleAllCheckboxes}
                         >
                             <img
@@ -370,6 +403,7 @@ const Join = () => {
                             />
                             <span className="text-sm font-bold">전체동의</span>
                         </div>
+
                         <div className="w-full border-t border-gray-200 my-4"></div>
                         <div className="space-y-4">
                             {Object.entries(checkboxLabels).map(
@@ -400,14 +434,14 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="w-full bg-colorPurple text-white rounded-lg h-[48px] text-sm mt-8"
+                        className="w-full bg-colorPurple text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
                         type="submit"
                     >
                         회원가입
                     </button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </>
     );
 };
 
