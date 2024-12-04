@@ -18,19 +18,33 @@ const Checkbox = ({
     onChevronClick,
     type
 }: CheckboxProps) => {
-    const handleChevronClick = (e: MouseEvent) => {
+    const handleChevronClick = (e: MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+
         let url = "";
-        if (type === "privacy") {
-            url =
-                "https://bronze-reaction-5e0.notion.site/112cba65465f80ab8588f91a4f65a458?pvs=4";
-        } else if (type === "terms") {
-            url =
-                "https://bronze-reaction-5e0.notion.site/112cba65465f80248052d4e4a5eee135?pvs=4";
+
+        switch (type) {
+            case "privacy":
+                url =
+                    "https://bronze-reaction-5e0.notion.site/112cba65465f80ab8588f91a4f65a458?pvs=4";
+                break;
+            case "terms":
+                url =
+                    "https://bronze-reaction-5e0.notion.site/112cba65465f80248052d4e4a5eee135?pvs=4";
+                break;
+            case "age":
+                break;
         }
+
         if (url) {
-            window.open(url, "_blank");
+            try {
+                window.open(url, "_blank", "noopener,noreferrer");
+            } catch (error) {
+                console.error("Failed to open URL:", error);
+                window.location.href = url;
+            }
         }
+
         if (onChevronClick) {
             onChevronClick();
         }
@@ -43,25 +57,26 @@ const Checkbox = ({
                     type="checkbox"
                     checked={isChecked}
                     onChange={onToggle}
-                    className="hidden"
+                    className="hidden cursor-pointer"
+                    role="checkbox"
+                    aria-checked={isChecked}
                 />
                 <img
                     src={isChecked ? CheckedBox : CheckboxOutline}
                     alt=""
-                    className="w-5 h-5 mr-2"
+                    className="w-5 h-5 mr-2 cursor-pointer"
                 />
                 <span className="text-sm leading-none font-bold">{label}</span>
             </label>
-            {
-                <a href="">
-                    <img
-                        src={ChevronRight}
-                        alt="chevron"
-                        className="w-5 h-5"
-                        onClick={handleChevronClick}
-                    />
-                </a>
-            }
+
+            <button
+                type="button"
+                onClick={handleChevronClick}
+                className="bg-transparent border-none cursor-pointer p-0"
+                aria-label={`${label} 상세 정보 보기`}
+            >
+                <img src={ChevronRight} alt="" className="w-5 h-5" />
+            </button>
         </div>
     );
 };

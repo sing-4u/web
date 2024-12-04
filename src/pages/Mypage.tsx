@@ -31,14 +31,12 @@ const Mypage = () => {
   const handleLogout = () => {
     logout();
     localStorage.removeItem("accessToken");
-    navigate("/", { replace: true });
-    window.location.reload();
   };
 
   const { openModal } = useModal();
 
   useEffect(() => {
-    if (userData === null) {
+    if (!userData === null) {
       navigate("/", { replace: true });
     }
   }, [userData, navigate]);
@@ -105,11 +103,12 @@ const Mypage = () => {
       buttonBackgroundColor: "bg-[#7846dd]",
     });
   };
-
   const openPasswordModal = () => {
     openModal({
       title: "비밀번호 변경",
-      Content: PasswordChangeModal,
+      Content: (props) => (
+        <PasswordChangeModal {...props} navigate={navigate} />
+      ),
       type: ModalType.DEFAULT,
       buttonBackgroundColor: "bg-[#7846dd]",
     });
@@ -210,7 +209,12 @@ const Mypage = () => {
               비밀번호
             </label>
             <div className="relative flex justify-center items-center">
-              <input type="password" id="password" className={inputClass} />
+              <input
+                type="password"
+                id="password"
+                className={inputClass}
+                disabled
+              />
               <button
                 type="button"
                 className={changeButtonClass}

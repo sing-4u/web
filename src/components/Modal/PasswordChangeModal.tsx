@@ -11,10 +11,12 @@ import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 import ErrorMessage from "../ErrorMessage";
+import { useNavigate } from "react-router-dom";
 
-const PasswordChangeModal = ({
+const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
+    navigate,
     buttonBackgroundColor
-}: ModalContentProps<unknown>) => {
+}) => {
     const {
         register,
         handleSubmit,
@@ -54,6 +56,7 @@ const PasswordChangeModal = ({
             });
             showToast("success", "비밀번호 변경 완료");
             closeModal();
+            navigate?.("/login");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("oldPassword", {
@@ -99,35 +102,34 @@ const PasswordChangeModal = ({
                             <input
                                 type={oldPasswordState.type}
                                 {...register("oldPassword", {
-                                    required: "비밀번호를 입력해 주세요.",
-                                    pattern: {
-                                        value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                        message:
-                                            "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                    required: true,
+                                    validate: (value) => {
+                                        if (value === "") {
+                                            return "비밀번호를 입력해주세요.";
+                                        }
+                                        if (value !== watchOldPassword) {
+                                            return "비밀번호가 일치하지 않습니다.";
+                                        }
                                     }
                                 })}
-                                className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
+                                className={`w-full my-2 ${getInputErrorClassName(
                                     errors.oldPassword
                                 )}`}
                                 placeholder="비밀번호 입력"
                             />
-                            {errors.oldPassword && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.oldPassword.message}
-                                </p>
-                            )}
-                            <button
-                                type="button"
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+
+                            <img
+                                src={handleOldEyeIconToggle()}
+                                alt="toggle password visibility"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleOldToggle}
-                            >
-                                <img
-                                    src={handleOldEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
-                                />
-                            </button>
+                            />
                         </div>
+                        {errors.oldPassword && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors.oldPassword.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>
@@ -144,35 +146,36 @@ const PasswordChangeModal = ({
                                     pattern: {
                                         value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
                                         message:
-                                            "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다."
+                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                     },
                                     validate: (value) => {
                                         if (value === "") {
-                                            return "비밀번호 취약: 비밀번호는 8~16자의 영문 대/소문자, 숫자, 특수문자를 모두 포함해야 합니다.";
+                                            return "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요.";
                                         }
-                                        if (value !== watchOldPassword) {
-                                            return "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요.";
+                                        if (value === watchOldPassword) {
+                                            return "새 비밀번호가 현재 비밀번호와 동일합니다. 다시 확인해주세요.";
                                         }
                                     }
                                 })}
-                                className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
+                                className={`w-full my-2 ${getInputErrorClassName(
                                     errors.newPassword
                                 )}`}
                                 placeholder="새 비밀번호 입력"
                             />
-                            <ErrorMessage field="newPassword" errors={errors} />
-                            <button
-                                type="button"
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+
+                            <img
+                                src={handleNewEyeIconToggle()}
+                                alt="toggle password visibility"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleNewToggle}
-                            >
-                                <img
-                                    src={handleNewEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
-                                />
-                            </button>
+                            />
                         </div>
+
+                        {errors.newPassword && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors.newPassword.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>
@@ -185,33 +188,32 @@ const PasswordChangeModal = ({
                             <input
                                 {...register("confirmPassword", {
                                     required: "비밀번호는 필수값입니다.",
-                                    validate: (value) =>
-                                        value === watchPassword ||
-                                        "비밀번호가 일치하지 않습니다."
+
+                                    validate: (value) => {
+                                        if (value !== watchPassword) {
+                                            return "비밀번호가 일치하지 않습니다.";
+                                        }
+                                    }
                                 })}
                                 type={confirmPasswordState.type}
-                                className={`w-full pr-10 rounded-[10px] mt-2 ${getInputErrorClassName(
+                                className={`w-full my-2 ${getInputErrorClassName(
                                     errors.confirmPassword
                                 )}`}
                                 placeholder="새 비밀번호 확인"
                             />
-                            {errors.confirmPassword && (
-                                <p className="mt-1 text-sm text-red-500">
-                                    {errors.confirmPassword.message}
-                                </p>
-                            )}
-                            <button
-                                type="button"
-                                className="absolute top-8 -translate-y-1/2 right-0 pr-3 flex items-center"
+
+                            <img
+                                src={handleConfirmEyeIconToggle()}
+                                alt="toggle password visibility"
+                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleConfirmToggle}
-                            >
-                                <img
-                                    src={handleConfirmEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
-                                />
-                            </button>
+                            />
                         </div>
+                        {errors.confirmPassword && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors.confirmPassword.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>
