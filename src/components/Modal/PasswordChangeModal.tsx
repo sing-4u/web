@@ -152,7 +152,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                             return "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요.";
                                         }
                                         if (value === watchOldPassword) {
-                                            return "새 비밀번호와 현재 비밀번호가 일치합니다. 다시 확인해주세요.";
+                                            return "새 비밀번호가 현재 비밀번호와 동일합니다. 다시 확인해주세요.";
                                         }
                                     }
                                 })}
