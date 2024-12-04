@@ -35,11 +35,11 @@ export const Modal = <T,>({
                     open
                 >
                     <div
-                        className={`flex flex-col ${
-                            type === ModalType.ERROR
-                                ? "justify-center"
-                                : "justify-between"
-                        } items-center mb-4`}
+                        className={`flex ${
+                            type === ModalType.DEFAULT
+                                ? "flex-row justify-between items-center"
+                                : "flex-col items-center"
+                        } mb-4`}
                     >
                         {/* TODO : 리팩토링 필요 */}
                         <div className="flex">
