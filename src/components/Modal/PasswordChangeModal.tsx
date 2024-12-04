@@ -117,11 +117,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 )}`}
                                 placeholder="비밀번호 입력"
                             />
-                            {errors.oldPassword && (
-                                <p className="mt-1 text-sm text-errorTextColor">
-                                    {errors.oldPassword.message}
-                                </p>
-                            )}
+
                             <img
                                 src={handleOldEyeIconToggle()}
                                 alt="toggle password visibility"
@@ -129,6 +125,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 onClick={handleOldToggle}
                             />
                         </div>
+                        {errors.oldPassword && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors.oldPassword.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>
@@ -162,12 +163,6 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 placeholder="새 비밀번호 입력"
                             />
 
-                            {errors.newPassword && (
-                                <p className="mt-1 text-sm text-errorTextColor">
-                                    {errors.newPassword.message}
-                                </p>
-                            )}
-
                             <img
                                 src={handleNewEyeIconToggle()}
                                 alt="toggle password visibility"
@@ -175,6 +170,12 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 onClick={handleNewToggle}
                             />
                         </div>
+
+                        {errors.newPassword && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors.newPassword.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>
@@ -200,11 +201,6 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 )}`}
                                 placeholder="새 비밀번호 확인"
                             />
-                            {errors.confirmPassword && (
-                                <p className="mt-1 text-sm text-errorTextColor">
-                                    {errors.confirmPassword.message}
-                                </p>
-                            )}
 
                             <img
                                 src={handleConfirmEyeIconToggle()}
@@ -213,6 +209,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 onClick={handleConfirmToggle}
                             />
                         </div>
+                        {errors.confirmPassword && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors.confirmPassword.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>

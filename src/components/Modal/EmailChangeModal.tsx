@@ -120,7 +120,7 @@ const EmailChangeModal = ({
                                 )}`}
                                 placeholder="비밀번호를 입력해주세요."
                             />
-                            <ErrorMessage field="password" errors={errors} />
+
                             <button
                                 type="button"
                                 disabled={isLoading}
@@ -134,6 +134,11 @@ const EmailChangeModal = ({
                                 />
                             </button>
                         </div>
+                        {errors.password && (
+                            <p className="mt-1 text-sm text-errorTextColor">
+                                {errors?.password.message}
+                            </p>
+                        )}
                     </div>
                 </label>
             </div>
