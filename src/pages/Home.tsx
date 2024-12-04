@@ -22,6 +22,38 @@ export default function Home() {
     const [hasMore, setHasMore] = useState(true);
     const [page, setPage] = useState(0);
 
+    const [searchTerm, setSearchTerm] = useState("");
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
+    const loadUsers = useCallback(
+        async (keyword: string = "", pageIndex: number = 0) => {
+            setLoading(true);
+            try {
+                const response = await axiosInstance().get(`${baseURL}/users`, {
+                    params: {
+                        size: 10,
+                        index: pageIndex,
+                        name: keyword
+                    }
+                });
+
+                if (pageIndex === 0) {
+                    setUsers(response.data);
+                } else {
+                    setUsers((prevUsers) => [...prevUsers, ...response.data]);
+                }
+                setPage(pageIndex + 1);
+                setHasMore(response.data.length === 10);
+            } catch (error) {
+                console.error("데이터 로드 중 오류 발생:", error);
+                setHasMore(false);
+            } finally {
+                setLoading(false);
+            }
+        },
+        []
+    );
+
     const loadInitialData = useCallback(async () => {
         setLoading(true);
         try {
@@ -81,6 +113,29 @@ export default function Home() {
     }, 100);
 
     useEffect(() => {
+        const debounceTimer = setTimeout(() => {
+            setDebouncedSearchTerm(searchTerm);
+        }, 300);
+
+        return () => {
+            clearTimeout(debounceTimer);
+        };
+    }, [searchTerm]);
+
+    useEffect(() => {
+        if (debouncedSearchTerm !== "") {
+            setPage(0);
+            loadUsers(debouncedSearchTerm, 0);
+        } else {
+            loadInitialData();
+        }
+    }, [debouncedSearchTerm, loadUsers, loadInitialData]);
+
+    const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setSearchTerm(e.target.value);
+    };
+
+    useEffect(() => {
         loadInitialData();
     }, [loadInitialData]);
 
@@ -127,6 +182,8 @@ export default function Home() {
 
             <div className="relative">
                 <input
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                     type="text"
                     placeholder="아티스트명을 검색해주세요"
                     className="w-full border p-2 pl-10 rounded-[10px]"
