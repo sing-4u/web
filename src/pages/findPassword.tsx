@@ -20,14 +20,6 @@ interface FormValue {
     code: string;
 }
 
-interface AuthState {
-    isAuthenticationCodeRequested: boolean;
-    lastRequestTime: number;
-    isRequesting: boolean;
-    timeLeft: number | null;
-    showTimer: boolean;
-}
-
 const MAX_LENGTH = 6;
 
 const FindPassword = () => {
@@ -39,23 +31,19 @@ const FindPassword = () => {
 
     const navigate = useNavigate();
     const { showToast, toasts } = useToast();
-
-    const [authState, setAuthState] = useState<AuthState>({
-        isAuthenticationCodeRequested: false,
-        lastRequestTime: 0,
-        isRequesting: false,
-        showTimer: false,
-        timeLeft: null
-    });
+    const [isAuthenticationCodeRequested, setIsAuthenticationCodeRequested] =
+        useState(false);
+    const [lastRequestTime, setLastRequestTime] = useState(0);
+    const [isRequesting, setIsRequesting] = useState(false);
 
     const {
         register,
         handleSubmit,
         watch,
         setError,
-        formState: { errors },
-        clearErrors
-    } = useForm<FormValue>({ mode: "onChange" });
+        formState: { errors }
+    } = useForm<FormValue>();
+    const [showTimer, setShowTimer] = useState(false);
 
     const { openModal } = useModal();
     const email = watch("email");
@@ -63,37 +51,35 @@ const FindPassword = () => {
     const MINUTES_IN_MS = 3 * 60 * 1000;
     const INTERVAL = 1000;
     const COOLDOWN_DURATION = 30000;
+    const [timeLeft, setTimeLeft] = useState<number | null>(null);
 
     const minutes = String(
-        Math.floor(((authState.timeLeft || 0) / (1000 * 60)) % 60)
+        Math.floor(((timeLeft || 0) / (1000 * 60)) % 60)
     ).padStart(2, "0");
-    const second = String(
-        Math.floor(((authState.timeLeft || 0) / 1000) % 60)
-    ).padStart(2, "0");
+    const second = String(Math.floor(((timeLeft || 0) / 1000) % 60)).padStart(
+        2,
+        "0"
+    );
 
     useEffect(() => {
-        if (
-            authState.timeLeft === null ||
-            !authState.isAuthenticationCodeRequested
-        )
-            return;
+        if (timeLeft === null || !isAuthenticationCodeRequested) return;
 
         const timer = setInterval(() => {
-            setAuthState((prev) => ({
-                ...prev,
-                timeLeft:
-                    prev.timeLeft !== null && prev.timeLeft > 0
-                        ? prev.timeLeft - INTERVAL
-                        : 0,
-                isAuthenticationCodeRequested:
-                    prev.timeLeft !== null && prev.timeLeft > 0
-            }));
+            setTimeLeft((prevTime) => {
+                if (prevTime === null) return null;
+                if (prevTime <= 0) {
+                    clearInterval(timer);
+                    setIsAuthenticationCodeRequested(false);
+                    return 0;
+                }
+                return prevTime - INTERVAL;
+            });
         }, INTERVAL);
 
         return () => {
             clearInterval(timer);
         };
-    }, [authState.timeLeft, authState.isAuthenticationCodeRequested]);
+    }, [timeLeft, isAuthenticationCodeRequested]);
 
     const checkRegexEmail = (email: string) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -114,58 +100,49 @@ const FindPassword = () => {
                     <div className="flex flex-col gap-y-4 rounded-[10px]"></div>
                 ),
                 type: ModalType.ERROR,
-                buttonBackgroundColor: "bg-[#7846dd]",
-                showErrorIcon: false
+                buttonBackgroundColor: "bg-[#7846dd]"
             });
             return;
         }
     };
 
     const handleAuthenticationCodeClick = async () => {
+        setIsAuthenticationCodeRequested(true);
+        checkRegexEmail(email);
+
+        retryRequestAuthenticationNumber(lastRequestTime);
+
+        setIsRequesting(true);
+
+        setTimeLeft(MINUTES_IN_MS);
+        setLastRequestTime(Date.now());
+
+        showToast("success", "인증번호가 전송되었습니다.");
         try {
-            checkRegexEmail(email);
-            if (errors.email) return;
-            retryRequestAuthenticationNumber(authState.lastRequestTime);
-
-            await axios.post(`${baseURL}/auth/get-email-code`, { email });
-
-            setAuthState((prev) => ({
-                ...prev,
-                isAuthenticationCodeRequested: true,
-                timeLeft: MINUTES_IN_MS,
-                lastRequestTime: Date.now(),
-                showTimer: true
-            }));
-
-            showToast("success", "인증번호가 전송되었습니다.");
-            clearErrors("email");
+            await axios.post(`${baseURL}/auth/get-email-code`, {
+                email
+            });
+            setShowTimer(true);
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 404) {
-                    setError("email", {
-                        type: "manual",
-                        message:
-                            "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
-                    });
-                } else if (error.response?.status === 403) {
-                    openModal({
-                        title: "SNS로 간편 가입된 계정입니다.",
-                        Content: SNSModalContent,
-                        type: ModalType.ERROR,
-                        buttonBackgroundColor: "bg-[#7846dd]",
-                        showErrorIcon: false
-                    });
-                }
+            if (axios.isAxiosError(error) && error.response?.status === 404) {
+                setError("email", {
+                    type: "manual",
+                    message:
+                        "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
+                });
             }
-            setAuthState((prev) => ({
-                ...prev,
-                showTimer: false
-            }));
+            if (axios.isAxiosError(error) && error.response?.status === 403) {
+                openModal({
+                    title: "SNS로 간편 가입된 계정입니다.",
+                    Content: SNSModalContent,
+                    type: ModalType.ERROR,
+                    buttonBackgroundColor: "bg-[#7846dd]"
+                });
+                return;
+            }
+            setShowTimer(false);
         } finally {
-            setAuthState((prev) => ({
-                ...prev,
-                isRequesting: false
-            }));
+            setIsRequesting(false);
         }
     };
 
@@ -197,9 +174,9 @@ const FindPassword = () => {
         }
     };
 
-    const buttonText = authState.isRequesting
+    const buttonText = isRequesting
         ? "요청 중..."
-        : authState.isAuthenticationCodeRequested
+        : isAuthenticationCodeRequested
         ? "재요청"
         : "인증번호 요청";
 
@@ -237,13 +214,13 @@ const FindPassword = () => {
                         } ${getInputErrorClassName(errors.email)}`}
                     />
                     {errors.email && (
-                        <span className="text-errorTextColor text-sm mb-[22px]">
+                        <span className="text-red-500 text-sm mb-[22px]">
                             {errors.email.message}
                         </span>
                     )}
                     <button
                         type="button"
-                        disabled={!email || authState.isRequesting}
+                        disabled={!email || isRequesting}
                         className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
                             ${
                                 email !== ""
@@ -282,7 +259,7 @@ const FindPassword = () => {
                             {errors.code.message}
                         </p>
                     )}
-                    {authState.timeLeft !== 0 && authState.showTimer && (
+                    {timeLeft !== 0 && showTimer && (
                         <span className="absolute inset-y-12 end-3 text-red-500">
                             {minutes}:{second}
                         </span>
