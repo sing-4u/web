@@ -102,7 +102,15 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <input
                                 type={oldPasswordState.type}
                                 {...register("oldPassword", {
-                                    required: "비밀번호를 입력해 주세요."
+                                    required: true,
+                                    validate: (value) => {
+                                        if (value === "") {
+                                            return "비밀번호를 입력해주세요.";
+                                        }
+                                        if (value !== watchOldPassword) {
+                                            return "비밀번호가 일치하지 않습니다.";
+                                        }
+                                    }
                                 })}
                                 className={`w-full my-2 ${getInputErrorClassName(
                                     errors.oldPassword
@@ -179,14 +187,12 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <input
                                 {...register("confirmPassword", {
                                     required: "비밀번호는 필수값입니다.",
-                                    pattern: {
-                                        value: /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,16}$/,
-                                        message:
-                                            "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
-                                    },
-                                    validate: (value) =>
-                                        value === watchPassword ||
-                                        "비밀번호가 일치하지 않습니다."
+
+                                    validate: (value) => {
+                                        if (value !== watchPassword) {
+                                            return "비밀번호가 일치하지 않습니다.";
+                                        }
+                                    }
                                 })}
                                 type={confirmPasswordState.type}
                                 className={`w-full my-2 ${getInputErrorClassName(
