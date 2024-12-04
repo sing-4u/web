@@ -19,6 +19,7 @@ import Navbar from "../components/Navbar";
 import { baseURL } from "../utils/apiUrl";
 import Logo from "../components/Logo";
 import { jwtDecode } from "jwt-decode";
+import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
 
 interface FormValues {
     name: string;
@@ -204,19 +205,14 @@ const Join = () => {
     };
 
     return (
-        <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mx-auto w-[380px] p-6"
-        >
-            <ToastContainer toasts={toasts} />
+        <>
+            <NavbarWithoutLoginButton />
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col items-center mx-auto justify-center w-[380px] p-6"
+            >
+                <ToastContainer toasts={toasts} />
 
-            <div>
-                <div
-                    onClick={() => navigate("/")}
-                    className="w-[64px] h-[22.5px]"
-                >
-                    <Logo />
-                </div>
                 <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     회원가입
                 </div>
@@ -444,8 +440,8 @@ const Join = () => {
                         회원가입
                     </button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </>
     );
 };
 
