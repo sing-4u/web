@@ -86,7 +86,7 @@ const FindPassword = () => {
         if (!emailRegex.test(email)) {
             setError("email", {
                 type: "manual",
-                message: "이메일 형식에 맞지 않습니다."
+                message: "올바른 이메일 형식이 아닙니다."
             });
             return;
         }
@@ -168,7 +168,7 @@ const FindPassword = () => {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("code", {
                     type: "manual",
-                    message: "인증 번호가 일치하지 않습니다."
+                    message: "인증번호가 올바르지 않습니다."
                 });
             }
         }
@@ -205,7 +205,7 @@ const FindPassword = () => {
                     <input
                         id="email"
                         {...register("email", {
-                            required: "이메일은 필수입니다"
+                            required: "이메일 주소를 입력해주세요."
                         })}
                         onKeyDown={handleEmailKeyPress}
                         placeholder="가입한 이메일 주소"
@@ -242,7 +242,7 @@ const FindPassword = () => {
                         id="code"
                         type="text"
                         {...register("code", {
-                            required: "인증번호는 필수입니다",
+                            required: "인증번호를 입력해주세요.",
                             maxLength: {
                                 value: MAX_LENGTH,
                                 message: `인증번호는 ${MAX_LENGTH}자리로 입력해주세요.`
