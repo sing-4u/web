@@ -6,7 +6,7 @@ body {
     font-family: Pretendard;
 }
 
-@font-face {
+/* @font-face {
     font-family: Pretendard;
     font-weight: 400;
     src: local("Pretendard Regular"),
@@ -26,7 +26,7 @@ body {
     src: local("Pretendard Bold"),
         url("./assets/fonts/Pretendard-Bold.woff") format("woff"),
         url("./assets/fonts/Pretendard-Bold.woff2") format("woff2");
-}
+} */
 
 @keyframes bounceIn {
     0% {
