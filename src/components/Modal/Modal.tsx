@@ -5,6 +5,7 @@ import CheckCircleFill from "../../../src/assets/ic_CheckCircleFill.svg";
 
 interface ModalExtendedProps<T> extends BaseModalProps<T> {
     onClose?: () => void;
+    showErrorIcon?: boolean;
 }
 
 export const Modal = <T,>({
@@ -13,7 +14,8 @@ export const Modal = <T,>({
     Content,
     data,
     type,
-    buttonBackgroundColor
+    buttonBackgroundColor,
+    showErrorIcon = true
 }: ModalExtendedProps<T>) => {
     if (!Content) return null;
 
@@ -43,7 +45,7 @@ export const Modal = <T,>({
                     >
                         {/* TODO : 리팩토링 필요 */}
                         <div className="flex">
-                            {type === ModalType.ERROR && (
+                            {type === ModalType.ERROR && showErrorIcon && (
                                 <div className="flex justify-center mt-[-15px]">
                                     <img
                                         src={TriangleFill}

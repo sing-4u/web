@@ -26,4 +26,5 @@ export interface BaseModalProps<T = unknown> {
     Content?: ComponentType<ModalContentProps<T>>;
     data?: T;
     buttonBackgroundColor: string;
+    showErrorIcon?: boolean;
 }

@@ -22,14 +22,16 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
         title,
         Content,
         data,
-        buttonBackgroundColor
+        buttonBackgroundColor,
+        showErrorIcon = true
     }: BaseModalProps<T>) => {
         setModalConfig({
             type,
             title,
             Content: Content as ComponentType<ModalContentProps<unknown>>, // Content는 ComponentType<ModalContentProps<unknown>>로 변환
             data,
-            buttonBackgroundColor
+            buttonBackgroundColor,
+            showErrorIcon
         });
     };
 
@@ -48,6 +50,7 @@ export const ModalProvider = ({ children }: { children: ReactNode }) => {
                     Content={modalConfig?.Content}
                     data={modalConfig?.data}
                     buttonBackgroundColor={modalConfig?.buttonBackgroundColor}
+                    showErrorIcon={modalConfig?.showErrorIcon}
                 />
             )}
         </ModalContext.Provider>
