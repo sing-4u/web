@@ -31,15 +31,11 @@ const Mypage = () => {
   const handleLogout = () => {
     logout();
     localStorage.removeItem("accessToken");
+    navigate("/");
+    window.location.reload();
   };
 
   const { openModal } = useModal();
-
-  useEffect(() => {
-    if (!userData === null) {
-      navigate("/", { replace: true });
-    }
-  }, [userData, navigate]);
 
   useEffect(() => {
     if (userData?.name) {

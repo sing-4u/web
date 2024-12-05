@@ -131,7 +131,7 @@ const ManageSong = () => {
                   <p
                     className="absolute flex justify-center items-center bottom-[-10px] left-1/2 transform -translate-x-1/2
         w-[73px] h-[20px] rounded-[4px] py-1 px-2 font-semibold text-[10px] leading-[11.93px]
-         bg-gradient-to-r from-[#7B92C7] via-[#3f384d] to-[#BB7FA0] text-white"
+         bg-gradient-to-r from-[#7B92C7] via-[#3f384d] to-[#BB7FA0] text-white whitespace-nowrap"
                   >
                     신청곡 받는 중
                   </p>
