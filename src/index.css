@@ -35,7 +35,6 @@ body {
     font-family: "Pretendard", system-ui, sans-serif;
   }
 }
-
 @keyframes bounceIn {
   0% {
     opacity: 0;
