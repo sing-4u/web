@@ -50,13 +50,13 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
         const { oldPassword, newPassword } = data;
         try {
             setIsLoading(true);
+            // TODO : 비밀번호 변경 시 로그아웃 처리 되는 부분 확인(배포에서만 로그아웃 처리됨)
             await axiosInstance().patch("/users/me/password", {
                 oldPassword,
                 newPassword
             });
             showToast("success", "비밀번호 변경 완료");
             closeModal();
-            navigate?.("/login");
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("oldPassword", {
@@ -102,7 +102,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <input
                                 type={oldPasswordState.type}
                                 {...register("oldPassword", {
-                                    required: true,
+                                    required: "비밀번호를 입력해주세요.",
                                     validate: (value) => {
                                         if (value === "") {
                                             return "비밀번호를 입력해주세요.";
