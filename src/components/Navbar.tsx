@@ -31,7 +31,7 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
             <>
               <button
                 onClick={() => navigate("/manage-song")}
-                className="flex w-[79px] h-[30px] border rounded-[5px] py-4 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white"
+                className="flex w-[79px] h-[30px] border rounded-[5px] py-4 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap"
               >
                 신청곡 관리
               </button>

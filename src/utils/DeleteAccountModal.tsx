@@ -41,6 +41,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
       });
       console.log("회원탈퇴 성공"); //TODO: 알림 팝업 화 작업 예정
       navigate("/");
+      window.location.reload();
       closeModal();
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.status === 401) {
@@ -53,7 +54,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white w-[327px] h-[556px] rounded-[10px] p-6 gap-10">
+      <div className="bg-white w-[327px] min-h-[556px] rounded-[10px] p-6 gap-10">
         <div className="flex justify-between items-center w-[279px] h-[21px] font-bold text-[18px] leading-[21.48px]">
           회원 탈퇴 <button onClick={closeModal}>X</button>
         </div>
@@ -73,7 +74,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
             className="w-[279px] h-[52px] pc:w-[380px]  pc:h-[264px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black"
           ></input>
         </div>
-        <div className="w-[279px] h-[234px] rounded-[10px] border border-inputBorderColor py-3.5 px-4 mt-4">
+        <div className="w-[279px] min-h-[234px] rounded-[10px] border border-inputBorderColor py-3.5 px-4 mt-4">
           <div className="w-[243px] h-[24px] font-bold text-[14px] leading-[24px]">
             탈퇴 시 유의사항
           </div>
