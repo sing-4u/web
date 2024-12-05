@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: Pretendard;
+    font-family: Pretendard;
 }
 
 /* @font-face {
@@ -61,3 +61,4 @@ body {
     font-family: "Pretendard", system-ui, sans-serif;
   }
 }
+*/
