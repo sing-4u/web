@@ -8,6 +8,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { ToastContainer } from "../components/ToastContainer";
 import Navbar from "../components/Navbar";
 import { useTitle } from "../hooks/useTitle";
+import Logo from "../components/Logo";
 
 interface PasswordProps {
     newPassword: string;
@@ -49,8 +50,8 @@ const NewPassword = () => {
             await axiosInstance(accessToken).patch("/auth/password", {
                 newPassword
             });
-            showToast("success", "비밀번호가 변경되었습니다.");
-            navigate("/login");
+            showToast("success", "비밀번호 재설정 완료");
+            setTimeout(() => navigate("/login"), 500);
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
             // 401 에러 처리
@@ -65,6 +66,12 @@ const NewPassword = () => {
             onSubmit={handleSubmit(onSubmit)}
             className="w-full max-w-[376px] mx-auto p-6"
         >
+            <div
+                onClick={() => navigate("/")}
+                className="w-[64px] h-[22.5px] cursor-pointer"
+            >
+                <Logo />
+            </div>
             <ToastContainer toasts={toasts} />
             <div className="">
                 <div className="text-2xl font-bold text-center mt-[22px]">
