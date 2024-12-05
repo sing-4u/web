@@ -349,7 +349,7 @@ const Join = () => {
                                         id="confirmPassword"
                                         {...register("confirmPassword", {
                                             required:
-                                                "비밀번호 확인을 해주세요.",
+                                                "비밀번호를 입력해주세요.",
                                             validate: (value) =>
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
