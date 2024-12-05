@@ -209,7 +209,7 @@ const Join = () => {
             <NavbarWithoutLoginButton />
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col items-center mx-auto justify-center w-[380px] p-6"
+                className="mx-auto w-[380px] p-6"
             >
                 <ToastContainer toasts={toasts} />
 
