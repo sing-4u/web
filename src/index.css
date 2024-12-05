@@ -3,10 +3,10 @@
 @tailwind utilities;
 
 body {
-    font-family: Pretendard;
+  font-family: Pretendard;
 }
 
-@font-face {
+/* @font-face {
     font-family: Pretendard;
     font-weight: 400;
     src: local("Pretendard Regular"),
@@ -14,11 +14,11 @@ body {
         url("./assets/fonts/Pretendard-Regular.woff2") format("woff2");
 }
 @font-face {
-    font-family: Pretendard;
-    font-weight: 500;
-    src: local("Pretendard Medium"),
-        url("./assets/fonts/Pretendard-Medium.woff") format("woff"),
-        url("./assets/fonts/Pretendard-Medium.woff2") format("woff2");
+  font-family: Pretendard;
+  font-weight: 500;
+  src: local("Pretendard Medium"),
+    url("/assets/fonts/Pretendard-Medium.woff") format("woff"),
+    url("/assets/fonts/Pretendard-Medium.woff2") format("woff2");
 }
 @font-face {
     font-family: Pretendard;
@@ -27,30 +27,37 @@ body {
         url("./assets/fonts/Pretendard-Bold.woff") format("woff"),
         url("./assets/fonts/Pretendard-Bold.woff2") format("woff2");
 }
-
+@layer base {
+  html {
+    font-family: "Pretendard", system-ui, sans-serif;
+  }
+  body {
+    font-family: "Pretendard", system-ui, sans-serif;
+  }
+}
 @keyframes bounceIn {
-    0% {
-        opacity: 0;
-        transform: translateY(-100px);
-    }
-    60% {
-        opacity: 1;
-        transform: translateY(20px);
-    }
-    80% {
-        transform: translateY(-10px);
-    }
-    100% {
-        transform: translateY(0);
-    }
+  0% {
+    opacity: 0;
+    transform: translateY(-100px);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(20px);
+  }
+  80% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
 
 .animate-bounceIn {
-    animation: bounceIn 0.6s ease-out;
+  animation: bounceIn 0.6s ease-out;
 }
 
 @layer base {
-    html {
-        font-family: "Pretendard", system-ui, sans-serif;
-    }
+  html {
+    font-family: "Pretendard", system-ui, sans-serif;
+  }
 }
