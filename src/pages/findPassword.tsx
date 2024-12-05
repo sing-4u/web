@@ -11,8 +11,6 @@ import SNSModalContent from "../components/Modal/SNSModal";
 import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
 import { baseURL } from "../utils/apiUrl";
-import { DecodedToken } from "./Join";
-import { jwtDecode } from "jwt-decode";
 import Logo from "../components/Logo";
 
 interface FormValue {
@@ -41,7 +39,8 @@ const FindPassword = () => {
         handleSubmit,
         watch,
         setError,
-        formState: { errors }
+        formState: { errors },
+        clearErrors
     } = useForm<FormValue>();
     const [showTimer, setShowTimer] = useState(false);
 
@@ -70,6 +69,7 @@ const FindPassword = () => {
                 if (prevTime <= 0) {
                     clearInterval(timer);
                     setIsAuthenticationCodeRequested(false);
+                    clearErrors("code");
                     return 0;
                 }
                 return prevTime - INTERVAL;
@@ -79,7 +79,7 @@ const FindPassword = () => {
         return () => {
             clearInterval(timer);
         };
-    }, [timeLeft, isAuthenticationCodeRequested]);
+    }, [timeLeft, isAuthenticationCodeRequested, clearErrors]);
 
     const checkRegexEmail = (email: string) => {
         const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -107,6 +107,7 @@ const FindPassword = () => {
     };
 
     const handleAuthenticationCodeClick = async () => {
+        showToast("success", "인증번호가 전송되었습니다.");
         setIsAuthenticationCodeRequested(true);
         checkRegexEmail(email);
 
@@ -117,7 +118,6 @@ const FindPassword = () => {
         setTimeLeft(MINUTES_IN_MS);
         setLastRequestTime(Date.now());
 
-        showToast("success", "인증번호가 전송되었습니다.");
         try {
             await axios.post(`${baseURL}/auth/get-email-code`, {
                 email
@@ -156,6 +156,19 @@ const FindPassword = () => {
     };
 
     const onSubmit = async ({ email, code }: FormValue) => {
+        if (timeLeft === 0) {
+            clearErrors("code");
+            return;
+        }
+
+        if (!code) {
+            setError("code", {
+                type: "required",
+                message: "인증번호를 입력해주세요."
+            });
+            return;
+        }
+
         try {
             const res = await axios.post(`${baseURL}/auth/verify-email-code`, {
                 email,
@@ -242,10 +255,14 @@ const FindPassword = () => {
                         id="code"
                         type="text"
                         {...register("code", {
-                            required: "인증번호를 입력해주세요.",
                             maxLength: {
                                 value: MAX_LENGTH,
                                 message: `인증번호는 ${MAX_LENGTH}자리로 입력해주세요.`
+                            },
+                            validate: (value) => {
+                                if (value === "") {
+                                    return "인증번호를 입력해주세요.";
+                                }
                             }
                         })}
                         placeholder="인증번호 6자리 입력"
@@ -253,10 +270,17 @@ const FindPassword = () => {
                             errors.code
                         )}`}
                     />
-
-                    {errors.code && (
+                    {/* 유효시간이 만료되면 이 메시지는 사라짐 */}
+                    {errors.code && timeLeft !== 0 && (
                         <p className="mt-1 text-sm text-errorTextColor">
                             {errors.code.message}
+                        </p>
+                    )}
+                    {/* 유효시간이 만료되면 이 메시지로 교체됨 */}
+                    {timeLeft === 0 && (
+                        <p className="mt-1 text-sm text-errorTextColor">
+                            유효시간이 만료되었습니다. 재발송 후 다시 시도해
+                            주세요.
                         </p>
                     )}
                     {timeLeft !== 0 && showTimer && (
