@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useTitle } from "../hooks/useTitle";
 import axiosInstance from "../utils/axiosInstance";
 import { baseURL } from "../utils/apiUrl";
+import Footer from "../components/Footer";
 
 interface UserProps {
     id: string;
@@ -184,30 +185,6 @@ export default function Home() {
         );
     };
 
-    const handleInquiryClick = () => {
-        window.open(
-            "https://forms.gle/ZinP7Qm3UAdegs246",
-            "_blank",
-            "noopener,noreferrer"
-        );
-    };
-
-    const handlePrivacyClick = () => {
-        window.open(
-            "https://bronze-reaction-5e0.notion.site/112cba65465f80ab8588f91a4f65a458?pvs=4",
-            "_blank",
-            "noopener,noreferrer"
-        );
-    };
-
-    const handleTermsClick = () => {
-        window.open(
-            "https://bronze-reaction-5e0.notion.site/112cba65465f80248052d4e4a5eee135?pvs=4",
-            "_blank",
-            "noopener,noreferrer"
-        );
-    };
-
     return (
         <div className="w-full mx-auto p-6 space-y-4 pc:px-[191px]">
             <Navbar />
@@ -278,33 +255,7 @@ export default function Home() {
                     의견 보내기
                 </button>
             </div>
-            <div className="w-full border-t border-gray-200 absolute left-0">
-                <div className="flex flex-col items-center py-4 text-sm text-gray-500">
-                    <div className="flex space-x-4 mb-2">
-                        <span
-                            onClick={handlePrivacyClick}
-                            className="hover:text-gray-700 cursor-pointer"
-                        >
-                            개인정보처리방침
-                        </span>
-                        <span
-                            onClick={handleTermsClick}
-                            className="hover:text-gray-700 cursor-pointer"
-                        >
-                            이용약관
-                        </span>
-                        <span
-                            onClick={handleInquiryClick}
-                            className="hover:text-gray-700 cursor-pointer"
-                        >
-                            문의
-                        </span>
-                    </div>
-                    <p className="text-xs">
-                        Copyright 2024 Sing4U All rights reserved.
-                    </p>
-                </div>
-            </div>
+            <Footer />
         </div>
     );
 }
