@@ -275,7 +275,7 @@ const Login = () => {
             </button>
           </div>
           {loginState.error && (
-            <div className="absolute w-[176px] top-[393px] left-[100px] text-red-500 text-center mt-4 font-medium text-[12px] leading-[14.32px]">
+            <div className="absolute w-[176px] top-[393px] left-[100px] text-red-500 text-center mt-4 font-medium text-[12px] leading-[14.32px] whitespace-nowrap">
               {loginState.error}
             </div>
           )}
