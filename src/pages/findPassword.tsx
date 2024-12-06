@@ -41,7 +41,7 @@ const FindPassword = () => {
         setError,
         formState: { errors },
         clearErrors
-    } = useForm<FormValue>();
+    } = useForm<FormValue>({ mode: "onChange" });
     const [showTimer, setShowTimer] = useState(false);
 
     const { openModal } = useModal();
@@ -88,8 +88,10 @@ const FindPassword = () => {
                 type: "manual",
                 message: "올바른 이메일 형식이 아닙니다."
             });
-            return;
+            return false;
         }
+        clearErrors("email");
+        return true;
     };
 
     const retryRequestAuthenticationNumber = (time: number) => {
@@ -108,9 +110,11 @@ const FindPassword = () => {
     };
 
     const handleAuthenticationCodeClick = async () => {
-        checkRegexEmail(email);
-
         if (retryRequestAuthenticationNumber(lastRequestTime)) {
+            return;
+        }
+
+        if (!checkRegexEmail(email)) {
             return;
         }
 
