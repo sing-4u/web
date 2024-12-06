@@ -102,11 +102,36 @@ const FindPassword = () => {
                     <div className="flex flex-col gap-y-4 rounded-[10px]"></div>
                 ),
                 type: ModalType.ERROR,
-                buttonBackgroundColor: "bg-[#7846dd]"
+                buttonBackgroundColor: "bg-[#7846dd]",
+                showErrorIcon: false
             });
             return true;
         }
         return false;
+    };
+
+    // 이메일 존재 여부 판단
+    const handleNoAccountError = (error: Error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+            setError("email", {
+                type: "manual",
+                message: "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
+            });
+        }
+    };
+
+    // 소셜로 가입한 경우
+    const handleSocialAccountError = (error: Error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 403) {
+            openModal({
+                title: "SNS로 간편 가입된 계정입니다.",
+                Content: SNSModalContent,
+                type: ModalType.ERROR,
+                buttonBackgroundColor: "bg-[#7846dd]",
+                showErrorIcon: false
+            });
+            return;
+        }
     };
 
     const handleAuthenticationCodeClick = async () => {
@@ -114,6 +139,7 @@ const FindPassword = () => {
             return;
         }
 
+        // 이메일 유효성 검사
         if (!checkRegexEmail(email)) {
             return;
         }
@@ -123,29 +149,20 @@ const FindPassword = () => {
         setLastRequestTime(Date.now());
 
         try {
-            showToast("success", "인증번호가 전송되었습니다.");
-            await axios.post(`${baseURL}/auth/get-email-code`, {
-                email
-            });
-            setShowTimer(true);
-            setIsAuthenticationCodeRequested(true);
-            setTimeLeft(MINUTES_IN_MS);
-        } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status === 404) {
-                setError("email", {
-                    type: "manual",
-                    message:
-                        "가입된 계정이 없습니다. 이메일을 다시 확인해주세요."
-                });
+            const response = await axios.post(
+                `${baseURL}/auth/get-email-code`,
+                { email }
+            );
+            if (response.status === 200) {
+                showToast("success", "인증번호가 전송되었습니다.");
+                setIsAuthenticationCodeRequested(true);
+                setShowTimer(true);
+                setTimeLeft(MINUTES_IN_MS);
             }
-            if (axios.isAxiosError(error) && error.response?.status === 403) {
-                openModal({
-                    title: "SNS로 간편 가입된 계정입니다.",
-                    Content: SNSModalContent,
-                    type: ModalType.ERROR,
-                    buttonBackgroundColor: "bg-[#7846dd]"
-                });
-                return;
+        } catch (error) {
+            if (error instanceof Error) {
+                handleNoAccountError(error);
+                handleSocialAccountError(error);
             }
             setShowTimer(false);
         } finally {
@@ -162,19 +179,35 @@ const FindPassword = () => {
         return;
     };
 
+    // 인증번호 검증
+    const handleInvalidAuthCodeError = (error: Error) => {
+        if (axios.isAxiosError(error) && error.response?.status === 401) {
+            setError("code", {
+                type: "manual",
+                message: "인증번호가 올바르지 않습니다."
+            });
+        }
+    };
+
+    // 인증번호 입력 여부 판단
+    const validateAuthCodeInput = (code: string) => {
+        if (!code) {
+            setError("code", {
+                type: "required",
+                message: "인증번호를 입력해주세요."
+            });
+            return false;
+        }
+        return true;
+    };
+
     const onSubmit = async ({ email, code }: FormValue) => {
         if (timeLeft === 0) {
             clearErrors("code");
             return;
         }
 
-        if (!code) {
-            setError("code", {
-                type: "required",
-                message: "인증번호를 입력해주세요."
-            });
-            return;
-        }
+        if (!validateAuthCodeInput(code)) return;
 
         try {
             const res = await axios.post(`${baseURL}/auth/verify-email-code`, {
@@ -185,12 +218,7 @@ const FindPassword = () => {
             const { data: accessToken } = res;
             navigate("/new-password", { state: accessToken });
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response?.status === 401) {
-                setError("code", {
-                    type: "manual",
-                    message: "인증번호가 올바르지 않습니다."
-                });
-            }
+            if (error instanceof Error) handleInvalidAuthCodeError(error);
         }
     };
 
@@ -225,7 +253,7 @@ const FindPassword = () => {
                     <input
                         id="email"
                         {...register("email", {
-                            required: "이메일 주소를 입력해주세요."
+                            required: "이메일을 입력해주세요."
                         })}
                         onKeyDown={handleEmailKeyPress}
                         placeholder="가입한 이메일 주소"
