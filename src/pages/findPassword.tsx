@@ -41,7 +41,7 @@ const FindPassword = () => {
         setError,
         formState: { errors },
         clearErrors
-    } = useForm<FormValue>();
+    } = useForm<FormValue>({ mode: "onChange" });
     const [showTimer, setShowTimer] = useState(false);
 
     const { openModal } = useModal();
@@ -88,8 +88,10 @@ const FindPassword = () => {
                 type: "manual",
                 message: "올바른 이메일 형식이 아닙니다."
             });
-            return;
+            return false;
         }
+        clearErrors("email");
+        return true;
     };
 
     const retryRequestAuthenticationNumber = (time: number) => {
@@ -102,27 +104,32 @@ const FindPassword = () => {
                 type: ModalType.ERROR,
                 buttonBackgroundColor: "bg-[#7846dd]"
             });
-            return;
+            return true;
         }
+        return false;
     };
 
     const handleAuthenticationCodeClick = async () => {
-        showToast("success", "인증번호가 전송되었습니다.");
-        setIsAuthenticationCodeRequested(true);
-        checkRegexEmail(email);
+        if (retryRequestAuthenticationNumber(lastRequestTime)) {
+            return;
+        }
 
-        retryRequestAuthenticationNumber(lastRequestTime);
+        if (!checkRegexEmail(email)) {
+            return;
+        }
 
         setIsRequesting(true);
 
-        setTimeLeft(MINUTES_IN_MS);
         setLastRequestTime(Date.now());
 
         try {
+            showToast("success", "인증번호가 전송되었습니다.");
             await axios.post(`${baseURL}/auth/get-email-code`, {
                 email
             });
             setShowTimer(true);
+            setIsAuthenticationCodeRequested(true);
+            setTimeLeft(MINUTES_IN_MS);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 setError("email", {
@@ -234,15 +241,14 @@ const FindPassword = () => {
                     <button
                         type="button"
                         disabled={!email || isRequesting}
-                        className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center
-                            ${
-                                email !== ""
-                                    ? "bg-black text-textColor hover:text-gray-400"
-                                    : "bg-customGray text-textColor"
-                            }`}
+                        className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center disabled:text-textColor disabled:cursor-not-allowed ${
+                            email !== ""
+                                ? "bg-black text-textColor"
+                                : "bg-customGray text-textColor"
+                        }`}
                         onClick={handleAuthenticationCodeClick}
                     >
-                        <span className="flex flex-col justify-center disabled:text-textColor hover:text-gray-400">
+                        <span className="flex flex-col justify-center">
                             {buttonText}
                         </span>
                     </button>

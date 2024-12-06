@@ -209,7 +209,7 @@ const Join = () => {
             <NavbarWithoutLoginButton />
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col items-center mx-auto justify-center w-[380px] p-6"
+                className="mx-auto w-[380px] p-6"
             >
                 <ToastContainer toasts={toasts} />
 
@@ -349,7 +349,7 @@ const Join = () => {
                                         id="confirmPassword"
                                         {...register("confirmPassword", {
                                             required:
-                                                "비밀번호 확인을 해주세요.",
+                                                "비밀번호를 입력해주세요.",
                                             validate: (value) =>
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."

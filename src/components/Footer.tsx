@@ -26,7 +26,7 @@ const handleTermsClick = () => {
 
 const Footer = () => {
     return (
-        <div className="w-full h-[40px] md:flex md:justify-center lg:w-full lg:max-w-[1440px] lg:h-[40px] lg:justify-between ">
+        <div className="w-full h-[40px] md:flex md:justify-center lg:w-full lg:max-w-[1440px] lg:h-[40px] lg:justify-between fixed bottom-0">
             <div className="flex mx-auto w-[200px] h-[14px] font-bold text-[12px] leading-[14.32px] text-customGray gap-2 ">
                 <div
                     onClick={handlePrivacyClick}
