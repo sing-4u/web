@@ -11,6 +11,7 @@ import Logo from "../components/Logo";
 import { baseURL } from "../utils/apiUrl";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "./Join";
+import usePasswordToggle from "../hooks/usePasswordToggle";
 
 interface LoginFormValue {
   email: string;
@@ -54,12 +55,12 @@ const Login = () => {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         setLoginState({
           loading: false,
-          error: "존재하지 않는 유저입니다.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       } else if (error.response?.status === 401) {
         setLoginState({
           loading: false,
-          error: "비밀번호가 일치하지 않습니다.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       } else {
         setLoginState({
@@ -69,6 +70,12 @@ const Login = () => {
       }
     },
   });
+
+  const {
+    passwordState: password,
+    handleToggle,
+    handleEyeIconToggle,
+  } = usePasswordToggle();
 
   const initiateGoogleLogin = async () => {
     const googleAuthEndpoint = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -229,10 +236,10 @@ const Login = () => {
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                 {...register("email", {
-                  required: "이메일을 입력해주세요",
+                  required: "이메일을 입력해주세요.",
                 })}
                 type="text"
-                placeholder="이메일 주소"
+                placeholder="이메일 주소."
               />
               {errors.email && (
                 <span className="text-red-500 text-[12px] leading-[14.32px] absolute top-[56px] left-0">
@@ -255,9 +262,16 @@ const Login = () => {
                 {...register("password", {
                   required: "비밀번호를 입력해주세요",
                 })}
-                type="password"
+                type={password.type}
                 placeholder="비밀번호"
               />
+              <button
+                type="button"
+                onClick={handleToggle}
+                className="absolute right-4 top-1/2 transform -translate-y-1/2"
+              >
+                <img src={handleEyeIconToggle()} className="w-5 h-5" />
+              </button>
               {errors.password && (
                 <span className="text-red-500 text-[12px] leading-[14.32px] absolute top-[56px] left-0">
                   {errors.password.message}
