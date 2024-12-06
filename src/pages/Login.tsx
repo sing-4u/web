@@ -54,12 +54,12 @@ const Login = () => {
       if (axios.isAxiosError(error) && error.response?.status === 404) {
         setLoginState({
           loading: false,
-          error: "존재하지 않는 유저입니다.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       } else if (error.response?.status === 401) {
         setLoginState({
           loading: false,
-          error: "비밀번호가 일치하지 않습니다.",
+          error: "이메일이나 비밀번호를 확인해주세요.",
         });
       } else {
         setLoginState({
