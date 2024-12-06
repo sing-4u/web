@@ -71,7 +71,7 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
-            className="w-[279px] h-[52px] pc:w-[380px]  pc:h-[264px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black"
+            className="w-[279px] h-[52px] pc:max-w-[380px] pc:max-h-[264px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black"
           ></input>
         </div>
         <div className="w-[279px] min-h-[234px] rounded-[10px] border border-inputBorderColor py-3.5 px-4 mt-4">
