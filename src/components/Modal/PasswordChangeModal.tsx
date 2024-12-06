@@ -187,7 +187,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                         <div className="relative">
                             <input
                                 {...register("confirmPassword", {
-                                    required: "비밀번호는 필수값입니다.",
+                                    required: "비밀번호를 입력해주세요.",
 
                                     validate: (value) => {
                                         if (value !== watchPassword) {
