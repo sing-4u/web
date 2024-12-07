@@ -137,10 +137,6 @@ export default function Home() {
     };
 
     useEffect(() => {
-        loadInitialData();
-    }, [loadInitialData]);
-
-    useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 const first = entries[0];
