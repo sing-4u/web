@@ -77,39 +77,6 @@ const SongDetail = () => {
         fetchRequestForm();
     }, [formId]);
 
-    const handlePostSong = async () => {
-        // if (isLoggedIn && artist && title) {
-        //     await axiosInstance().post("/songs", {
-        //         userId: formId,
-        //         email,
-        //         artist,
-        //         title
-        //     });
-        //     openModal({
-        //         title: "신청 완료",
-        //         type: ModalType.SUCCESS,
-        //         Content: SongRequestSuccessModal,
-        //         data: { artist, title, formId, email },
-        //         buttonBackgroundColor:
-        //             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
-        //     });
-        // }
-        // if (!isLoggedIn) {
-        //     openModal({
-        //         Content: (props) => (
-        //             <EmailInputModal
-        //                 {...props}
-        //                 navigate={navigate}
-        //                 modalData={{ artist, title, formId, userData }}
-        //             />
-        //         ),
-        //         title: "싱포유 회원이시면",
-        //         type: ModalType.DEFAULT,
-        //         buttonBackgroundColor: ""
-        //     });
-        // }
-    };
-
     const onSubmit = async ({ artist, title }: SongDetailForm) => {
         const { email } = userData ?? { email: "" };
 
@@ -170,7 +137,7 @@ const SongDetail = () => {
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
             <Navbar />
-            {
+            {user?.user?.isOpened && (
                 <div className="relative flex flex-col w-full justify-center items-center mt-10">
                     <div
                         className="relative w-[90px] h-[90px] cursor-pointer mt-3"
@@ -197,9 +164,6 @@ const SongDetail = () => {
                         ) : (
                             <ImgProfileL />
                         )}
-                        <div className="absolute w-[24px] h-[24px] top-[66px] left-[66px] rounded-full border">
-                            <CameraImg />
-                        </div>
                     </div>
                     <input
                         type="file"
@@ -273,52 +237,55 @@ const SongDetail = () => {
                         </button>
                     </form>
                 </div>
-            }
+            )}
 
-            {/* <div className="relative flex flex-col w-full justify-center items-center mt-10">
-                <div
-                    className="relative w-[90px] h-[90px] cursor-pointer mt-3"
-                    onClick={() =>
-                        document.getElementById("profileImageInput")?.click()
-                    }
-                >
-                    {profileImage ? (
-                        typeof profileImage === "string" ? (
-                            <img
-                                src={profileImage}
-                                alt="Profile"
-                                className="w-full h-full object-cover rounded-full"
-                            />
+            {!user?.user?.isOpened && (
+                <div className="relative flex flex-col w-full justify-center items-center mt-10">
+                    <div
+                        className="relative w-[90px] h-[90px] cursor-pointer mt-3"
+                        onClick={() =>
+                            document
+                                .getElementById("profileImageInput")
+                                ?.click()
+                        }
+                    >
+                        {profileImage ? (
+                            typeof profileImage === "string" ? (
+                                <img
+                                    src={profileImage}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover rounded-full"
+                                />
+                            ) : (
+                                <img
+                                    src={URL.createObjectURL(profileImage)}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover rounded-full "
+                                />
+                            )
                         ) : (
-                            <img
-                                src={URL.createObjectURL(profileImage)}
-                                alt="Profile"
-                                className="w-full h-full object-cover rounded-full "
-                            />
-                        )
-                    ) : (
-                        <ImgProfileL />
-                    )}
-                    <div className="absolute w-[24px] h-[24px] top-[66px] left-[66px] rounded-full border">
-                        <CameraImg />
+                            <ImgProfileL />
+                        )}
+                        <div className="absolute w-[24px] h-[24px] top-[66px] left-[66px] rounded-full border">
+                            <CameraImg />
+                        </div>
                     </div>
-                </div>
-                <input
-                    type="file"
-                    id="profileImageInput"
-                    accept="image/*"
-                    className="hidden"
-                />
-                <span className="font-bold text-lg mt-4">
-                    {userName || "Loading...."}
-                </span>
-                {!user?.user?.isOpened && (
+                    <input
+                        type="file"
+                        id="profileImageInput"
+                        accept="image/*"
+                        className="hidden"
+                    />
+                    <span className="font-bold text-lg mt-4">
+                        {userName || "Loading...."}
+                    </span>
+
                     <section className="w-[379px] h-[136px] bg-[#f5f5f5] mt-[38px] flex justify-center items-center text-center rounded-lg">
                         현재 아티스트가 신청곡을 받고 있지 않습니다. <br />
                         다음 신청 기간을 기다려 주세요.
                     </section>
-                )}
-            </div> */}
+                </div>
+            )}
         </div>
     );
 };
