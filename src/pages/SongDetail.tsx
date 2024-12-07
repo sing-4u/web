@@ -269,9 +269,6 @@ const SongDetail = () => {
                         ) : (
                             <ImgProfileL />
                         )}
-                        <div className="absolute w-[24px] h-[24px] top-[66px] left-[66px] rounded-full border">
-                            <CameraImg />
-                        </div>
                     </div>
                     <input
                         type="file"
