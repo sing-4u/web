@@ -53,7 +53,7 @@ const SongDetail = () => {
         register,
         handleSubmit,
         formState: { errors },
-        getValues
+        reset
     } = useForm<SongDetailForm>();
 
     const isLoggedIn = !!userData;
@@ -88,15 +88,18 @@ const SongDetail = () => {
                     artist,
                     title
                 });
-                console.log(res);
-                openModal({
-                    title: "신청 완료",
-                    type: ModalType.SUCCESS,
-                    Content: SongRequestSuccessModal,
-                    data: { artist, title, formId, email },
-                    buttonBackgroundColor:
-                        "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
-                });
+                if (res.status === 200) {
+                    openModal({
+                        title: "신청 완료",
+                        type: ModalType.SUCCESS,
+                        Content: SongRequestSuccessModal,
+                        data: { artist, title, formId, email },
+                        buttonBackgroundColor:
+                            "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                    });
+                    // 입력 필드 초기화
+                    reset();
+                }
             }
             if (!isLoggedIn) {
                 openModal({
@@ -217,7 +220,7 @@ const SongDetail = () => {
                                     errors.title
                                 )}`}
                                 {...register("title", {
-                                    required: "가수 이름을 입력해주세요."
+                                    required: "노래 제목을 입력해주세요."
                                 })}
                             />
                             {errors.title && (
