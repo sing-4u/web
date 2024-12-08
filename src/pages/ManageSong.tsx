@@ -90,7 +90,7 @@ const ManageSong = () => {
       setIsCopied(true);
       setTimeout(() => {
         setIsCopied(false);
-      }, 2000);
+      }, 1000);
     });
   };
 
@@ -180,7 +180,7 @@ const ManageSong = () => {
               </button>
             </div>
             {isCopied && (
-              <div className="fixed inset-0 z-10 flex justify-center items-center mobile:bg-[#000000] mobile:bg-opacity-40">
+              <div className="fixed inset-0 z-10 flex justify-center items-center mobile:bg-[#000000] mobile:bg-opacity-40 transition-opacity animate-fadeOut">
                 <div className="bg-[#ffffff] py-6 px-12 mobile:py-4 mobile:px-10 rounded-sm border-2 shadow-2xl font-semibold text-[18px] leading-[21.48px] text-center  mobile:text-[18px]">
                   링크 복사 완료!
                 </div>

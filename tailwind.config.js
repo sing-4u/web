@@ -39,9 +39,14 @@ export default {
             transform: "translate(-50%, -100%)",
           },
         },
+        fadeOut: {
+          "0%": { opacity: "1" },
+          "100%": { opacity: "0" },
+        },
       },
       animation: {
         fadeIn: "fadeIn 0.3s ease-in-out",
+        fadeOut: "fadeOut 1.5s ease-in-out",
       },
     },
   },
