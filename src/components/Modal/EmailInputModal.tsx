@@ -7,6 +7,7 @@ import { UserData } from "../../hooks/useUserData";
 import ErrorMessage from "../ErrorMessage";
 import { ModalType } from "../../types";
 import SongRequestSuccessModal from "./SongRequestSuccessModal";
+import axios from "axios";
 
 interface SongData {
     artist: string;
@@ -25,7 +26,6 @@ export default function EmailInputModal<T extends SongData>({
     navigate,
     modalData
 }: EmailInputModalProps<T>) {
-    console.log(modalData);
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
     const { openModal, closeModal } = useModal();
@@ -64,12 +64,14 @@ export default function EmailInputModal<T extends SongData>({
                 buttonBackgroundColor:
                     "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
             });
-            // 모달 닫기
-            closeModal();
-            // 홈으로 리다이렉트
-            navigate("/");
         } catch (error) {
-            throw new Error("Failed to fetch user form");
+            if (error instanceof Error) {
+                if (axios.isAxiosError(error)) {
+                    if (error.response?.status === 409) {
+                        setError("이미 신청한 이메일입니다.");
+                    }
+                }
+            }
         }
     };
 
@@ -116,7 +118,8 @@ export default function EmailInputModal<T extends SongData>({
                         error ? "border-red-500" : ""
                     } ${getInputErrorClassName} placeholder:text-[14px] mt-2`}
                 />
-                <ErrorMessage errors={error} />
+
+                <p className="mt-1 text-sm text-errorTextColor">{error}</p>
                 <button
                     onClick={handleClickSongDetail}
                     className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold"
