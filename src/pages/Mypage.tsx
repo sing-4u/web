@@ -118,7 +118,7 @@ const Mypage = () => {
     "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF] md:right-4 md:w-[70px] md:h-[35px] md:text-[14px]";
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
+    <div className="min-h-screen flex flex-col items-center ">
       <Navbar profileImage={profileImage} />
       <form
         onSubmit={(e) => {
@@ -240,7 +240,7 @@ const Mypage = () => {
       {isModalOpen && (
         <DeleteAccountModal closeModal={() => setIsModalOpen(false)} />
       )}
-      <div className="w-full ">
+      <div className="w-full">
         <div className="max-w-[1440px] mx-auto">
           <Footer />
         </div>
