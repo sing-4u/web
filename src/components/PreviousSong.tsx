@@ -1,4 +1,4 @@
-import { FC, useState } from "react";
+import { FC, useState, useEffect } from "react";
 import { useSongListId } from "../hooks/useSongListId";
 import ChevronDown from "./ChevronDown";
 import ChevronUp from "./ChevronUp";
@@ -31,19 +31,24 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
     setVisibleSongs((prev) => prev + 5);
   };
 
+  const handleAccordionToggle = () => {
+    setOpenPreviousSongs((prev: Record<number, boolean>) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }));
+    if (!openPreviousSongs[idx]) {
+      setVisibleSongs(5);
+    }
+  };
+
   return (
     <div
       key={list.id}
-      className="flex flex-col w-[327px] rounded-[8px] border-2 border-inputBorderClass p-4 mt-8"
+      className="flex flex-col w-[327px] rounded-[8px] border-2 border-inputBorderClass p-4 mt-6"
     >
       <div
         className="flex justify-between items-center cursor-pointer"
-        onClick={() =>
-          setOpenPreviousSongs((prev: Record<number, boolean>) => ({
-            ...prev,
-            [idx]: !prev[idx],
-          }))
-        }
+        onClick={handleAccordionToggle}
       >
         <div>
           <h2 className="font-semibold text-[18px] leading-[21.48px] text-black">
@@ -85,16 +90,17 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
                 </li>
               )
             )}
-          {sortedPreviousSongDetails.length > visibleSongs && (
-            <button
-              className="mt-4 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass"
-              onClick={handleShowMoreSongs}
-            >
-              더보기 +
-            </button>
-          )}
         </ul>
       )}
+      {openPreviousSongs[idx] &&
+        sortedPreviousSongDetails.length > visibleSongs && (
+          <button
+            className="px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass"
+            onClick={handleShowMoreSongs}
+          >
+            더보기 +
+          </button>
+        )}
     </div>
   );
 };

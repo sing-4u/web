@@ -106,6 +106,13 @@ const ManageSong = () => {
     );
   };
 
+  const handleAccordionToggle = () => {
+    setIsAccordionOpen((prev) => !prev);
+    if (!isAccordionOpen) {
+      setVisibleSongs(5);
+    }
+  };
+
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
   const commentButtonClass =
@@ -195,7 +202,7 @@ const ManageSong = () => {
               <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-indigo-500/50 p-4 mt-6">
                 <div
                   className="flex justify-between items-center cursor-pointer"
-                  onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+                  onClick={handleAccordionToggle}
                 >
                   <h2 className="inline-block text-transparent bg-clip-text font-semibold text-[18px] leading-[21.48px] bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]">
                     현재 신청 곡 순위
@@ -246,12 +253,14 @@ const ManageSong = () => {
                             )
                           )}
                         </ul>
-                        <button
-                          onClick={handleShowMoreSongs}
-                          className="mt-4 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass"
-                        >
-                          더보기 +
-                        </button>
+                        {songListDetails.length > 5 && (
+                          <button
+                            onClick={handleShowMoreSongs}
+                            className="mt-5 px-4 py-4 w-full h-[14px] font-semibold text-[12px] leading-[14.32px] border-t-2 border-inputBorderClass"
+                          >
+                            더보기 +
+                          </button>
+                        )}
                       </div>
                     ) : (
                       <WaitingSongMessage />
