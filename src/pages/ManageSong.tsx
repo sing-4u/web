@@ -14,6 +14,7 @@ import axiosInstance from "../utils/axiosInstance";
 import PreviousSongList from "../components/PreviousSong";
 import { NonListNow, NonListPrevious } from "../components/NonListMessage";
 import { WaitingSongMessage } from "../components/NonListMessage";
+import Footer from "../components/Footer";
 
 const ManageSong = () => {
   const queryClient = useQueryClient();
@@ -97,11 +98,20 @@ const ManageSong = () => {
     setVisibleSongs((prev) => prev + 5);
   };
 
+  const handleFeedBackClick = () => {
+    window.open(
+      "https://forms.gle/a2PgcpA7De8UxQp17",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+
   const smallButtonClass =
     "w-[160px] h-[44px] rounded-[4px] py-3.5 px-5 font-semibold text-[14px] leading-[16.71px]";
-
+  const commentButtonClass =
+    "mobile:w-[72px] mobile:h-[72px] mobile:py-[26px] mobile:px-[10px] mobile:text-[10px] mobile:font-semibold mobile:leading-[11.93px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors";
   return (
-    <div className="w-[376px] mx-auto flex flex-col items-center tablet:w-full lg:w-full">
+    <div className="mobile:w-[376px] mx-auto flex flex-col items-center tablet:w-full pc:w-full">
       <Navbar />
       <div className="pc:w-full pc:max-w-6xl pc:flex pc:ml-14">
         <div className="flex flex-col justify-center items-center tablet:flex-row tablet:justify-between tablet:w-[672px] tablet:border tablet:border-inputBorderColor tablet:rounded-[8px] tablet:p-4 tablet:mt-10 mobile:mt-4 pc:w-[270ox] pc:h-[328px] pc:border-2 pc:border-inputBorderColor pc:rounded pc:mt-10 pc:p-4">
@@ -146,13 +156,17 @@ const ManageSong = () => {
             <div className="flex space-x-2">
               <button
                 onClick={handleStartReceiving}
-                className={smallButtonClass + " bg-buttonColor2"}
+                className={`${smallButtonClass} ${
+                  receivingSong ? "bg-buttonColor2" : "bg-black text-white"
+                }`}
               >
                 신청곡 받기
               </button>
               <button
                 onClick={handleEndReceiving}
-                className={smallButtonClass + " bg-black text-white"}
+                className={`${smallButtonClass} ${
+                  receivingSong ? "bg-black text-white" : "bg-buttonColor2"
+                }`}
               >
                 신청곡 종료
               </button>
@@ -277,6 +291,17 @@ const ManageSong = () => {
           </div>
         </div>
       </div>
+      <div className="w-full">
+        <div className="fixed bottom-8 right-8 z-50">
+          <button
+            onClick={handleFeedBackClick}
+            className={`${commentButtonClass} w-[110px] h-[110px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors`}
+          >
+            의견 보내기
+          </button>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };
