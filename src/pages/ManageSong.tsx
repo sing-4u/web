@@ -309,13 +309,14 @@ const ManageSong = () => {
               <NonListPrevious />
             )}
           </div>
+          <div className="mobile:bg-white mobile:w-full mobile:h-[100px]"></div>
         </div>
       </div>
       <div className="w-full">
         <div className="fixed bottom-8 right-8 z-50">
           <button
             onClick={handleFeedBackClick}
-            className={`${commentButtonClass} w-[110px] h-[110px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors`}
+            className={`${commentButtonClass} w-[110px] h-[110px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors opacity-50`}
           >
             의견 보내기
           </button>
