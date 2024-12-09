@@ -100,8 +100,7 @@ const SongDetail = () => {
                     // 입력 필드 초기화
                     reset();
                 }
-            }
-            if (!isLoggedIn) {
+            } else if (!isLoggedIn) {
                 openModal({
                     Content: (props) => (
                         <EmailInputModal

@@ -8,6 +8,7 @@ import ErrorMessage from "../ErrorMessage";
 import { ModalType } from "../../types";
 import SongRequestSuccessModal from "./SongRequestSuccessModal";
 import axios from "axios";
+import SongRequestFailModal from "./SongRequestFailModal";
 
 interface SongData {
     artist: string;
@@ -37,7 +38,13 @@ export default function EmailInputModal<T extends SongData>({
         closeModal();
     };
 
-    const handleClickSongDetail = async () => {
+    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEmail(event.target.value);
+        if (error) setError("");
+    };
+
+    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         if (!email.trim()) {
             setError("이메일을 입력해주세요.");
             return;
@@ -68,23 +75,21 @@ export default function EmailInputModal<T extends SongData>({
             if (error instanceof Error) {
                 if (axios.isAxiosError(error)) {
                     if (error.response?.status === 409) {
-                        setError("이미 신청한 이메일입니다.");
+                        openModal({
+                            title: "중복 신청",
+                            type: ModalType.ERROR,
+                            Content: SongRequestFailModal,
+                            data: {
+                                artist: modalData?.artist,
+                                title: modalData?.title,
+                                email
+                            },
+                            buttonBackgroundColor:
+                                "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                        });
                     }
                 }
             }
-        }
-    };
-
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEmail(event.target.value);
-        if (error) setError("");
-    };
-
-    const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!email.trim()) {
-            setError("이메일을 입력해주세요.");
-            return;
         }
     };
     return (
@@ -120,10 +125,7 @@ export default function EmailInputModal<T extends SongData>({
                 />
 
                 <p className="mt-1 text-sm text-errorTextColor">{error}</p>
-                <button
-                    onClick={handleClickSongDetail}
-                    className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold"
-                >
+                <button className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold">
                     비회원으로 신청하기
                 </button>
             </form>
