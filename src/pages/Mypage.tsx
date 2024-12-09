@@ -193,7 +193,7 @@ const Mypage = () => {
               />
               <button
                 type="button"
-                className={changeButtonClass}
+                className={`${changeButtonClass} whitespace-nowrap`}
                 onClick={openEmailModal}
               >
                 변경
@@ -213,7 +213,7 @@ const Mypage = () => {
               />
               <button
                 type="button"
-                className={changeButtonClass}
+                className={`${changeButtonClass} whitespace-nowrap`}
                 onClick={openPasswordModal}
               >
                 변경
