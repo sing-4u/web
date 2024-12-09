@@ -69,7 +69,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
           type="button"
           className={`${changeButtonClass} ${
             isEditing ? " bg-customGray" : "bg-gray-800"
-          }`}
+          } whitespace-nowrap`}
           onClick={handleNameChange}
         >
           {isEditing ? "완료" : "수정"}
