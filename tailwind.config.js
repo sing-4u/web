@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       screens: {
-        mobile: { min: "376px", max: "767px" },
+        mobile: { min: "375px", max: "767px" },
         tablet: { min: "768px", max: "1439px" },
         pc: { min: "1440px" },
       },
@@ -46,7 +46,7 @@ export default {
       },
       animation: {
         fadeIn: "fadeIn 0.3s ease-in-out",
-        fadeOut: "fadeOut 1.5s ease-in-out",
+        fadeOut: "fadeOut 2s ease-in-out",
       },
     },
   },
