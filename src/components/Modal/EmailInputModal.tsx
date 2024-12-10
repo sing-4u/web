@@ -113,9 +113,9 @@ export default function EmailInputModal<T extends SongData>({
             <form className="flex flex-col" onSubmit={onSubmit}>
                 <label
                     className="mt-2 font-semibold text-[14px]"
-                    htmlFor="이메일"
+                    htmlFor="새 이메일"
                 >
-                    이메일
+                    <span className="font-medium text-base">새 이메일</span>
                 </label>
                 <input
                     type="email"
