@@ -4,7 +4,6 @@ import { NavigateFunction } from "react-router-dom";
 import { useModal } from "../../hooks/useModal";
 import axiosInstance from "../../utils/axiosInstance";
 import { UserData } from "../../hooks/useUserData";
-import ErrorMessage from "../ErrorMessage";
 import { ModalType } from "../../types";
 import SongRequestSuccessModal from "./SongRequestSuccessModal";
 import axios from "axios";
@@ -21,11 +20,13 @@ interface SongData {
 interface EmailInputModalProps<T extends SongData> {
     navigate: NavigateFunction;
     modalData?: T;
+    onRequestComplete: () => void;
 }
 
 export default function EmailInputModal<T extends SongData>({
     navigate,
-    modalData
+    modalData,
+    onRequestComplete
 }: EmailInputModalProps<T>) {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
@@ -69,7 +70,8 @@ export default function EmailInputModal<T extends SongData>({
                     formId
                 },
                 buttonBackgroundColor:
-                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                    "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
+                onClose: onRequestComplete
             });
         } catch (error) {
             if (error instanceof Error) {
@@ -85,7 +87,8 @@ export default function EmailInputModal<T extends SongData>({
                                 email
                             },
                             buttonBackgroundColor:
-                                "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                                "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
+                            onClose: onRequestComplete
                         });
                     }
                 }

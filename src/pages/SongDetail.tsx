@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import useUserData from "../hooks/useUserData";
-import CameraImg from "../components/CameraImg";
 import ImgProfileL from "../components/ImgProfileL";
-import TriangleFill from "../assets/ic_TriangleFill.svg";
 import TriangleFillRed from "../assets/ic_TriangleFill_red.svg";
 import { useForm } from "react-hook-form";
 import axiosInstance from "../utils/axiosInstance";
@@ -53,10 +51,15 @@ const SongDetail = () => {
         register,
         handleSubmit,
         formState: { errors },
-        reset
+        setValue
     } = useForm<SongDetailForm>();
 
-    const isLoggedIn = !!userData;
+    const resetFields = () => {
+        setValue("artist", "");
+        setValue("title", "");
+    };
+
+    // const isLoggedIn = !!userData;
 
     useEffect(() => {
         async function fetchRequestForm() {
@@ -81,56 +84,57 @@ const SongDetail = () => {
         const { email } = userData ?? { email: "" };
 
         try {
-            if (isLoggedIn && artist && title) {
-                const res = await axiosInstance().post("/songs", {
-                    userId: formId,
-                    email,
-                    artist,
-                    title
-                });
-                if (res.status === 201) {
-                    openModal({
-                        title: "신청 완료",
-                        type: ModalType.SUCCESS,
-                        Content: SongRequestSuccessModal,
-                        data: { artist, title, formId, email },
-                        buttonBackgroundColor:
-                            "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
-                    });
-                    // 입력 필드 초기화
-                    reset();
-                }
-            } else if (!isLoggedIn) {
+            const res = await axiosInstance().post("/songs", {
+                userId: formId,
+                email,
+                artist,
+                title
+            });
+
+            if (res.status === 201) {
                 openModal({
-                    Content: (props) => (
-                        <EmailInputModal
-                            {...props}
-                            navigate={navigate}
-                            modalData={{ artist, title, formId, userData }}
-                        />
-                    ),
-                    title: "싱포유 회원이시면",
-                    type: ModalType.NOTLOGIN,
-                    buttonBackgroundColor: ""
+                    title: "신청 완료",
+                    type: ModalType.SUCCESS,
+                    Content: SongRequestSuccessModal,
+                    data: { artist, title, formId, email },
+                    buttonBackgroundColor:
+                        "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
+                    onClose: resetFields
                 });
+                resetFields();
             }
         } catch (error) {
-            if (axios.isAxiosError(error)) {
-                if (error.response?.status === 409) {
+            if (axios.isAxiosError(error) && error.response) {
+                if (error.response.status === 409) {
                     openModal({
                         title: "중복 신청",
                         type: ModalType.ERROR,
                         Content: SongRequestFailModal,
                         data: { artist, title, email },
                         buttonBackgroundColor:
-                            "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                            "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
+                        onClose: () => {
+                            resetFields();
+                        }
+                    });
+                } else if (error.response.status === 400) {
+                    openModal({
+                        Content: (props) => (
+                            <EmailInputModal
+                                {...props}
+                                navigate={navigate}
+                                modalData={{ artist, title, formId, userData }}
+                                onRequestComplete={resetFields}
+                            />
+                        ),
+                        title: "싱포유 회원이시면",
+                        type: ModalType.NOTLOGIN,
+                        buttonBackgroundColor: ""
                     });
                 }
             }
-            // 409 에러 처리
         }
     };
-
     const userName = user?.user?.name || fetchedUser?.name;
 
     const inputLabelClass =
@@ -219,7 +223,7 @@ const SongDetail = () => {
                                     errors.title
                                 )}`}
                                 {...register("title", {
-                                    required: "노래 제목을 입력해주세요."
+                                    required: "가수 이름을 입력해주세요."
                                 })}
                             />
                             {errors.title && (

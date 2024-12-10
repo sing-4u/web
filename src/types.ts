@@ -28,4 +28,5 @@ export interface BaseModalProps<T = unknown> {
     data?: T;
     buttonBackgroundColor: string;
     showErrorIcon?: boolean;
+    onClose?: () => void;
 }
