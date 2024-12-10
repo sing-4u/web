@@ -24,6 +24,6 @@ dist-ssr
 *.sw?
 env.d.ts
 .env
-fonts
+
 # Ignore public/web only
 web/
