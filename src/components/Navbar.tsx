@@ -31,11 +31,11 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
             <>
               <button
                 onClick={() => navigate("/manage-song")}
-                className="flex w-[79px] h-[30px] border rounded-[5px] py-4 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap"
+                className="flex w-[79px] h-[30px] tablet:px-[21px] tablet:w-[106px] tablet:h-[44px] tablet:text-[14px] pc:w-[120px] pc:h-[44px] pc:px-[21px] pc:text-[16px] border rounded-[5px] py-4 px-2 font-bold text-[12px] leading-[14.32px] justify-center items-center bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap"
               >
                 신청곡 관리
               </button>
-              <div className="w-[36px] h-[36px] rounded-full border overflow-hidden">
+              <div className="w-[36px] h-[36px] tablet:w-[44px] tablet:h-[44px]  pc:w-[44px] pc:h-[44px] rounded-full border overflow-hidden">
                 {profileImage || defaultProfileImage ? (
                   <img
                     onClick={() => navigate("/mypage")}
