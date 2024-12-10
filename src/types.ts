@@ -17,7 +17,8 @@ export interface ModalContentProps<T> {
 export enum ModalType {
     DEFAULT,
     ERROR,
-    SUCCESS
+    SUCCESS,
+    NOTLOGIN
 }
 
 export interface BaseModalProps<T = unknown> {
