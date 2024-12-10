@@ -88,7 +88,7 @@ const SongDetail = () => {
                     artist,
                     title
                 });
-                if (res.status === 200) {
+                if (res.status === 201) {
                     openModal({
                         title: "신청 완료",
                         type: ModalType.SUCCESS,
