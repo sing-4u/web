@@ -110,7 +110,7 @@ const SongDetail = () => {
                         />
                     ),
                     title: "싱포유 회원이시면",
-                    type: ModalType.DEFAULT,
+                    type: ModalType.NOTLOGIN,
                     buttonBackgroundColor: ""
                 });
             }
