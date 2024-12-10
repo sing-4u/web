@@ -136,6 +136,8 @@ const Join = () => {
         return null;
     }
 
+    const isButtonDisabled = Object.values(watch()).some((value) => !value);
+
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 
     const handleCheckboxToggle = (name: keyof CheckboxState) => {
@@ -434,7 +436,8 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="w-full bg-colorPurple text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
+                        disabled={isButtonDisabled}
+                        className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
                         type="submit"
                     >
                         회원가입
