@@ -196,9 +196,7 @@ const Login = () => {
           <div className="absolute w-[326px] h-[22px] top-[181px] left-[25px] font-medium text-[13px] leading-[22px] text-center">
             지금 가입하면, 당신의 신청곡으로 특별한 노래를 선물해드릴게요
           </div>
-          <div className="space-x-2 mt-4 flex items-center">
-            <span className="w-full border-b"></span>
-          </div>
+          <div className="space-x-2 mt-4 flex items-center"></div>
           <div className="absolute w-[327px] h-[52px] top-[278px] left-[24px] rounded-[10px] border border-black flex items-center justify-center">
             {/* <button
                             type="button"
@@ -239,7 +237,7 @@ const Login = () => {
                   required: "이메일을 입력해주세요.",
                 })}
                 type="text"
-                placeholder="이메일 주소."
+                placeholder="이메일 주소"
               />
               {errors.email && (
                 <span className="text-red-500 text-[12px] leading-[14.32px] absolute top-[56px] left-0">
