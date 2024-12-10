@@ -228,7 +228,7 @@ const Login = () => {
               }`}
             >
               <input
-                className={`w-[327px] h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                className={`w-[327px] h-[52px] border border-inputBorderColor box-border text-[#AAAAA] ${
                   errors.email ? "border-red-500" : "border-customGray"
                 }
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]

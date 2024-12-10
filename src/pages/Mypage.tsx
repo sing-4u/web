@@ -169,15 +169,17 @@ const Mypage = () => {
               이미지삭제
             </div>
           </div>
-          {errorMessage && (
-            <div className="text-red-500 text-sm mt-2">{errorMessage}</div>
-          )}
+
           <div className="flex flex-col gap-y-2">
             <NicknameEditor
               nickname={nickname}
               setNickname={setNickname}
               onError={setErrorMessage}
+              clearErrors={() => setErrorMessage(null)}
             />
+            {errorMessage && (
+              <span className="text-red-500 text-sm ml-1">{errorMessage}</span>
+            )}
           </div>
           <div className="flex flex-col gap-y-2">
             <label htmlFor="email" className={inputLabelClass}>

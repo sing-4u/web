@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
                 ) : (
                   <div
                     onClick={() => navigate("/mypage")}
-                    className="cursor-pointer"
+                    className="cursor-pointer w-full h-full"
                   >
                     <ImgProfileS />
                   </div>
