@@ -104,7 +104,7 @@ export default function EmailInputModal<T extends SongData>({
             <div className="space-x-2 mt-4 mb-12 flex items-center">
                 <span className="w-full border-b"></span>
             </div>
-            <h2 className="font-bold text-[18px]">
+            <h2 className="font-bold text-2xl">
                 아직, <br /> 싱포유 회원이 아니시면,
             </h2>
             <form className="flex flex-col" onSubmit={onSubmit}>
