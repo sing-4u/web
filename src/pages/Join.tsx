@@ -136,6 +136,8 @@ const Join = () => {
         return null;
     }
 
+    const isButtonDisabled = Object.values(watch()).some((value) => !value);
+
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 
     const handleCheckboxToggle = (name: keyof CheckboxState) => {
@@ -254,7 +256,7 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
                                         errors.name
                                     )}`}
                                     placeholder="별명"
@@ -281,7 +283,7 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
                                         errors.email
                                     )}`}
                                     placeholder="abc@email.com"
@@ -314,7 +316,7 @@ const Join = () => {
                                                     "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                             }
                                         })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
                                             errors.password
                                         )}`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
@@ -354,7 +356,7 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal ${getInputErrorClassName(
+                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
                                             errors.confirmPassword
                                         )}`}
                                         placeholder="비밀번호 확인"
@@ -434,7 +436,8 @@ const Join = () => {
                     </div>
 
                     <button
-                        className="w-full bg-colorPurple text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
+                        disabled={isButtonDisabled}
+                        className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
                         type="submit"
                     >
                         회원가입

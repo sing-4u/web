@@ -61,6 +61,8 @@ const NewPassword = () => {
         }
     };
 
+    const isButtonDisabled = Object.values(watch()).some((value) => !value);
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -147,7 +149,8 @@ const NewPassword = () => {
                 </div>
 
                 <button
-                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10"
+                    disabled={isButtonDisabled}
+                    className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-textColor rounded-lg h-[52px] mt-10"
                     type="submit"
                 >
                     비밀번호 변경하기
