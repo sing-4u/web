@@ -14,6 +14,7 @@ import EmailInputModal from "../components/Modal/EmailInputModal";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
+import Footer from "../components/Footer";
 
 interface SongDetailForm {
     artist: string;
@@ -289,6 +290,7 @@ const SongDetail = () => {
                     </section>
                 </div>
             )}
+            <Footer />
         </div>
     );
 };
