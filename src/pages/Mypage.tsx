@@ -14,6 +14,7 @@ import NicknameEditor from "../components/NicknameEditor";
 import EmailChangeModal from "../components/Modal/EmailChangeModal";
 import { ModalType } from "../types";
 import PasswordChangeModal from "../components/Modal/PasswordChangeModal";
+import MypageProfile from "../components/MypageProfileL";
 
 const Mypage = () => {
   const { data: userData, refetch } = useUserData();
@@ -149,9 +150,9 @@ const Mypage = () => {
                   />
                 )
               ) : (
-                <ImgProfileL />
+                <MypageProfile />
               )}
-              <div className="absolute w-[24px] h-[24px] top-[66px] left-[66px] rounded-full border">
+              <div className="absolute w-[24px] h-[24px] top-[65px] left-[64px] rounded-full">
                 <CameraImg />
               </div>
             </div>
@@ -164,7 +165,7 @@ const Mypage = () => {
             />
             <div
               onClick={handleImageDelete}
-              className="w-[90px] h-[16px] mt-1 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray"
+              className="w-[90px] h-[16px] mt-2 font-medium text-[13px] leading-[15.51px] text-center cursor-pointer text-customGray"
             >
               이미지삭제
             </div>
@@ -242,10 +243,8 @@ const Mypage = () => {
       {isModalOpen && (
         <DeleteAccountModal closeModal={() => setIsModalOpen(false)} />
       )}
-      <div className="w-full">
-        <div className="max-w-[1440px] mx-auto">
-          <Footer />
-        </div>
+      <div className="w-full mobile:mr-8">
+        <Footer />
       </div>
     </div>
   );

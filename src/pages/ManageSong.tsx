@@ -137,7 +137,7 @@ const ManageSong = () => {
             <div className="pc:mb-10 tablet:flex tablet:items-center">
               <div className="relative w-[90px] h-[90px]">
                 <div
-                  className={`absolute inset-0 p-[4px] rounded-full ${
+                  className={`absolute inset-0 p-1 rounded-full ${
                     receivingSong
                       ? "bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
                       : ""
