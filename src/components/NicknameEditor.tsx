@@ -5,12 +5,14 @@ interface NicknameEditorProps {
   nickname: string;
   setNickname: (nickname: string) => void;
   onError: (message: string) => void;
+  clearErrors: () => void;
 }
 
 const NicknameEditor: React.FC<NicknameEditorProps> = ({
   nickname,
   setNickname,
   onError,
+  clearErrors,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -27,6 +29,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
           }
         );
         setIsEditing(false);
+        clearErrors();
       } catch {
         onError("닉네임을 입력해 주세요.");
       }
@@ -60,7 +63,10 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
           type="text"
           id="nickname"
           value={nickname}
-          onChange={(e) => setNickname(e.target.value)}
+          onChange={(e) => {
+            setNickname(e.target.value);
+            clearErrors();
+          }}
           onKeyDown={handleKeyDown}
           disabled={!isEditing}
           className={inputClass}
