@@ -66,6 +66,8 @@ export const Modal = <T,>({
                         className={`flex ${
                             type === ModalType.DEFAULT
                                 ? "flex-row justify-between items-center"
+                                : type === ModalType.NOTLOGIN
+                                ? "flex-col items-start" // NOTLOGIN 타입일 때 왼쪽 정렬
                                 : "flex-col items-center"
                         } mb-4`}
                     >

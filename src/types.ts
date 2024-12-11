@@ -17,7 +17,8 @@ export interface ModalContentProps<T> {
 export enum ModalType {
     DEFAULT,
     ERROR,
-    SUCCESS
+    SUCCESS,
+    NOTLOGIN
 }
 
 export interface BaseModalProps<T = unknown> {
@@ -27,4 +28,5 @@ export interface BaseModalProps<T = unknown> {
     data?: T;
     buttonBackgroundColor: string;
     showErrorIcon?: boolean;
+    onClose?: () => void;
 }
