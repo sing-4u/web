@@ -208,7 +208,7 @@ export default function Home() {
                                     <img
                                         src={user.image || Card}
                                         alt={`${user.name}의 프로필 이미지`}
-                                        className="w-full h-full object-cover"
+                                        className="w-full h-full object-cover max-w-full"
                                     />
                                     {user.isOpened && (
                                         <div className="absolute top-2 left-2 bg-gradient-to-br text-white from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-[4px]">
