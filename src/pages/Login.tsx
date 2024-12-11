@@ -228,7 +228,7 @@ const Login = () => {
               }`}
             >
               <input
-                className={`w-[327px] h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                className={`w-[327px] h-[52px] border border-inputBorderColor box-border text-[#AAAAA] ${
                   errors.email ? "border-red-500" : "border-customGray"
                 }
                   rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
@@ -291,7 +291,7 @@ const Login = () => {
               {loginState.error}
             </div>
           )}
-          <div className="flex flex-col items-center w-[245px] h-[24px] top-[615px] left-[65px] absolute">
+          <div className="flex flex-col items-center w-[245px] h-[24px] top-[620px] mobile:top-[620.5px] left-[65px] absolute">
             <div className="flex items-center space-x-4 mt-6">
               <div
                 className="font-medium text-[14px] leading-[24px] text-customGray cursor-pointer"
