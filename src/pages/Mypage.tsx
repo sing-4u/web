@@ -127,7 +127,7 @@ const Mypage = () => {
         }}
         className="flex flex-col items-center w-full max-w-md mt-10 flex-grow "
       >
-        <div className="flex flex-col w-[328px] h-[413px] gap-y-6 md:w-[380px] md:h-[635px]">
+        <div className="flex flex-col h-[413px] gap-y-6 md:w-[380px] md:h-[635px]">
           <div className="relative flex flex-col w-full justify-center items-center">
             <div
               className="relative w-[90px] h-[90px] cursor-pointer mt-3"

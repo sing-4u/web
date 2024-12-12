@@ -129,7 +129,7 @@ const ManageSong = () => {
   const commentButtonClass =
     "mobile:w-[72px] mobile:h-[72px] mobile:py-[26px] mobile:px-[10px] mobile:text-[10px] mobile:font-semibold mobile:leading-[11.93px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors";
   return (
-    <div className="mobile:w-[375px] mx-auto flex flex-col items-center tablet:w-full pc:w-full">
+    <div className="mobile:min-w-[375px] mx-auto flex flex-col items-center tablet:w-full pc:w-full">
       <Navbar />
       <div className="pc:w-full pc:max-w-6xl pc:flex pc:ml-14">
         <div className="flex flex-col justify-center items-center tablet:flex-row tablet:justify-between tablet:w-[672px] tablet:border tablet:border-inputBorderColor tablet:rounded-[8px] tablet:p-4 tablet:mt-10 mobile:mt-4 pc:w-[270ox] pc:h-[328px] pc:border-2 pc:border-inputBorderColor pc:rounded pc:mt-10 pc:p-4">
