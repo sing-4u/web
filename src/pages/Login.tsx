@@ -180,8 +180,8 @@ const Login = () => {
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ""}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
-          className="form-container w-full max-w-md mx-auto p-6 space-y-6 h-full relative
-  md:w-[380px] md:h-[601px]"
+          className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative mobile:w-[375px]
+  tablet:w-[380px] tablet:h-[601px]"
         >
           <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
             <div
@@ -287,7 +287,7 @@ const Login = () => {
             </button>
           </div>
           {loginState.error && (
-            <div className="absolute w-[176px] top-[393px] left-[100px] text-red-500 text-center mt-4 font-medium text-[12px] leading-[14.32px] whitespace-nowrap">
+            <div className="absolute w-[176px] top-[390px] left-[100px] box-border text-red-500 text-center mt-4 font-medium text-[12px] leading-[14.32px] whitespace-nowrap">
               {loginState.error}
             </div>
           )}
