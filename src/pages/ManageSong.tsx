@@ -131,7 +131,7 @@ const ManageSong = () => {
   return (
     <div className="mobile:w-[375px] mx-auto flex flex-col items-center tablet:w-full pc:w-full">
       <Navbar />
-      <div className="pc:w-full pc:max-w-6xl pc:flex pc:ml-14 pc:h-screen">
+      <div className="pc:w-full pc:max-w-6xl pc:flex pc:ml-14">
         <div className="flex flex-col justify-center items-center tablet:flex-row tablet:justify-between tablet:w-[672px] tablet:border tablet:border-inputBorderColor tablet:rounded-[8px] tablet:p-4 tablet:mt-10 mobile:mt-4 pc:w-[270ox] pc:h-[328px] pc:border-2 pc:border-inputBorderColor pc:rounded pc:mt-10 pc:p-4">
           <div className="flex flex-col tablet:mt-0 items-center tablet:flex-row">
             <div className="pc:mb-10 tablet:flex tablet:items-center">
@@ -208,7 +208,7 @@ const ManageSong = () => {
         </div>
 
         <div className="tablet:flex tablet:flex-1 pc:flex pc:gap-x-8 pc:mt-4 tablet:space-x-2 tablet:ml-0">
-          <div className="pc:ml-10">
+          <div className="pc:ml-10 md:pb-10">
             {receivingSong && nowSongList ? (
               <div className="flex flex-col w-[327px] rounded-[8px] border-2 border-indigo-500/50 p-4 mt-6">
                 <div
@@ -285,7 +285,7 @@ const ManageSong = () => {
           </div>
           <div className="tablet:flex tablet:flex-1 mobile:ml-0 tablet:ml-4">
             {previousSongLists?.length > 0 ? (
-              <div className="w-[327px] mobile:mt-4 tablet:mt-0 flex flex-col justify-center items-center mb-10">
+              <div className="w-[327px] mobile:mt-4 tablet:mt-0 flex flex-col mb-10">
                 {previousSongLists.map(
                   (
                     list: {
@@ -309,7 +309,7 @@ const ManageSong = () => {
               <NonListPrevious />
             )}
           </div>
-          <div className="mobile:bg-white mobile:w-full mobile:h-[100px]"></div>
+          <div className="mobile:bg-white mobile:w-full mobile:h-[100px]]"></div>
         </div>
       </div>
       <div className="w-full">

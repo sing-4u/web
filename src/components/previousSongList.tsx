@@ -24,7 +24,7 @@ const PreviousSongList: FC<PreviousSongListProps> = ({
   return (
     <div
       key={list.id}
-      className="flex flex-col w-[327px] rounded-[8px] border-2 border-inputBorderClass p-4 mt-8"
+      className="flex flex-col  w-[327px] rounded-[8px] border-2 border-inputBorderClass p-4 mt-8"
     >
       <div
         className="flex justify-between items-center cursor-pointer"
