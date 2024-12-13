@@ -78,9 +78,9 @@ const EmailChangeModal = ({
         >
             <ToastContainer toasts={toasts} />
             <div>
-                <label className="block *:text-sm text-gray-700">
+                <label className="block text-sm text-gray-700">
                     새 이메일
-                    <div className="flex flex-col">
+                    <div className="flex flex-col mt-2">
                         <input
                             type="email"
                             {...register("email", {
@@ -90,13 +90,17 @@ const EmailChangeModal = ({
                                     message: "올바른 이메일 형식이 아닙니다."
                                 }
                             })}
-                            className={`my-2 ${getInputErrorClassName(
+                            className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                 errors.email
-                            )}`}
+                                    ? "border-errorTextColor"
+                                    : "border-customGray"
+                            }
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                             placeholder="이메일 입력"
                         />
                         {errors.email && (
-                            <p className="mt-1 text-sm text-errorTextColor">
+                            <p className="mt-2 text-sm text-errorTextColor">
                                 {errors?.email.message}
                             </p>
                         )}
@@ -115,9 +119,13 @@ const EmailChangeModal = ({
                                     required:
                                         "본인임을 인증하기 위해 비밀번호를 입력해주세요."
                                 })}
-                                className={`w-full my-2 ${getInputErrorClassName(
+                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                     errors.password
-                                )}`}
+                                        ? "border-errorTextColor"
+                                        : "border-customGray"
+                                }
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                 placeholder="비밀번호를 입력해주세요."
                             />
 
@@ -135,7 +143,7 @@ const EmailChangeModal = ({
                             </button>
                         </div>
                         {errors.password && (
-                            <p className="mt-1 text-sm text-errorTextColor">
+                            <p className="mt-4 text-sm text-errorTextColor">
                                 {errors?.password.message}
                             </p>
                         )}

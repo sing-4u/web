@@ -336,7 +336,7 @@ const Join = () => {
                             </label>
 
                             {errors.password && (
-                                <p className="text-errorTextColor text-sm mt-2">
+                                <p className="text-errorTextColor text-sm mt-4">
                                     {errors.password.message}
                                 </p>
                             )}
@@ -378,7 +378,7 @@ const Join = () => {
                             </label>
 
                             {errors.confirmPassword && (
-                                <p className="text-errorTextColor text-sm mt-2">
+                                <p className="text-errorTextColor text-sm mt-4">
                                     {errors.confirmPassword.message}
                                 </p>
                             )}
@@ -443,7 +443,6 @@ const Join = () => {
                     </div>
 
                     <button
-                        disabled={isButtonDisabled}
                         className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
                         type="submit"
                     >
