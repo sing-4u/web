@@ -116,10 +116,9 @@ const SongDetail = () => {
                         data: { artist, title, email },
                         buttonBackgroundColor:
                             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
-                        onClose: () => {
-                            resetFields();
-                        }
+                        onClose: resetFields
                     });
+                    resetFields();
                 } else if (error.response.status === 400) {
                     openModal({
                         Content: (props) => (
@@ -134,6 +133,7 @@ const SongDetail = () => {
                         type: ModalType.NOTLOGIN,
                         buttonBackgroundColor: ""
                     });
+                    resetFields();
                 }
             }
         }
@@ -143,10 +143,12 @@ const SongDetail = () => {
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2";
 
+    const isOpened = user?.user?.isOpened || fetchedUser?.isOpened;
+
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
             <Navbar />
-            {user?.user?.isOpened && (
+            {isOpened ? (
                 <div className="relative flex flex-col w-full justify-center items-center mt-10">
                     <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
                         {profileImage ? (
@@ -239,9 +241,7 @@ const SongDetail = () => {
                         </button>
                     </form>
                 </div>
-            )}
-
-            {!user?.user?.isOpened && (
+            ) : (
                 <div className="relative flex flex-col w-full justify-center items-center mt-10">
                     <div
                         className="relative w-[90px] h-[90px] cursor-pointer mt-3"
@@ -285,6 +285,51 @@ const SongDetail = () => {
                     </section>
                 </div>
             )}
+
+            {/* {!isOpened && (
+                <div className="relative flex flex-col w-full justify-center items-center mt-10">
+                    <div
+                        className="relative w-[90px] h-[90px] cursor-pointer mt-3"
+                        onClick={() =>
+                            document
+                                .getElementById("profileImageInput")
+                                ?.click()
+                        }
+                    >
+                        {profileImage ? (
+                            typeof profileImage === "string" ? (
+                                <img
+                                    src={profileImage}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover rounded-full"
+                                />
+                            ) : (
+                                <img
+                                    src={URL.createObjectURL(profileImage)}
+                                    alt="Profile"
+                                    className="w-full h-full object-cover rounded-full "
+                                />
+                            )
+                        ) : (
+                            <MypageProfile />
+                        )}
+                    </div>
+                    <input
+                        type="file"
+                        id="profileImageInput"
+                        accept="image/*"
+                        className="hidden"
+                    />
+                    <span className="font-bold text-lg mt-4">
+                        {userName || "Loading...."}
+                    </span>
+
+                    <section className="w-[379px] h-[136px] bg-[#f5f5f5] mt-[38px] flex justify-center items-center text-center rounded-lg">
+                        현재 아티스트가 신청곡을 받고 있지 않습니다. <br />
+                        다음 신청 기간을 기다려 주세요.
+                    </section>
+                </div>
+            )} */}
             <Footer />
         </div>
     );
