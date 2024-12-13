@@ -5,19 +5,15 @@ import axios from "axios";
 import CheckboxOutline from "../../src/assets/_checkbox_outline.svg";
 import CheckboxBlack from "../../src/assets/_checkbox.svg";
 import { useLocation, useNavigate } from "react-router-dom";
-import getInputErrorClassName from "../utils/className";
 import GoogleIcon from "../components/GoogleIcon";
 import usePasswordToggle from "../hooks/usePasswordToggle";
 import storeToken from "../utils/storeToken";
 import { useToast } from "../hooks/useToast";
 import { useAuthRedirect } from "../hooks/useAuthRedirect";
-import ErrorMessage from "../components/ErrorMessage";
 import { ToastContainer } from "../components/ToastContainer";
 import { useTitle } from "../hooks/useTitle";
 import Tooltip from "../assets/tootip.svg";
-import Navbar from "../components/Navbar";
 import { baseURL } from "../utils/apiUrl";
-import Logo from "../components/Logo";
 import { jwtDecode } from "jwt-decode";
 import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
 
@@ -244,7 +240,7 @@ const Join = () => {
 
                     <div className="space-y-4">
                         <div className="flex flex-col">
-                            <label className="text-sm flex flex-col font-bold">
+                            <label className="text-sm flex flex-col">
                                 닉네임
                                 <input
                                     type="text"
@@ -256,9 +252,11 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
+                                    className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
                                         errors.name
-                                    )}`}
+                                            ? "border-errorTextColor"
+                                            : "border-customGray"
+                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] placeholder:pl-[18px]`}
                                     placeholder="별명"
                                 />
                             </label>
@@ -271,7 +269,7 @@ const Join = () => {
                         <div className="pc:my-[30px]"></div>
 
                         <div className="flex flex-col">
-                            <label className="text-sm flex flex-col font-bold">
+                            <label className="text-sm flex flex-col">
                                 이메일
                                 <input
                                     type="email"
@@ -283,9 +281,11 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`border border-[#e1e1e1] h-[48px] px-4 text-sm mt-2 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
+                                    className={`w-full h-14 border border-inputBorderColor text-inputTextColo mt-2 ${
                                         errors.email
-                                    )}`}
+                                            ? "border-errorTextColor"
+                                            : "border-customGray"
+                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] placeholder:pl-[18px]`}
                                     placeholder="abc@email.com"
                                 />
                             </label>
@@ -298,10 +298,7 @@ const Join = () => {
                         </div>
                         <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
-                            <label
-                                htmlFor="password"
-                                className="text-sm mb-2 font-bold"
-                            >
+                            <label htmlFor="password" className="text-sm">
                                 비밀번호
                                 <div className="relative top-2">
                                     <input
@@ -316,9 +313,11 @@ const Join = () => {
                                                     "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                             }
                                         })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
+                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor ${
                                             errors.password
-                                        )}`}
+                                                ? "border-errorTextColor"
+                                                : "border-customGray"
+                                        } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] placeholder:pl-[18px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -342,7 +341,7 @@ const Join = () => {
                         <div className="flex flex-col">
                             <label
                                 htmlFor="confirmPassword"
-                                className="text-sm font-bold mb-2"
+                                className="text-sm mb-2"
                             >
                                 비밀번호 확인
                                 <div className="relative top-2">
@@ -356,9 +355,12 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`border border-[#e1e1e1] w-full h-[48px] px-4 text-sm pr-12 placeholder:font-normal font-normal focus:outline-none ${getInputErrorClassName(
+                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor ${
                                             errors.confirmPassword
-                                        )}`}
+                                                ? "border-errorTextColor"
+                                                : "border-customGray"
+                                        }
+                                            rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[16px] placeholder:pl-[18px]`}
                                         placeholder="비밀번호 확인"
                                     />
 
@@ -431,7 +433,9 @@ const Join = () => {
                             )}
                         </div>
                         {termsError && (
-                            <p className="text-red-500 text-xs">{termsError}</p>
+                            <p className="text-errorTextColor text-xs">
+                                {termsError}
+                            </p>
                         )}
                     </div>
 
