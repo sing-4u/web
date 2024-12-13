@@ -75,22 +75,23 @@ export default function EmailInputModal<T extends SongData>({
             });
         } catch (error) {
             if (error instanceof Error) {
-                if (axios.isAxiosError(error)) {
-                    if (error.response?.status === 409) {
-                        openModal({
-                            title: "중복 신청",
-                            type: ModalType.ERROR,
-                            Content: SongRequestFailModal,
-                            data: {
-                                artist: modalData?.artist,
-                                title: modalData?.title,
-                                email
-                            },
-                            buttonBackgroundColor:
-                                "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
-                            onClose: onRequestComplete
-                        });
-                    }
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 409
+                ) {
+                    openModal({
+                        title: "중복 신청",
+                        type: ModalType.ERROR,
+                        Content: SongRequestFailModal,
+                        data: {
+                            artist: modalData?.artist,
+                            title: modalData?.title,
+                            email
+                        },
+                        buttonBackgroundColor:
+                            "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
+                        onClose: onRequestComplete
+                    });
                 }
             }
         }
