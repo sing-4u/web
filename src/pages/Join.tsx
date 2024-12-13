@@ -256,7 +256,7 @@ const Join = () => {
                                         errors.name
                                             ? "border-errorTextColor"
                                             : "border-customGray"
-                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] placeholder:pl-[18px]`}
+                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[18px]`}
                                     placeholder="별명"
                                 />
                             </label>
@@ -284,7 +284,7 @@ const Join = () => {
                                         errors.email
                                             ? "border-errorTextColor"
                                             : "border-customGray"
-                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] placeholder:pl-[18px]`}
+                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[18px]`}
                                     placeholder="abc@email.com"
                                 />
                             </label>
@@ -315,7 +315,7 @@ const Join = () => {
                                             errors.password
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
-                                        } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] placeholder:pl-[18px]`}
+                                        } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[18px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -357,7 +357,7 @@ const Join = () => {
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                                            rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[16px] placeholder:pl-[18px]`}
+                                            rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[16px] pl-[18px]`}
                                         placeholder="비밀번호 확인"
                                     />
 
