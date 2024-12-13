@@ -266,7 +266,6 @@ const Join = () => {
                                 </p>
                             )}
                         </div>
-                        <div className="pc:my-[30px]"></div>
 
                         <div className="flex flex-col">
                             <label className="text-sm flex flex-col">
@@ -281,7 +280,7 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`w-full h-14 border border-inputBorderColor text-inputTextColo mt-2 ${
+                                    className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
                                         errors.email
                                             ? "border-errorTextColor"
                                             : "border-customGray"
@@ -296,11 +295,10 @@ const Join = () => {
                                 </p>
                             )}
                         </div>
-                        <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
                             <label htmlFor="password" className="text-sm">
                                 비밀번호
-                                <div className="relative top-2">
+                                <div className="relative">
                                     <input
                                         type={password.type}
                                         id="password"
@@ -313,7 +311,7 @@ const Join = () => {
                                                     "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                             }
                                         })}
-                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor ${
+                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
                                             errors.password
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
@@ -337,14 +335,13 @@ const Join = () => {
                                 </p>
                             )}
                         </div>
-                        <div className="pc:my-[30px]"></div>
                         <div className="flex flex-col">
                             <label
                                 htmlFor="confirmPassword"
-                                className="text-sm mb-2"
+                                className="text-sm"
                             >
                                 비밀번호 확인
-                                <div className="relative top-2">
+                                <div className="relative">
                                     <input
                                         type={confirmPassword.type}
                                         id="confirmPassword"
@@ -355,7 +352,7 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor ${
+                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
                                             errors.confirmPassword
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
@@ -379,7 +376,6 @@ const Join = () => {
                                 </p>
                             )}
                         </div>
-                        <div className="pc:my-[30px]"></div>
                     </div>
 
                     <div className="space-y-4 mt-[30px]">
