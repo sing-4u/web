@@ -252,11 +252,13 @@ const Join = () => {
                                                 "최대 50자까지 입력 가능합니다."
                                         }
                                     })}
-                                    className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
+                                    className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                         errors.name
                                             ? "border-errorTextColor"
                                             : "border-customGray"
-                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[18px]`}
+                                    }
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[24px]`}
                                     placeholder="별명"
                                 />
                             </label>
@@ -280,11 +282,13 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
+                                    className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                         errors.email
                                             ? "border-errorTextColor"
                                             : "border-customGray"
-                                    } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[18px]`}
+                                    }
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[24px]`}
                                     placeholder="abc@email.com"
                                 />
                             </label>
@@ -311,11 +315,13 @@ const Join = () => {
                                                     "8~16자의 영문 대/소문자, 숫자, 특수문자를 조합하여 입력해주세요."
                                             }
                                         })}
-                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
+                                        className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                             errors.password
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
-                                        } rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[14px] pl-[18px]`}
+                                        }
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[24px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -352,12 +358,13 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`w-full h-14 border border-inputBorderColor text-inputTextColor mt-2 ${
-                                            errors.confirmPassword
+                                        className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                            errors.password
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                                            rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px] placeholder:pt-[16px] pl-[18px]`}
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[24px]`}
                                         placeholder="비밀번호 확인"
                                     />
 
