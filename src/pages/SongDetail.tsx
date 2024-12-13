@@ -16,7 +16,6 @@ import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
 import Footer from "../components/Footer";
 import MypageProfile from "../components/MypageProfileL";
-import Mypage from "./Mypage";
 
 interface SongDetailForm {
     artist: string;
@@ -54,7 +53,8 @@ const SongDetail = () => {
         register,
         handleSubmit,
         formState: { errors },
-        setValue
+        setValue,
+        watch
     } = useForm<SongDetailForm>();
 
     const resetFields = () => {
@@ -93,7 +93,6 @@ const SongDetail = () => {
                 artist,
                 title
             });
-
             if (res.status === 201) {
                 openModal({
                     title: "신청 완료",
@@ -107,8 +106,11 @@ const SongDetail = () => {
                 resetFields();
             }
         } catch (error) {
-            if (axios.isAxiosError(error) && error.response) {
-                if (error.response.status === 409) {
+            if (error instanceof Error) {
+                if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 409
+                ) {
                     openModal({
                         title: "중복 신청",
                         type: ModalType.ERROR,
@@ -119,7 +121,10 @@ const SongDetail = () => {
                         onClose: resetFields
                     });
                     resetFields();
-                } else if (error.response.status === 400) {
+                } else if (
+                    axios.isAxiosError(error) &&
+                    error.response?.status === 400
+                ) {
                     openModal({
                         Content: (props) => (
                             <EmailInputModal
@@ -142,8 +147,12 @@ const SongDetail = () => {
 
     const inputLabelClass =
         "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2";
+    const inputClass =
+        "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black md:w-[380px]";
 
     const isOpened = user?.user?.isOpened || fetchedUser?.isOpened;
+
+    const isButtonDisabled = !watch("artist") || !watch("title");
 
     return (
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
@@ -190,17 +199,15 @@ const SongDetail = () => {
                             <input
                                 type="text"
                                 placeholder="가수 이름"
-                                className={`rounded-md px-4 h-[48px] ${
-                                    errors.artist ? "" : "mb-[22px]"
-                                } text-sm ${getInputErrorClassName(
-                                    errors.artist
-                                )}`}
+                                className={`${inputClass} ${
+                                    errors.artist ? "mb-2" : "mb-[22px]"
+                                }`}
                                 {...register("artist", {
                                     required: "가수 이름을 입력해주세요."
                                 })}
                             />
                             {errors.artist && (
-                                <span className="text-red-500 text-sm mb-[30px]">
+                                <span className="text-red-500 text-sm mb-[22px]">
                                     {errors.artist.message}
                                 </span>
                             )}
@@ -215,17 +222,15 @@ const SongDetail = () => {
                             <input
                                 type="text"
                                 placeholder="노래 제목"
-                                className={`rounded-md px-4 h-[48px] ${
-                                    errors.title ? "" : "mb-[22px]"
-                                } text-sm ${getInputErrorClassName(
-                                    errors.title
-                                )}`}
+                                className={`${inputClass} ${
+                                    errors.title ? "mb-2" : ""
+                                }`}
                                 {...register("title", {
-                                    required: "가수 이름을 입력해주세요."
+                                    required: "노래 제목을 입력해주세요."
                                 })}
                             />
                             {errors.title && (
-                                <span className="text-red-500 text-sm mb-[30px]">
+                                <span className="text-red-500 text-sm">
                                     {errors.title.message}
                                 </span>
                             )}
@@ -236,21 +241,26 @@ const SongDetail = () => {
                                 제출 후 수정이 불가능합니다.
                             </span>
                         </div>
-                        <button className="flex items-center justify-center gap-2  bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white px-4 py-3 rounded-lg hover:opacity-90 transition-opacity">
+                        <button
+                            className={`
+        flex items-center justify-center gap-2
+        ${
+            isButtonDisabled
+                ? "bg-gray-300"
+                : "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+        }
+        text-white px-4 py-3 rounded-lg
+        hover:opacity-90
+        transition-opacity
+    `}
+                        >
                             신청곡 보내기
                         </button>
                     </form>
                 </div>
             ) : (
                 <div className="relative flex flex-col w-full justify-center items-center mt-10">
-                    <div
-                        className="relative w-[90px] h-[90px] cursor-pointer mt-3"
-                        onClick={() =>
-                            document
-                                .getElementById("profileImageInput")
-                                ?.click()
-                        }
-                    >
+                    <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
                         {profileImage ? (
                             typeof profileImage === "string" ? (
                                 <img
