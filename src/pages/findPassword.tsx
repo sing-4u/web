@@ -325,7 +325,7 @@ const FindPassword = () => {
                 </div>
                 <button
                     disabled={!isAuthenticationCodeRequested}
-                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10 hover:bg-colorPurpleHover disabled:bg-gray-500 disabled:cursor-not-allowed"
+                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10 hover:bg-colorPurpleHover disabled:bg-buttonColor2 disabled:cursor-not-allowed"
                     type="submit"
                 >
                     다음
