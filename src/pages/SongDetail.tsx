@@ -189,7 +189,7 @@ const SongDetail = () => {
                             </label>
                             <input
                                 type="text"
-                                placeholder="가수이름"
+                                placeholder="가수 이름"
                                 className={`rounded-md px-4 h-[48px] ${
                                     errors.artist ? "" : "mb-[22px]"
                                 } text-sm ${getInputErrorClassName(
@@ -214,7 +214,7 @@ const SongDetail = () => {
                             </label>
                             <input
                                 type="text"
-                                placeholder="가수이름"
+                                placeholder="노래 제목"
                                 className={`rounded-md px-4 h-[48px] ${
                                     errors.title ? "" : "mb-[22px]"
                                 } text-sm ${getInputErrorClassName(
@@ -286,50 +286,6 @@ const SongDetail = () => {
                 </div>
             )}
 
-            {/* {!isOpened && (
-                <div className="relative flex flex-col w-full justify-center items-center mt-10">
-                    <div
-                        className="relative w-[90px] h-[90px] cursor-pointer mt-3"
-                        onClick={() =>
-                            document
-                                .getElementById("profileImageInput")
-                                ?.click()
-                        }
-                    >
-                        {profileImage ? (
-                            typeof profileImage === "string" ? (
-                                <img
-                                    src={profileImage}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover rounded-full"
-                                />
-                            ) : (
-                                <img
-                                    src={URL.createObjectURL(profileImage)}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover rounded-full "
-                                />
-                            )
-                        ) : (
-                            <MypageProfile />
-                        )}
-                    </div>
-                    <input
-                        type="file"
-                        id="profileImageInput"
-                        accept="image/*"
-                        className="hidden"
-                    />
-                    <span className="font-bold text-lg mt-4">
-                        {userName || "Loading...."}
-                    </span>
-
-                    <section className="w-[379px] h-[136px] bg-[#f5f5f5] mt-[38px] flex justify-center items-center text-center rounded-lg">
-                        현재 아티스트가 신청곡을 받고 있지 않습니다. <br />
-                        다음 신청 기간을 기다려 주세요.
-                    </section>
-                </div>
-            )} */}
             <Footer />
         </div>
     );
