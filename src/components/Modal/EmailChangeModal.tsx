@@ -49,7 +49,9 @@ const EmailChangeModal = ({
             await axiosInstance().patch("/users/me/email", { email, password });
 
             showToast("success", "이메일 변경 완료");
-            closeModal();
+            setTimeout(() => {
+                closeModal();
+            }, 300);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("password", {
@@ -95,8 +97,8 @@ const EmailChangeModal = ({
                                     ? "border-errorTextColor"
                                     : "border-customGray"
                             }
-                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                      rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
                             placeholder="이메일 입력"
                         />
                         {errors.email && (
@@ -124,8 +126,8 @@ const EmailChangeModal = ({
                                         ? "border-errorTextColor"
                                         : "border-customGray"
                                 }
-                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                      rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                 placeholder="비밀번호를 입력해주세요."
                             />
 

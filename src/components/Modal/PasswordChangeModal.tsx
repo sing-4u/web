@@ -53,7 +53,9 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                 newPassword
             });
             showToast("success", "비밀번호 변경 완료");
-            closeModal();
+            setTimeout(() => {
+                closeModal();
+            }, 300);
         } catch (error) {
             if (axios.isAxiosError(error) && error.response?.status === 401) {
                 setError("oldPassword", {
