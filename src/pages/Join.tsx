@@ -257,7 +257,7 @@ const Join = () => {
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                                     placeholder="별명"
                                 />
@@ -287,7 +287,7 @@ const Join = () => {
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                                     placeholder="abc@email.com"
                                 />
@@ -320,7 +320,7 @@ const Join = () => {
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
@@ -363,7 +363,7 @@ const Join = () => {
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
                   placeholder:pt-[14px] pl-[24px]`}
                                         placeholder="비밀번호 확인"
                                     />
