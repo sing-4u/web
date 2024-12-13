@@ -7,6 +7,8 @@ import { useTitle } from "../hooks/useTitle";
 import axiosInstance from "../utils/axiosInstance";
 import { baseURL } from "../utils/apiUrl";
 import Footer from "../components/Footer";
+import { useToast } from "../hooks/useToast";
+import { ToastContainer } from "../components/ToastContainer";
 
 interface UserProps {
     id: string;
@@ -16,6 +18,7 @@ interface UserProps {
 }
 
 export default function Home() {
+    const { showToast, toasts } = useToast();
     const navigate = useNavigate();
     const [users, setUsers] = useState<UserProps[]>([]);
     const [loading, setLoading] = useState(false);
@@ -100,6 +103,13 @@ export default function Home() {
         }
     }, [loading, hasMore, page]);
 
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        if (params.get("showToast") === "passwordChanged") {
+            showToast("success", "비밀번호가 성공적으로 변경되었습니다.");
+        }
+    }, []);
+
     const setTitle = useTitle();
     setTimeout(() => {
         setTitle("홈");
@@ -179,7 +189,8 @@ export default function Home() {
         "mobile:w-[72px] mobile:h-[72px] mobile:py-[26px] mobile:px-[10px] mobile:text-[10px] mobile:font-semibold mobile:leading-[11.93px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors";
 
     return (
-        <div className="w-full space-y-4 ">
+        <div className="w-full space-y-4">
+            <ToastContainer toasts={toasts} />
             <Navbar />
             <div className="relative pc:px-[191px] mobile:px-6 tablet:px-[46px]">
                 <input

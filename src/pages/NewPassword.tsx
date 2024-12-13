@@ -50,8 +50,7 @@ const NewPassword = () => {
             await axiosInstance(accessToken).patch("/auth/password", {
                 newPassword
             });
-            showToast("success", "비밀번호 재설정 완료");
-            setTimeout(() => navigate("/login"), 500);
+            navigate("/?showToast=passwordChanged", { replace: true });
         } catch (error) {
             if (error instanceof Error) throw new Error(error.message);
             // 401 에러 처리
