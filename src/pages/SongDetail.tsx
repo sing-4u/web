@@ -16,6 +16,7 @@ import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
 import Footer from "../components/Footer";
 import MypageProfile from "../components/MypageProfileL";
+import ImgProfile from "../assets/ImageProfileL.svg";
 
 interface SongDetailForm {
     artist: string;
@@ -44,8 +45,7 @@ const SongDetail = () => {
     const navigate = useNavigate();
     const formId = searchParams.get("formId");
     const { data: userData } = useUserData();
-    const profileImage =
-        user?.user?.image || fetchedUser?.image || userData?.image;
+    const profileImage = user?.user?.image || fetchedUser?.image;
 
     const { openModal } = useModal();
 
@@ -111,11 +111,18 @@ const SongDetail = () => {
                     axios.isAxiosError(error) &&
                     error.response?.status === 409
                 ) {
+                    const { detail } = error.response.data;
                     openModal({
                         title: "중복 신청",
                         type: ModalType.ERROR,
                         Content: SongRequestFailModal,
-                        data: { artist, title, email },
+                        data: {
+                            existingRequest: {
+                                artist: detail.artist,
+                                title: detail.title,
+                                email: detail.email
+                            }
+                        },
                         buttonBackgroundColor:
                             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
                         onClose: resetFields
@@ -160,23 +167,11 @@ const SongDetail = () => {
             {isOpened ? (
                 <div className="relative flex flex-col w-full justify-center items-center mt-[22px]">
                     <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
-                        {profileImage ? (
-                            typeof profileImage === "string" ? (
-                                <img
-                                    src={profileImage}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover rounded-full "
-                                />
-                            ) : (
-                                <img
-                                    src={URL.createObjectURL(profileImage)}
-                                    alt="Profile"
-                                    className="w-full h-full object-cover rounded-full "
-                                />
-                            )
-                        ) : (
-                            <MypageProfile />
-                        )}
+                        <img
+                            src={profileImage || ImgProfile}
+                            alt="Profile"
+                            className="w-full h-full object-cover rounded-full "
+                        />
                     </div>
                     <input
                         type="file"
@@ -200,7 +195,9 @@ const SongDetail = () => {
                                 type="text"
                                 placeholder="가수 이름"
                                 className={`${inputClass} ${
-                                    errors.artist ? "mb-2" : "mb-[22px]"
+                                    errors.artist
+                                        ? "mb-2 border-errorTextColor"
+                                        : "mb-[22px] border-customGray"
                                 }`}
                                 {...register("artist", {
                                     required: "가수 이름을 입력해주세요."

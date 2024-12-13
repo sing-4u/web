@@ -1,14 +1,25 @@
-interface SongRequestFailModalProps<T extends Record<string, React.ReactNode>> {
+interface SongRequestData {
+    artist: string;
+    title: string;
+    email: string;
+}
+
+interface BaseModalData {
+    existingRequest?: Partial<SongRequestData>; // 기존 신청곡
+    [key: string]: unknown;
+}
+
+interface SongRequestFailModalProps<T extends BaseModalData> {
     title?: string;
     data?: T;
     buttonBackgroundColor?: string;
 }
 
-export const SongRequestFailModal = <
-    T extends Record<string, React.ReactNode>
->({
+export const SongRequestFailModal = <T extends BaseModalData>({
     data
 }: SongRequestFailModalProps<T>) => {
+    const songToShow = data?.existingRequest;
+
     return (
         <>
             <div className="text-center font-[12px] mb-6">
@@ -25,20 +36,26 @@ export const SongRequestFailModal = <
                             <span className="font-bold text-customGray">
                                 가수
                             </span>
-                            <span className="font-bold">{data?.artist}</span>
+                            <span className="font-bold">
+                                {songToShow?.artist}
+                            </span>
                         </div>
 
                         <div className="flex justify-between border-b-[0.5px] border-[#f4f4f4]">
                             <span className="font-bold text-customGray">
                                 노래제목
                             </span>
-                            <span className="font-bold">{data?.title}</span>
+                            <span className="font-bold">
+                                {songToShow?.title}
+                            </span>
                         </div>
                         <div className="flex justify-between">
                             <span className="font-bold text-customGray">
                                 신청 이메일
                             </span>
-                            <span className="font-bold">{data?.email}</span>
+                            <span className="font-bold">
+                                {songToShow?.email}
+                            </span>
                         </div>
                     </div>
                 </div>
