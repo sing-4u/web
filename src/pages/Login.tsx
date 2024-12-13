@@ -181,7 +181,7 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
           className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative mobile:w-[375px]
-  tablet:w-[380px] tablet:h-[601px]"
+  pc:w-[380px] pc:h-[601px]"
         >
           <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
             <div
