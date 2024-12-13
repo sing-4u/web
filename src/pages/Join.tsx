@@ -257,8 +257,8 @@ const Join = () => {
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px] mt-2`}
                                     placeholder="별명"
                                 />
                             </label>
@@ -287,8 +287,8 @@ const Join = () => {
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px] mt-2`}
                                     placeholder="abc@email.com"
                                 />
                             </label>
@@ -302,7 +302,7 @@ const Join = () => {
                         <div className="flex flex-col">
                             <label htmlFor="password" className="text-sm">
                                 비밀번호
-                                <div className="relative">
+                                <div className="relative top-2">
                                     <input
                                         type={password.type}
                                         id="password"
@@ -320,8 +320,8 @@ const Join = () => {
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -344,10 +344,10 @@ const Join = () => {
                         <div className="flex flex-col">
                             <label
                                 htmlFor="confirmPassword"
-                                className="text-sm"
+                                className="text-sm mt-2"
                             >
                                 비밀번호 확인
-                                <div className="relative">
+                                <div className="relative top-2">
                                     <input
                                         type={confirmPassword.type}
                                         id="confirmPassword"
@@ -363,8 +363,8 @@ const Join = () => {
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                  rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                         placeholder="비밀번호 확인"
                                     />
 
