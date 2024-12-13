@@ -1,11 +1,11 @@
 import React from "react";
 
-const ImgProfileL = () => {
+const MypageProfile = () => {
   return (
-    <svg 
+    <svg
       width="90"
       height="90"
-      viewBox="2 0 90 90"
+      viewBox="0 0 90 90"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -25,4 +25,4 @@ const ImgProfileL = () => {
   );
 };
 
-export default ImgProfileL;
+export default MypageProfile;
