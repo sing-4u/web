@@ -149,7 +149,7 @@ const SongDetail = () => {
         <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
             <Navbar />
             {isOpened ? (
-                <div className="relative flex flex-col w-full justify-center items-center mt-10">
+                <div className="relative flex flex-col w-full justify-center items-center mt-[22px]">
                     <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
                         {profileImage ? (
                             typeof profileImage === "string" ? (
