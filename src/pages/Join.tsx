@@ -258,7 +258,7 @@ const Join = () => {
                                             : "border-customGray"
                                     }
                   rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px]`}
+                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
                                     placeholder="별명"
                                 />
                             </label>
@@ -288,7 +288,7 @@ const Join = () => {
                                             : "border-customGray"
                                     }
                   rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px]`}
+                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
                                     placeholder="abc@email.com"
                                 />
                             </label>
@@ -321,7 +321,7 @@ const Join = () => {
                                                 : "border-customGray"
                                         }
                   rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px]`}
+                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -364,7 +364,7 @@ const Join = () => {
                                                 : "border-customGray"
                                         }
                   rounded-[10px] text-left placeholder:text-[16px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[24px]`}
+                  placeholder:pt-[14px] pl-[24px] text-[16px]`}
                                         placeholder="비밀번호 확인"
                                     />
 
