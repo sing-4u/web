@@ -10,11 +10,8 @@ import { useModal } from "../../hooks/useModal";
 import axios from "axios";
 import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
-import ErrorMessage from "../ErrorMessage";
-import { useNavigate } from "react-router-dom";
 
 const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
-    navigate,
     buttonBackgroundColor
 }) => {
     const {
@@ -98,9 +95,10 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                 <label className="mb-2 block text-sm text-gray-700">
                     현재 비밀번호
                     <div className="flex flex-col">
-                        <div className="relative">
+                        <div className="relative top-2">
                             <input
                                 type={oldPasswordState.type}
+                                id="oldPassword"
                                 {...register("oldPassword", {
                                     required: "비밀번호를 입력해주세요.",
                                     validate: (value) => {
@@ -112,21 +110,25 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full my-2 ${getInputErrorClassName(
+                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                     errors.oldPassword
-                                )}`}
+                                        ? "border-errorTextColor"
+                                        : "border-customGray"
+                                }
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                 placeholder="비밀번호 입력"
                             />
 
                             <img
                                 src={handleOldEyeIconToggle()}
-                                alt="toggle password visibility"
-                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                alt="Toggle Password Visibility"
+                                className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleOldToggle}
                             />
                         </div>
                         {errors.oldPassword && (
-                            <p className="mt-1 text-sm text-errorTextColor">
+                            <p className="mt-4 text-sm text-errorTextColor">
                                 {errors.oldPassword.message}
                             </p>
                         )}
@@ -138,9 +140,10 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                 <label className="mb-2 block text-sm text-gray-700">
                     새 비밀번호
                     <div className="flex flex-col">
-                        <div className="relative">
+                        <div className="relative top-2">
                             <input
                                 type={newPasswordState.type}
+                                id="newPassword"
                                 {...register("newPassword", {
                                     required: "비밀번호를 입력해 주세요.",
                                     pattern: {
@@ -157,22 +160,26 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full my-2 ${getInputErrorClassName(
+                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                     errors.newPassword
-                                )}`}
+                                        ? "border-errorTextColor"
+                                        : "border-customGray"
+                                }
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                 placeholder="새 비밀번호 입력"
                             />
 
                             <img
                                 src={handleNewEyeIconToggle()}
-                                alt="toggle password visibility"
-                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                alt="Toggle Password Visibility"
+                                className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleNewToggle}
                             />
                         </div>
 
                         {errors.newPassword && (
-                            <p className="mt-1 text-sm text-errorTextColor">
+                            <p className="mt-4 text-sm text-errorTextColor">
                                 {errors.newPassword.message}
                             </p>
                         )}
@@ -184,33 +191,37 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                 <label className="mb-2 block text-sm text-gray-700">
                     새 비밀번호 확인
                     <div className="flex flex-col">
-                        <div className="relative">
+                        <div className="relative top-2">
                             <input
+                                type={confirmPasswordState.type}
+                                id="confirmPassword"
                                 {...register("confirmPassword", {
                                     required: "비밀번호를 입력해주세요.",
-
                                     validate: (value) => {
                                         if (value !== watchPassword) {
                                             return "비밀번호가 일치하지 않습니다.";
                                         }
                                     }
                                 })}
-                                type={confirmPasswordState.type}
-                                className={`w-full my-2 ${getInputErrorClassName(
+                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                     errors.confirmPassword
-                                )}`}
+                                        ? "border-errorTextColor"
+                                        : "border-customGray"
+                                }
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                 placeholder="새 비밀번호 확인"
                             />
 
                             <img
                                 src={handleConfirmEyeIconToggle()}
-                                alt="toggle password visibility"
-                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                alt="Toggle Password Visibility"
+                                className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
                                 onClick={handleConfirmToggle}
                             />
                         </div>
                         {errors.confirmPassword && (
-                            <p className="mt-1 text-sm text-errorTextColor">
+                            <p className="mt-4 text-sm text-errorTextColor">
                                 {errors.confirmPassword.message}
                             </p>
                         )}
