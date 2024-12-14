@@ -75,7 +75,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
         <button
           type="button"
           className={`${changeButtonClass} ${
-            isEditing ? " bg-customGray" : "bg-gray-800"
+            isEditing ? " bg-customGray" : "bg-black"
           } whitespace-nowrap`}
           onClick={handleNameChange}
         >
