@@ -19,7 +19,7 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
 
   return (
     <div className="w-full border-b-[0.5px] border-inputBorderColor">
-      <div className="flex justify-between items-center w-full h-[60px] max-w-6xl mx-auto px-6">
+      <div className="flex justify-between items-center w-full h-[60px] max-w-[1440px] mx-auto px-6">
         <div
           onClick={() => navigate("/")}
           className="w-[64px] h-[22.5px] cursor-pointer"
