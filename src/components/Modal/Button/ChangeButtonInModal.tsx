@@ -13,7 +13,7 @@ const ChangeButtonInModal = ({
         <button
             type="submit"
             disabled={isValid}
-            className={`mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium ${
+            className={`mobile:font-bold pc:font-bold mobile:text-[14px] pc:text-base tablet:font-bold mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold ${
                 isValid
                     ? "bg-gray-300 cursor-not-allowed"
                     : buttonBackgroundColor

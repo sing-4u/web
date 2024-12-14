@@ -100,36 +100,40 @@ export default function EmailInputModal<T extends SongData>({
         <div>
             <button
                 onClick={handleClickLogin}
-                className="bg-colorPurple w-full h-12 rounded-lg text-white text-[14px] font-semibold"
+                className="bg-colorPurple w-full h-12 rounded-lg text-white mobile:text-[14px] tablet:text-[14px] pc:text-base font-bold"
             >
                 로그인
             </button>
             {/* border 추가 */}
-            <div className="space-x-2 mt-4 mb-12 flex items-center">
+            <div className="space-x-2 pc:my-12 mobile:my-10 tablet:my-10 flex items-center">
                 <span className="w-full border-b"></span>
             </div>
-            <h2 className="font-bold text-2xl">
+            <h2 className="font-bold pc:text-2xl mobile:text-lg tablet:text-lg">
                 아직, <br /> 싱포유 회원이 아니시면,
             </h2>
             <form className="flex flex-col" onSubmit={onSubmit}>
                 <label
-                    className="mt-2 font-semibold text-[14px]"
+                    className="mobile:mt-[22px] tablet:mt-[22px] pc:mt-[30px] font-medium text-[14px]"
                     htmlFor="새 이메일"
                 >
-                    <span className="font-medium text-base">새 이메일</span>
+                    <span className="font-medium mobile:text-[14px] tablet:text-[14px] pc:text-base">
+                        새 이메일
+                    </span>
                 </label>
                 <input
                     type="email"
                     value={email}
                     onChange={handleEmailChange}
                     placeholder="이메일 입력"
-                    className={`border-[0.5px] border-inputBorderColor ${
-                        error ? "border-red-500" : ""
-                    } ${getInputErrorClassName} placeholder:text-[14px] mt-2`}
+                    className={`border-[0.5px] border-inputBorderColor placeholder:font-normal ${
+                        error ? "border-errorTextColor" : ""
+                    } ${getInputErrorClassName} placeholder:pc:text-[14px] placeholder:mobile:text-base mt-2`}
                 />
 
-                <p className="mt-1 text-sm text-errorTextColor">{error}</p>
-                <button className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold">
+                <p className="mobile:mt-2 tablet:mt-2 pc:my-2 text-[12px] text-errorTextColor mobile:mb-[22px] tablet:mb-[22px] pc:mb-[22px]">
+                    {error}
+                </p>
+                <button className="bg-black w-full h-12 rounded-lg text-white mobile:text-[14px] tablet:text-[14px] pc:text-base font-bold">
                     비회원으로 신청하기
                 </button>
             </form>
