@@ -59,7 +59,7 @@ export const Modal = <T,>({
             <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 <dialog
-                    className="bg-white p-10 rounded-lg w-[460px] relative"
+                    className="bg-white p-10 rounded-lg w-[90%] max-w-[460px] relative"
                     open
                 >
                     <div
@@ -67,41 +67,52 @@ export const Modal = <T,>({
                             type === ModalType.DEFAULT
                                 ? "flex-row justify-between items-center"
                                 : type === ModalType.NOTLOGIN
-                                ? "flex-col items-start" // NOTLOGIN 타입일 때 왼쪽 정렬
+                                ? "flex-col items-start"
                                 : "flex-col items-center"
                         } mb-4`}
                     >
-                        {/* TODO : 리팩토링 필요 */}
-                        <div className="flex">
-                            {type === ModalType.ERROR && showErrorIcon && (
-                                <div className="flex justify-center mt-[-15px]">
-                                    <img
-                                        src={TriangleFill}
-                                        alt=""
-                                        className="w-10 h-10 mb-1"
-                                    />
+                        {type === ModalType.DEFAULT ? (
+                            <>
+                                <h2 className="text-2xl font-bold text-left">
+                                    {title}
+                                </h2>
+                                <button
+                                    onClick={onClose}
+                                    aria-label="모달 닫기"
+                                >
+                                    <img src={CloseButton} alt="Close" />
+                                </button>
+                            </>
+                        ) : (
+                            <>
+                                <div className="flex">
+                                    {type === ModalType.ERROR &&
+                                        showErrorIcon && (
+                                            <div className="flex justify-center mt-[-15px]">
+                                                <img
+                                                    src={TriangleFill}
+                                                    alt=""
+                                                    className="w-10 h-10 mb-1"
+                                                />
+                                            </div>
+                                        )}
                                 </div>
-                            )}
-                        </div>
-                        <div className="flex flex-col">
-                            {type === ModalType.SUCCESS && (
-                                <div className="flex justify-center mt-[-15px]">
-                                    <img
-                                        src={CheckCircleFill}
-                                        alt=""
-                                        className="w-10 h-10 mb-1"
-                                    />
+                                <div className="flex flex-col">
+                                    {type === ModalType.SUCCESS && (
+                                        <div className="flex justify-center mt-[-15px]">
+                                            <img
+                                                src={CheckCircleFill}
+                                                alt=""
+                                                className="w-10 h-10 mb-1"
+                                            />
+                                        </div>
+                                    )}
+                                    <h2 className="text-2xl font-bold">
+                                        {title}
+                                    </h2>
                                 </div>
-                            )}
-                            <h2 className="text-2xl font-bold">{title}</h2>
-                        </div>
-                        {/* 성공도 실패도 아닐 경우(이메일 변경 모달, 비밀번호 변경 모달) */}
-                        {type === ModalType.DEFAULT && (
-                            <button onClick={onClose}>
-                                <img src={CloseButton} alt="Close" />
-                            </button>
+                            </>
                         )}
-                        {/*  */}
                     </div>
 
                     <Content
