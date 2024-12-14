@@ -290,10 +290,10 @@ export default function Home() {
                     )
                 )}
             </div>
-            <div className="fixed bottom-8 right-8 z-50">
+            <div className="fixed mobile:bottom-8 pc:bottom-14 tablet:bottom-14 pc:right-12 mobile:right-8 tablet:right-7 z-50">
                 <button
                     onClick={handleFeedBackClick}
-                    className={`${commentButtonClass} w-[110px] h-[110px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors`}
+                    className={`${commentButtonClass} mobile:w-[72px] mobile:h-[72px] pc:w-[110px] pc:h-[110px] tablet:w-[110px] tablet:h-[110px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors`}
                 >
                     의견 보내기
                 </button>
