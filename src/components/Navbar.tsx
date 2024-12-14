@@ -62,7 +62,7 @@ const Navbar: React.FC<NavbarProps> = ({ profileImage }) => {
               onClick={() => {
                 navigate("/login");
               }}
-              className="flex w-[56px] h-[30px] border rounded-[5px] py-3 px-2 font-bold text-[12px] leading-[14.32px] gap-2 justify-center items-center bg-black text-white ml-auto"
+              className="flex w-[56px] md:w-[88px] md:h-[44px] md:text-[16px] md:leading-[19.09px] h-[30px] border rounded-[5px] py-3 px-2 font-bold text-[12px] leading-[14.32px] gap-2 justify-center items-center bg-black text-white ml-auto"
             >
               로그인
             </button>
