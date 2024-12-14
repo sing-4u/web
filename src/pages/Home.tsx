@@ -9,6 +9,7 @@ import { baseURL } from "../utils/apiUrl";
 import Footer from "../components/Footer";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
+import ClearButton from "../assets/ic_closeFill.svg";
 
 interface UserProps {
     id: string;
@@ -185,6 +186,10 @@ export default function Home() {
         );
     };
 
+    const handleClearSearch = () => {
+        setSearchTerm("");
+    };
+
     const commentButtonClass =
         "mobile:w-[72px] mobile:h-[72px] mobile:py-[26px] mobile:px-[10px] mobile:text-[10px] mobile:font-semibold mobile:leading-[11.93px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors";
 
@@ -205,6 +210,18 @@ export default function Home() {
                     alt="Search Icon"
                     className="absolute left-[215px] mobile:left-[46px] tablet:left-[70px] top-1/2 transform -translate-y-1/2 w-6 h-6"
                 />
+                {searchTerm && (
+                    <button
+                        onClick={handleClearSearch}
+                        className="absolute right-[215px] mobile:right-[46px] tablet:right-[70px] top-1/2 transform -translate-y-1/2 w-6 h-6"
+                    >
+                        <img
+                            src={ClearButton}
+                            alt="Clear Search"
+                            className="w-full h-full"
+                        />
+                    </button>
+                )}
             </div>
             <div className="grid mobile:grid-cols-2 w-full gap-4 pc:grid-cols-4 tablet:grid-cols-3 pc:px-[191px] mobile:px-6 tablet:px-[46px]">
                 {users.map((user, index) => (
