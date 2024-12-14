@@ -96,6 +96,10 @@ export default function EmailInputModal<T extends SongData>({
             }
         }
     };
+
+    // 이메일이 비어있는 경우 버튼 비활성화
+    const isButtonDisabled = !email.trim();
+    console.log(isButtonDisabled);
     return (
         <div>
             <button
@@ -133,7 +137,10 @@ export default function EmailInputModal<T extends SongData>({
                 <p className="mobile:mt-2 tablet:mt-2 pc:my-2 text-[12px] text-errorTextColor mobile:mb-[22px] tablet:mb-[22px] pc:mb-[22px]">
                     {error}
                 </p>
-                <button className="bg-black w-full h-12 rounded-lg text-white mobile:text-[14px] tablet:text-[14px] pc:text-base font-bold">
+                <button
+                    disabled={isButtonDisabled}
+                    className="disabled:bg-buttonColor2 disabled:cursor-not-allowed bg-black w-full h-12 rounded-lg text-white mobile:text-[14px] tablet:text-[14px] pc:text-base font-bold"
+                >
                     비회원으로 신청하기
                 </button>
             </form>
