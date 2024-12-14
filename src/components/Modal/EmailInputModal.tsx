@@ -105,7 +105,7 @@ export default function EmailInputModal<T extends SongData>({
                 로그인
             </button>
             {/* border 추가 */}
-            <div className="space-x-2 mt-4 mb-12 flex items-center">
+            <div className="space-x-2 mt-12 mb-12 flex items-center">
                 <span className="w-full border-b"></span>
             </div>
             <h2 className="font-bold text-2xl">
