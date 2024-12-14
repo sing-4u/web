@@ -228,7 +228,7 @@ export default function Home() {
                     <div key={`${user.id}_${index}`} className="flex flex-col">
                         {user?.isOpened ? (
                             <div className="relative rounded-[20px] overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] rounded-[20px]" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap rounded-[20px]" />
                                 <div className="relative m-[8px] bg-white rounded-[8px] overflow-hidden">
                                     <div
                                         className="relative aspect-square w-full"
@@ -242,7 +242,7 @@ export default function Home() {
                                             className="w-full h-full object-cover max-w-full rounded-lg"
                                         />
 
-                                        <div className="w-24 h-[30px] font-pretendard absolute top-2 left-2 bg-gradient-to-br text-white from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] mobile:text-[10px] pc:text-xs tablet:text-xs mobile:leading-[11.93px] tablet:leading-[11.93px] pc:leading-[14.32px] font-bold py-2 px-[14px] rounded-[4px]">
+                                        <div className="h-[30px] font-pretendard absolute top-2 left-2 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white mobile:text-[10px] pc:text-xs tablet:text-xs mobile:leading-[11.93px] tablet:leading-[11.93px] pc:leading-[14.32px] font-bold py-2 px-[14px] rounded-[4px]">
                                             신청곡 받는 중
                                         </div>
                                     </div>
