@@ -47,7 +47,7 @@ const SongDetail = () => {
     const { data: userData } = useUserData();
     const profileImage = user?.user?.image || fetchedUser?.image;
 
-    const { openModal } = useModal();
+    const { openModal, closeModal } = useModal();
 
     const {
         register,
@@ -143,8 +143,23 @@ const SongDetail = () => {
                         ),
                         title: "싱포유 회원이시면",
                         type: ModalType.NOTLOGIN,
-                        buttonBackgroundColor: ""
+                        buttonBackgroundColor: "",
+                        onClose: () => {
+                            window.history.back();
+                        }
                     });
+                    const handlePopState = () => {
+                        closeModal();
+                    };
+                    window.addEventListener("popstate", handlePopState);
+
+                    // Cleanup listener when modal closes
+                    const cleanup = () => {
+                        window.removeEventListener("popstate", handlePopState);
+                        resetFields();
+                    };
+
+                    return cleanup;
                     resetFields();
                 }
             }
