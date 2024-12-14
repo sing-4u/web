@@ -100,7 +100,7 @@ const SongDetail = () => {
                     Content: SongRequestSuccessModal,
                     data: { artist, title, formId, email },
                     buttonBackgroundColor:
-                        "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
+                        "bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap",
                     onClose: resetFields
                 });
                 resetFields();
