@@ -128,9 +128,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <img
                                 src={handleOldEyeIconToggle()}
                                 alt="Toggle Password Visibility"
-                                className={`w-5 h-5 absolute right-4 ${
-                                    errors.oldPassword ? "top-1/2" : "bottom-9"
-                                } transform -translate-y-1/2`}
+                                className={`w-5 h-5 absolute right-4 transform -translate-y-1/2 ${
+                                    errors.oldPassword
+                                        ? "mobile:top-1/2 pc:top-1/2 tablet:top-1/2"
+                                        : "mobile:bottom-7 pc:bottom-9 tablet:bottom-7"
+                                }`}
                                 onClick={handleOldToggle}
                             />
                         </div>
@@ -183,9 +185,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                             <img
                                 src={handleNewEyeIconToggle()}
                                 alt="Toggle Password Visibility"
-                                className={`w-5 h-5 absolute right-4 ${
-                                    errors.newPassword ? "top-1/2" : "bottom-9"
-                                } transform -translate-y-1/2`}
+                                className={`w-5 h-5 absolute right-4 transform -translate-y-1/2 ${
+                                    errors.newPassword
+                                        ? "mobile:top-1/2 pc:top-1/2 tablet:top-1/2"
+                                        : "mobile:bottom-7 pc:bottom-9 tablet:bottom-7"
+                                }`}
                                 onClick={handleNewToggle}
                             />
                         </div>
@@ -231,11 +235,11 @@ rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-norm
                             <img
                                 src={handleConfirmEyeIconToggle()}
                                 alt="Toggle Password Visibility"
-                                className={`w-5 h-5 absolute right-4 ${
+                                className={`w-5 h-5 absolute right-4 transform -translate-y-1/2 ${
                                     errors.confirmPassword
-                                        ? "top-1/2"
-                                        : "bottom-9"
-                                } transform -translate-y-1/2`}
+                                        ? "mobile:top-1/2 pc:top-1/2 tablet:top-1/2"
+                                        : "mobile:bottom-7 pc:bottom-9 tablet:bottom-7"
+                                }`}
                                 onClick={handleConfirmToggle}
                             />
                         </div>

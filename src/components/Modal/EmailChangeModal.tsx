@@ -140,9 +140,11 @@ const EmailChangeModal = ({
                             <button
                                 type="button"
                                 disabled={isLoading}
-                                className={`w-5 h-5 absolute right-4 ${
-                                    errors.password ? "top-1/2" : "bottom-9"
-                                } transform -translate-y-1/2`}
+                                className={`w-5 h-5 absolute right-4 transform -translate-y-1/2 ${
+                                    errors.password
+                                        ? "mobile:top-1/2 pc:top-1/2 tablet:top-1/2"
+                                        : "mobile:bottom-7 pc:bottom-9 tablet:bottom-7"
+                                }`}
                                 onClick={handleToggle}
                             >
                                 <img
