@@ -124,7 +124,7 @@ const EmailChangeModal = ({
                                     required:
                                         "본인임을 인증하기 위해 비밀번호를 입력해주세요."
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
                                     errors.password
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -141,7 +141,7 @@ const EmailChangeModal = ({
                                 type="button"
                                 disabled={isLoading}
                                 className={`w-5 h-5 absolute right-4 ${
-                                    errors.password ? "top-1/2" : "bottom-7"
+                                    errors.password ? "top-1/2" : "bottom-9"
                                 } transform -translate-y-1/2`}
                                 onClick={handleToggle}
                             >

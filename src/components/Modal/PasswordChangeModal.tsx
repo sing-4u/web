@@ -129,7 +129,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 src={handleOldEyeIconToggle()}
                                 alt="Toggle Password Visibility"
                                 className={`w-5 h-5 absolute right-4 ${
-                                    errors.oldPassword ? "top-1/2" : "bottom-7"
+                                    errors.oldPassword ? "top-1/2" : "bottom-9"
                                 } transform -translate-y-1/2`}
                                 onClick={handleOldToggle}
                             />
@@ -184,7 +184,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                 src={handleNewEyeIconToggle()}
                                 alt="Toggle Password Visibility"
                                 className={`w-5 h-5 absolute right-4 ${
-                                    errors.newPassword ? "top-1/2" : "bottom-7"
+                                    errors.newPassword ? "top-1/2" : "bottom-9"
                                 } transform -translate-y-1/2`}
                                 onClick={handleNewToggle}
                             />
@@ -215,7 +215,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
                                     errors.confirmPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -234,7 +234,7 @@ rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-norm
                                 className={`w-5 h-5 absolute right-4 ${
                                     errors.confirmPassword
                                         ? "top-1/2"
-                                        : "bottom-7"
+                                        : "bottom-9"
                                 } transform -translate-y-1/2`}
                                 onClick={handleConfirmToggle}
                             />
