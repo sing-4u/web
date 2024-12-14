@@ -222,10 +222,10 @@ export default function Home() {
                                         <img
                                             src={user.image || Card}
                                             alt={`${user.name}의 프로필 이미지`}
-                                            className="w-full h-full object-cover max-w-full"
+                                            className="w-full h-full object-cover max-w-full rounded-lg"
                                         />
 
-                                        <div className="absolute top-2 left-2 bg-gradient-to-br text-white from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-xs font-bold py-1 px-2 rounded-[4px]">
+                                        <div className="w-24 h-[30px] font-pretendard absolute top-2 left-2 bg-gradient-to-br text-white from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] mobile:text-[10px] pc:text-xs tablet:text-xs mobile:leading-[11.93px] tablet:leading-[11.93px] pc:leading-[14.32px] font-bold py-2 px-[14px] rounded-[4px]">
                                             신청곡 받는 중
                                         </div>
                                     </div>
@@ -233,7 +233,7 @@ export default function Home() {
                             </div>
                         ) : (
                             <div className="relative rounded-[20px] overflow-hidden">
-                                <div className="absolute inset-0 border-4 border-inputBorderColor rounded-[20px]" />
+                                <div className="absolute inset-0 border-6 border-inputBorderColor rounded-[20px]" />
                                 <div className="relative m-[8px] bg-white rounded-[8px] overflow-hidden">
                                     <div
                                         className="relative aspect-square w-full"
