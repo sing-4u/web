@@ -228,11 +228,11 @@ export default function Home() {
                 {users.map((user, index) => (
                     <div key={`${user.id}_${index}`} className="flex flex-col">
                         {user?.isOpened ? (
-                            <div className="relative rounded-[20px] overflow-hidden">
-                                <div className="absolute inset-0 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap rounded-[20px]" />
-                                <div className="relative pc:m-[8px] tablet:m-[8px] mobile:m-[6px] bg-white rounded-[8px] overflow-hidden">
+                            <div className="relative rounded-[20px]">
+                                <div className="absolute inset-0 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] rounded-[20px]" />
+                                <div className="relative mobile:m-[6px] tablet:m-[6px] pc:m-[4px] bg-white rounded-[16px]">
                                     <div
-                                        className="relative aspect-square w-full"
+                                        className="relative aspect-square w-full p-3"
                                         onClick={() =>
                                             handleSongDetailClick(user)
                                         }
@@ -242,19 +242,18 @@ export default function Home() {
                                                 user.image || DefaultImgProfile
                                             }
                                             alt={`${user.name}의 프로필 이미지`}
-                                            className="w-full h-full object-cover max-w-full rounded-lg"
+                                            className="w-full h-full object-cover rounded-[12px]"
                                         />
-
-                                        <div className="h-[30px] font-pretendard absolute top-2 left-2 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white mobile:text-[10px] pc:text-xs tablet:text-xs mobile:leading-[11.93px] tablet:leading-[11.93px] pc:leading-[14.32px] font-bold py-2 px-[14px] rounded-[4px]">
+                                        <div className="absolute top-6 left-6 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white text-xs font-bold py-2 px-[14px] rounded-[4px]">
                                             신청곡 받는 중
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         ) : (
-                            <div className="relative rounded-[20px] overflow-hidden">
-                                <div className="absolute inset-0 border-6 border-inputBorderColor rounded-[20px]" />
-                                <div className="relative m-[8px] bg-white rounded-[8px] overflow-hidden">
+                            <div className="relative rounded-[20px]">
+                                <div className="absolute inset-0 mobile:border-[6px] tablet:border-[6px] pc:border-[4px] border-inputBorderColor rounded-[20px]" />
+                                <div className="relative m-[8px] bg-white rounded-[8px]">
                                     <div
                                         className="relative aspect-square w-full"
                                         onClick={() =>
@@ -266,7 +265,7 @@ export default function Home() {
                                                 user.image || DefaultImgProfile
                                             }
                                             alt={`${user.name}의 프로필 이미지`}
-                                            className="w-full h-full object-cover max-w-full"
+                                            className="w-full h-full object-cover rounded-[12px]"
                                         />
                                     </div>
                                 </div>
