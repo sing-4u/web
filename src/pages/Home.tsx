@@ -244,7 +244,7 @@ export default function Home() {
                                             alt={`${user.name}의 프로필 이미지`}
                                             className="w-full h-full object-cover rounded-[12px]"
                                         />
-                                        <div className="absolute top-6 left-6 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white text-xs font-bold py-2 px-[14px] rounded-[4px]">
+                                        <div className="font-pretendard absolute top-2 left-2 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white mobile:text-[10px] pc:text-xs tablet:text-xs mobile:leading-[11.93px] tablet:leading-[11.93px] pc:leading-[14.32px] font-bold py-2 px-[14px] rounded-[4px]">
                                             신청곡 받는 중
                                         </div>
                                     </div>
