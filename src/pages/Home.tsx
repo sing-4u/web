@@ -232,7 +232,7 @@ export default function Home() {
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] rounded-[20px]" />
                                 <div className="relative mobile:m-[6px] tablet:m-[6px] pc:m-[4px] bg-white rounded-[16px]">
                                     <div
-                                        className="relative aspect-square w-full p-3"
+                                        className="relative aspect-square w-full"
                                         onClick={() =>
                                             handleSongDetailClick(user)
                                         }
