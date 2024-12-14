@@ -14,7 +14,7 @@ export const NonListNow = () => {
 
 export const NonListPrevious = () => {
   return (
-    <div className="relative border-2 rounded-[8px] mt-6">
+    <div className="relative border-2 rounded-[8px] mt-6 h-[184px]">
       <div className="p-3 w-[327px] h-[178px] font-semibold text-[18px] leading-[21.48px]">
         이전 신청 곡 순위
         <div className="flex absolute top-[55px] left-[20px] justify-center items-center text-center w-[287px] h-[97px] text-[15px] mobile:text-[12px] mobile:leading-[16px] leading-[20px] border-2 opacity-50">
