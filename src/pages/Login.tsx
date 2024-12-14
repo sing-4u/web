@@ -312,6 +312,9 @@ const Login = () => {
                 비밀번호 찾기
               </div>
             </div>
+            <div className="text-[10px] font-medium leading-[11.93px] text-[#888888] mt-20">
+              Copyright 2024 Sing4U All rights reserved.
+            </div>
           </div>
         </div>
       </form>
