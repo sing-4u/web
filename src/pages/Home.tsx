@@ -10,6 +10,7 @@ import Footer from "../components/Footer";
 import { useToast } from "../hooks/useToast";
 import { ToastContainer } from "../components/ToastContainer";
 import ClearButton from "../assets/ic_closeFill.svg";
+import DefaultImgProfile from "../assets/img_profile_default_L.svg";
 
 interface UserProps {
     id: string;
@@ -229,7 +230,7 @@ export default function Home() {
                         {user?.isOpened ? (
                             <div className="relative rounded-[20px] overflow-hidden">
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white whitespace-nowrap rounded-[20px]" />
-                                <div className="relative m-[8px] bg-white rounded-[8px] overflow-hidden">
+                                <div className="relative pc:m-[8px] tablet:m-[8px] mobile:m-[6px] bg-white rounded-[8px] overflow-hidden">
                                     <div
                                         className="relative aspect-square w-full"
                                         onClick={() =>
@@ -237,7 +238,9 @@ export default function Home() {
                                         }
                                     >
                                         <img
-                                            src={user.image || Card}
+                                            src={
+                                                user.image || DefaultImgProfile
+                                            }
                                             alt={`${user.name}의 프로필 이미지`}
                                             className="w-full h-full object-cover max-w-full rounded-lg"
                                         />
@@ -259,7 +262,9 @@ export default function Home() {
                                         }
                                     >
                                         <img
-                                            src={user.image || Card}
+                                            src={
+                                                user.image || DefaultImgProfile
+                                            }
                                             alt={`${user.name}의 프로필 이미지`}
                                             className="w-full h-full object-cover max-w-full"
                                         />
