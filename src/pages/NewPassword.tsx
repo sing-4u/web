@@ -149,7 +149,7 @@ const NewPassword = () => {
 
                 <button
                     disabled={isButtonDisabled}
-                    className="w-full bg-colorPurple disabled:bg-buttonColor2 disabled:cursor-not-allowed text-textColor rounded-lg h-[52px] mt-10"
+                    className="font-bold w-full bg-colorPurple disabled:bg-buttonColor2 disabled:cursor-not-allowed text-textColor rounded-lg h-[52px] mt-10"
                     type="submit"
                 >
                     비밀번호 변경하기
