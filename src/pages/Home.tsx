@@ -194,10 +194,10 @@ export default function Home() {
         "mobile:w-[72px] mobile:h-[72px] mobile:py-[26px] mobile:px-[10px] mobile:text-[10px] mobile:font-semibold mobile:leading-[11.93px] bg-black text-white rounded-full flex items-center justify-center text-base hover:bg-gray-800 transition-colors";
 
     return (
-        <div className="w-full space-y-4">
+        <div className="w-full max-w-[1920px]">
             <ToastContainer toasts={toasts} />
             <Navbar />
-            <div className="relative pc:px-[191px] mobile:px-6 tablet:px-[46px]">
+            <div className="relative pc:px-[191px] mobile:px-6 tablet:px-[46px] mobile:mt-4 pc:mt-8 tablet:mt-8">
                 <input
                     value={searchTerm}
                     onChange={handleSearchChange}
@@ -223,7 +223,7 @@ export default function Home() {
                     </button>
                 )}
             </div>
-            <div className="grid mobile:grid-cols-2 w-full gap-4 pc:grid-cols-4 tablet:grid-cols-3 pc:px-[191px] mobile:px-6 tablet:px-[46px]">
+            <div className="grid mobile:grid-cols-2 w-full gap-4 pc:grid-cols-4 tablet:grid-cols-3 pc:px-[191px] mobile:px-6 mobile:mt-4 tablet:mt-8 pc:mt-8 tablet:px-[46px]">
                 {users.map((user, index) => (
                     <div key={`${user.id}_${index}`} className="flex flex-col">
                         {user?.isOpened ? (
