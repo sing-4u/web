@@ -94,7 +94,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
         >
             <ToastContainer toasts={toasts} />
             <div>
-                <label className="mb-2 block text-sm text-gray-700">
+                <label className="mb-2 block mobile:text-sm pc:text-base text-[#000000] font-medium">
                     현재 비밀번호
                     <div className="flex flex-col">
                         <div className="relative top-2">
@@ -112,20 +112,25 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
                                     errors.oldPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
                                 }
-                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                  rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
+                          errors.oldPassword ? "" : "mb-[22px]"
+                      } pc:${errors.oldPassword ? "" : "mb-[30px]"}
+                      tablet:${errors.oldPassword ? "" : "mb-[22px]"}`}
                                 placeholder="비밀번호 입력"
                             />
 
                             <img
                                 src={handleOldEyeIconToggle()}
                                 alt="Toggle Password Visibility"
-                                className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                className={`w-5 h-5 absolute right-4 ${
+                                    errors.oldPassword ? "top-1/2" : "bottom-7"
+                                } transform -translate-y-1/2`}
                                 onClick={handleOldToggle}
                             />
                         </div>
@@ -139,7 +144,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
             </div>
 
             <div>
-                <label className="mb-2 block text-sm text-gray-700">
+                <label className="mb-2 block mobile:text-sm pc:text-base text-[#000000] font-medium">
                     새 비밀번호
                     <div className="flex flex-col">
                         <div className="relative top-2">
@@ -167,15 +172,20 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         ? "border-errorTextColor"
                                         : "border-customGray"
                                 }
-                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                  rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
+                          errors.newPassword ? "" : "mb-[22px]"
+                      } pc:${errors.newPassword ? "" : "mb-[30px]"}
+                      tablet:${errors.newPassword ? "" : "mb-[22px]"}`}
                                 placeholder="새 비밀번호 입력"
                             />
 
                             <img
                                 src={handleNewEyeIconToggle()}
                                 alt="Toggle Password Visibility"
-                                className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                className={`w-5 h-5 absolute right-4 ${
+                                    errors.newPassword ? "top-1/2" : "bottom-7"
+                                } transform -translate-y-1/2`}
                                 onClick={handleNewToggle}
                             />
                         </div>
@@ -190,7 +200,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
             </div>
 
             <div>
-                <label className="mb-2 block text-sm text-gray-700">
+                <label className="mb-2 block mobile:text-sm pc:text-base text-[#000000] font-medium">
                     새 비밀번호 확인
                     <div className="flex flex-col">
                         <div className="relative top-2">
@@ -210,15 +220,22 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         ? "border-errorTextColor"
                                         : "border-customGray"
                                 }
-                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
+rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
+                          errors.confirmPassword ? "" : "mb-[22px]"
+                      } pc:${errors.confirmPassword ? "" : "mb-[30px]"}
+                      tablet:${errors.confirmPassword ? "" : "mb-[22px]"}`}
                                 placeholder="새 비밀번호 확인"
                             />
 
                             <img
                                 src={handleConfirmEyeIconToggle()}
                                 alt="Toggle Password Visibility"
-                                className="w-5 h-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                className={`w-5 h-5 absolute right-4 ${
+                                    errors.confirmPassword
+                                        ? "top-1/2"
+                                        : "bottom-7"
+                                } transform -translate-y-1/2`}
                                 onClick={handleConfirmToggle}
                             />
                         </div>

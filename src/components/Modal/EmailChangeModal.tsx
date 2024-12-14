@@ -80,7 +80,7 @@ const EmailChangeModal = ({
         >
             <ToastContainer toasts={toasts} />
             <div>
-                <label className="block text-sm text-gray-700">
+                <label className="block text-sm text-[#000000] font-medium mobile:text-[14px] pc:text-base">
                     새 이메일
                     <div className="flex flex-col mt-2">
                         <input
@@ -92,17 +92,20 @@ const EmailChangeModal = ({
                                     message: "올바른 이메일 형식이 아닙니다."
                                 }
                             })}
-                            className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                            className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
                                 errors.email
                                     ? "border-errorTextColor"
                                     : "border-customGray"
                             }
-                      rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                      rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
+                          errors.email ? "" : "mb-[22px]"
+                      } pc:${errors.email ? "" : "mb-[30px]"}
+                      tablet:${errors.email ? "" : "mb-[22px]"}`}
                             placeholder="이메일 입력"
                         />
                         {errors.email && (
-                            <p className="mt-2 text-sm text-errorTextColor">
+                            <p className="mt-2 text-sm text-errorTextColor font-normal mobile:text-xs pc:text-[14px]">
                                 {errors?.email.message}
                             </p>
                         )}
@@ -111,7 +114,7 @@ const EmailChangeModal = ({
             </div>
 
             <div>
-                <label className="block mb-2 text-sm text-gray-700">
+                <label className="block mb-2 text-sm text-[#000000] font-medium mobile:text-[14px] pc:text-base">
                     비밀번호
                     <div className="flex flex-col">
                         <div className="relative top-2">
@@ -126,15 +129,20 @@ const EmailChangeModal = ({
                                         ? "border-errorTextColor"
                                         : "border-customGray"
                                 }
-                      rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                      rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:tablet:font-normal placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
+                          errors.email ? "" : "mb-[22px]"
+                      } pc:${errors.email ? "" : "mb-[30px]"}
+                      tablet:${errors.email ? "" : "mb-[22px]"}`}
                                 placeholder="비밀번호를 입력해주세요."
                             />
 
                             <button
                                 type="button"
                                 disabled={isLoading}
-                                className="h-5 w-5 absolute right-4 top-1/2 transform -translate-y-1/2"
+                                className={`w-5 h-5 absolute right-4 ${
+                                    errors.password ? "top-1/2" : "bottom-7"
+                                } transform -translate-y-1/2`}
                                 onClick={handleToggle}
                             >
                                 <img
@@ -145,7 +153,7 @@ const EmailChangeModal = ({
                             </button>
                         </div>
                         {errors.password && (
-                            <p className="mt-4 text-sm text-errorTextColor">
+                            <p className="mt-4 text-errorTextColor font-normal mobile:text-xs pc:text-[14px]">
                                 {errors?.password.message}
                             </p>
                         )}

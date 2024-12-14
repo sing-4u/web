@@ -65,11 +65,11 @@ export const Modal = <T,>({
                     <div
                         className={`flex ${
                             type === ModalType.DEFAULT
-                                ? "flex-row justify-between items-center"
+                                ? "flex-row justify-between items-center mobile:mt-6 mobile:mb-10 tablet:mt-6 tablet:mb-10 pc:mt-8 pc:mb-12"
                                 : type === ModalType.NOTLOGIN
                                 ? "flex-col items-start"
                                 : "flex-col items-center"
-                        } mb-[6px]`}
+                        }`}
                     >
                         {type === ModalType.DEFAULT ? (
                             <>
@@ -92,7 +92,7 @@ export const Modal = <T,>({
                                                 <img
                                                     src={TriangleFill}
                                                     alt=""
-                                                    className="w-10 h-10 mb-[10px]"
+                                                    className="w-10 h-10 mobile:mb-[10px] tablet:mb-[10px] pc:mb-4"
                                                 />
                                             </div>
                                         )}
@@ -103,11 +103,21 @@ export const Modal = <T,>({
                                             <img
                                                 src={CheckCircleFill}
                                                 alt=""
-                                                className="mobile:w-8 mobile:h-8 tablet:w-8 tablet:h-8 pc:w-12 pc:h-12 mb-1 mobile:mb-[5px] tablet:mb-[5px] pc:mb-2"
+                                                className="mobile:w-8 mobile:h-8 tablet:w-8 tablet:h-8 pc:w-12 pc:h-12 pc:mb-2 mb-1 mobile:mb-[5px] tablet:mb-[5px]"
                                             />
                                         </div>
                                     )}
-                                    <h2 className="text-2xl font-bold mobile:mt-[5px] tablet:mt-[5px] pc:mt-2">
+                                    <h2
+                                        className={`text-2xl font-bold ${
+                                            type === ModalType.SUCCESS
+                                                ? "font-bold mobile:mt-[5px] mobile:text-[18px] tablet:text-[18px] pc:text-2xl tablet:mt-[10px] tablet:mb-[24px] pc:mt-2 mobile:mb-6 pc:mb-6"
+                                                : type === ModalType.NOTLOGIN
+                                                ? "mobile:mt-6 mobile:mb-[22px] mobile:text-lg tablet:text-lg pc:text-[24px] tablet:mt-6 tablet:mb-[22px] pc:mt-10 pc:mb-[30px]"
+                                                : type === ModalType.ERROR
+                                                ? "mobile:mb-[6px] pc:mb-2 tablet:mb-[6px]"
+                                                : ""
+                                        }`}
+                                    >
                                         {title}
                                     </h2>
                                 </div>

@@ -8,18 +8,13 @@ interface SongRequestSuccessModalProps
     }> {}
 
 export const SongRequestSuccessModal = ({
-    title,
     data
 }: SongRequestSuccessModalProps) => {
     if (!data) return;
     return (
         <div className="flex flex-col items-center justify-center">
-            <div className="flex flex-col mb-2">
-                <h3 className="text-[18px] font-bold">{title}</h3>
-            </div>
             {/* 그래디언트 테두리를 위한 컨테이너 */}
             <div className="w-full p-[1px] bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] rounded-md mx-2">
-                {/* 실제 컨텐츠를 담는 내부 컨테이너 */}
                 <div className="w-full h-full bg-white rounded-[5px]">
                     <div className="bg-[#7846dd]/60 flex justify-center text-white p-3 font-bold mobile:text-[14px] tablet:text-[14px] pc:text-lg">
                         신청곡
