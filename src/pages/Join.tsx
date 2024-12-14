@@ -444,7 +444,7 @@ const Join = () => {
 
                     <button
                         disabled={isButtonDisabled}
-                        className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover"
+                        className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover font-bold"
                         type="submit"
                     >
                         회원가입
