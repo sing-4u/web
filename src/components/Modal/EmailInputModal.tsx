@@ -100,12 +100,12 @@ export default function EmailInputModal<T extends SongData>({
         <div>
             <button
                 onClick={handleClickLogin}
-                className="bg-colorPurple w-full h-12 rounded-lg text-white text-[14px] font-semibold"
+                className="bg-colorPurple w-full h-12 rounded-lg text-white text-[14px] font-bold"
             >
                 로그인
             </button>
             {/* border 추가 */}
-            <div className="space-x-2 my-12 flex items-center">
+            <div className="space-x-2 pc:my-12 mobile:my-10 my-12 flex items-center">
                 <span className="w-full border-b"></span>
             </div>
             <h2 className="font-bold text-2xl">
@@ -113,7 +113,7 @@ export default function EmailInputModal<T extends SongData>({
             </h2>
             <form className="flex flex-col" onSubmit={onSubmit}>
                 <label
-                    className="mt-[30px] font-semibold text-[14px]"
+                    className="mt-[30px] font-medium text-[14px]"
                     htmlFor="새 이메일"
                 >
                     <span className="font-medium text-base">새 이메일</span>
@@ -123,13 +123,13 @@ export default function EmailInputModal<T extends SongData>({
                     value={email}
                     onChange={handleEmailChange}
                     placeholder="이메일 입력"
-                    className={`border-[0.5px] border-inputBorderColor ${
+                    className={`border-[0.5px] border-inputBorderColor placeholder:font-normal ${
                         error ? "border-red-500" : ""
                     } ${getInputErrorClassName} placeholder:text-[14px] mt-2`}
                 />
 
                 <p className="mt-1 text-sm text-errorTextColor">{error}</p>
-                <button className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-semibold">
+                <button className="bg-black w-full h-12 rounded-lg mt-10 text-white text-[14px] font-bold">
                     비회원으로 신청하기
                 </button>
             </form>

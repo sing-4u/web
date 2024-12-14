@@ -45,7 +45,7 @@ export const Modal = <T,>({
     // }, []);
     if (!Content) return null;
 
-    const buttonClassName = `w-full py-3 ${buttonBackgroundColor} text-textColor rounded-lg mt-4`;
+    const buttonClassName = `w-full py-3 ${buttonBackgroundColor} text-textColor rounded-lg mobile:mt-6 tablet:mt-6 pc:mt-6`;
 
     const onClickModal = (event: React.MouseEvent<HTMLElement>) => {
         if (event.target === event.currentTarget) onClose?.();
@@ -59,7 +59,7 @@ export const Modal = <T,>({
             <div className="fixed inset-0 bg-black/50" aria-hidden="true" />
             <div className="fixed inset-0 flex items-center justify-center p-4">
                 <dialog
-                    className="bg-white p-10 rounded-lg w-[90%] max-w-[460px] relative"
+                    className="bg-white mobile:pb-7 tablet:pb-7 mobile:px-6 tablet:px-6 pc:px-10 pc:pb-10 rounded-lg w-[90%] max-w-[460px] relative"
                     open
                 >
                     <div
@@ -69,7 +69,7 @@ export const Modal = <T,>({
                                 : type === ModalType.NOTLOGIN
                                 ? "flex-col items-start"
                                 : "flex-col items-center"
-                        } mb-4`}
+                        } mb-[6px]`}
                     >
                         {type === ModalType.DEFAULT ? (
                             <>
@@ -88,26 +88,26 @@ export const Modal = <T,>({
                                 <div className="flex">
                                     {type === ModalType.ERROR &&
                                         showErrorIcon && (
-                                            <div className="flex justify-center mt-[-15px]">
+                                            <div className="flex justify-center mobile:mt-6 tablet:mt-6 pc:mt-10">
                                                 <img
                                                     src={TriangleFill}
                                                     alt=""
-                                                    className="w-10 h-10 mb-1"
+                                                    className="w-10 h-10 mb-[10px]"
                                                 />
                                             </div>
                                         )}
                                 </div>
                                 <div className="flex flex-col">
                                     {type === ModalType.SUCCESS && (
-                                        <div className="flex justify-center mt-[-15px]">
+                                        <div className="flex justify-center mobile:mt-10 tablet:mt-10 pc:mt-10">
                                             <img
                                                 src={CheckCircleFill}
                                                 alt=""
-                                                className="w-10 h-10 mb-1"
+                                                className="mobile:w-8 mobile:h-8 tablet:w-8 tablet:h-8 pc:w-12 pc:h-12 mb-1 mobile:mb-[5px] tablet:mb-[5px] pc:mb-2"
                                             />
                                         </div>
                                     )}
-                                    <h2 className="text-2xl font-bold">
+                                    <h2 className="text-2xl font-bold mobile:mt-[5px] tablet:mt-[5px] pc:mt-2">
                                         {title}
                                     </h2>
                                 </div>

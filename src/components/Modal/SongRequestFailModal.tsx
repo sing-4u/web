@@ -19,6 +19,7 @@ export const SongRequestFailModal = <T extends BaseModalData>({
     data
 }: SongRequestFailModalProps<T>) => {
     const songToShow = data?.existingRequest;
+    console.log("songToShow: ", songToShow);
 
     return (
         <>
@@ -28,12 +29,12 @@ export const SongRequestFailModal = <T extends BaseModalData>({
             </div>
             <div className="w-full p-[1px] bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] rounded-[8px]">
                 <div className="w-full h-full bg-white rounded-[7px] overflow-hidden">
-                    <div className="bg-[#7846dd]/60 flex justify-center text-white p-3">
+                    <div className="bg-[#7846dd]/60 flex justify-center text-white p-3 font-bold mobile:text-[14px] tablet:text-[14px] pc:text-lg">
                         신청곡
                     </div>
-                    <div className="px-3 py-2 space-y-2">
+                    <div className="px-3 py-2">
                         <div className="flex justify-between border-b-[0.5px] border-[#f4f4f4]">
-                            <span className="font-bold text-customGray">
+                            <span className="font-bold text-customGray mobile:text-xs pc:text-[14px] pc:mb-2 pc:mt-2 mobile:mb-2 mobile:mt-2 tablet:mb-2 tablet:mt-2">
                                 가수
                             </span>
                             <span className="font-bold">
@@ -42,7 +43,7 @@ export const SongRequestFailModal = <T extends BaseModalData>({
                         </div>
 
                         <div className="flex justify-between border-b-[0.5px] border-[#f4f4f4]">
-                            <span className="font-bold text-customGray">
+                            <span className="font-bold text-customGray mobile:text-xs pc:text-[14px] pc:mb-2 pc:mt-2 mobile:mb-2 mobile:mt-2 tablet:mb-2 tablet:mt-2">
                                 노래제목
                             </span>
                             <span className="font-bold">
@@ -50,10 +51,10 @@ export const SongRequestFailModal = <T extends BaseModalData>({
                             </span>
                         </div>
                         <div className="flex justify-between">
-                            <span className="font-bold text-customGray">
+                            <span className="font-bold text-customGray mobile:text-xs pc:text-[14px] pc:mb-2 pc:mt-2 mobile:mb-2 mobile:mt-2 tablet:mb-2 tablet:mt-2">
                                 신청 이메일
                             </span>
-                            <span className="font-bold">
+                            <span className="font-bold mobile:text-xs tablet:text-xs pc:text-[14px]">
                                 {songToShow?.email}
                             </span>
                         </div>
