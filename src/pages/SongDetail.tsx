@@ -162,7 +162,7 @@ const SongDetail = () => {
     const isButtonDisabled = !watch("artist") || !watch("title");
 
     return (
-        <div className="flex flex-col justify-center items-center w-full max-w-md flex-grow mt-2 mx-auto">
+        <div className="w-full space-y-4">
             <Navbar />
             {isOpened ? (
                 <div className="relative flex flex-col w-full justify-center items-center mt-[22px]">
