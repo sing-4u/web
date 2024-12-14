@@ -281,9 +281,7 @@ export default function Home() {
                     의견 보내기
                 </button>
             </div>
-            <div className="flex justify-center items-center">
-                <Footer />
-            </div>
+            <Footer />
         </div>
     );
 }
