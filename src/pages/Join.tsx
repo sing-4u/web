@@ -283,7 +283,7 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
+                                    className={`w-full h-[52px] border border-inputBorderColor ${
                                         errors.email
                                             ? "border-errorTextColor"
                                             : "border-customGray"
@@ -362,7 +362,7 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                        className={`w-full h-[52px] border border-inputBorderColor ${
                                             errors.confirmPassword
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
