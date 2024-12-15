@@ -12,7 +12,7 @@ import { baseURL } from "../utils/apiUrl";
 import { jwtDecode } from "jwt-decode";
 import { DecodedToken } from "./Join";
 import usePasswordToggle from "../hooks/usePasswordToggle";
-
+import LoginTooltip from "../assets/LoginTooltip.svg";
 interface LoginFormValue {
   email: string;
   password: string;
@@ -181,7 +181,7 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <div
           className="w-full max-w-md mx-auto p-6 space-y-6 h-full relative mobile:w-[375px]
-  tablet:w-[380px] tablet:h-[601px]"
+  pc:w-[380px] pc:h-[601px]"
         >
           <div className=" absolute w-[100px] h-[35.15px] top-[125px] left-[138px] font-bold text-[34px] leading-[38px] text-center">
             <div
@@ -217,6 +217,11 @@ const Login = () => {
               <GoogleIcon />
               <span className="ml-2">Google로 회원가입</span>
             </a>
+            <img
+              src={LoginTooltip}
+              alt="Google Login Tooltip"
+              className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
+            />
           </div>
           <div className="absolute w-[250px] h-[12px] top-[370px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
@@ -306,6 +311,9 @@ const Login = () => {
               >
                 비밀번호 찾기
               </div>
+            </div>
+            <div className="text-[10px] font-medium leading-[11.93px] text-[#888888] mt-20">
+              Copyright 2024 Sing4U All rights reserved.
             </div>
           </div>
         </div>
