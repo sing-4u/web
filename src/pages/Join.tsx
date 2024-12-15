@@ -283,7 +283,7 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                    className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
                                         errors.email
                                             ? "border-errorTextColor"
                                             : "border-customGray"
@@ -325,7 +325,7 @@ const Join = () => {
                                                 : "border-customGray"
                                         }
                   rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:mb-[6px] tablet:mb-[6px] pc:mb-[14px]`}
+                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -363,7 +363,7 @@ const Join = () => {
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
                                         className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
-                                            errors.password
+                                            errors.confirmPassword
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
