@@ -327,7 +327,7 @@ const FindPassword = () => {
                         </p>
                     )}
                     {timeLeft !== 0 && showTimer && (
-                        <span className="mobile:absolute mobile:top-[45px] mobile:end-3 tablet:absolute tablet:top-[48px] tablet:end-3 pc:absolute pc:top-[46px] pc:end-3 text-errorTextColor mobile:text-sm">
+                        <span className="mobile:absolute mobile:right-3 mobile:bottom-[calc(100%-65px)] tablet:absolute tablet:right-3 tablet:bottom-[calc(100%-72px)] pc:absolute pc:right-3 pc:bottom-[calc(100%-72px)] text-errorTextColor mobile:text-sm">
                             {minutes}:{second}
                         </span>
                     )}
