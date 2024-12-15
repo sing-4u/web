@@ -12,6 +12,7 @@ import { ModalType } from "../types";
 import { useTitle } from "../hooks/useTitle";
 import { baseURL } from "../utils/apiUrl";
 import Logo from "../components/Logo";
+import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
 
 interface FormValue {
     email: string;
@@ -229,25 +230,23 @@ const FindPassword = () => {
         : "인증번호 요청";
 
     return (
-        <div className="w-full max-w-[376px] mx-auto relative">
+        <div className="w-full relative">
+            <NavbarWithoutLoginButton />
             <ToastContainer toasts={toasts} />
 
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-full max-w-md mx-auto p-6"
             >
-                <div
-                    onClick={() => navigate("/")}
-                    className="w-[64px] h-[22.5px] cursor-pointer"
-                >
-                    <Logo />
-                </div>
                 <div className="text-2xl font-bold text-center mt-[22px] mb-[60px]">
                     비밀번호 찾기
                 </div>
 
                 <div className="relative flex flex-col mt-[60px]">
-                    <label htmlFor="email" className="text-left mb-2">
+                    <label
+                        htmlFor="email"
+                        className="text-left mb-2 font-normal mobile:text-sm pc:text-base"
+                    >
                         이메일
                     </label>
                     <input
@@ -259,7 +258,9 @@ const FindPassword = () => {
                         placeholder="가입한 이메일 주소"
                         className={`${
                             errors.email ? `mb-2` : `mb-[22px]`
-                        } ${getInputErrorClassName(errors.email)}`}
+                        } ${getInputErrorClassName(
+                            errors.email
+                        )} placeholder:mobile:text-sm mobile:text-sm`}
                     />
                     {errors.email && (
                         <span className="text-red-500 text-sm mb-[22px]">
@@ -276,13 +277,16 @@ const FindPassword = () => {
                         }`}
                         onClick={handleAuthenticationCodeClick}
                     >
-                        <span className="flex flex-col justify-center">
+                        <span className="flex flex-col justify-center mobile:text-xs tablet:text-xs pc:text-sm">
                             {buttonText}
                         </span>
                     </button>
                 </div>
                 <div className="relative flex flex-col">
-                    <label htmlFor="code" className="text-left mb-2">
+                    <label
+                        htmlFor="code"
+                        className="text-left mb-2 font-normal mobile:text-sm pc:text-base"
+                    >
                         인증번호
                     </label>
                     <input
@@ -302,7 +306,7 @@ const FindPassword = () => {
                         placeholder="인증번호 6자리 입력"
                         className={`mb-2 ${getInputErrorClassName(
                             errors.code
-                        )}`}
+                        )} placeholder:mobile:text-sm mobile:text-sm`}
                     />
                     {/* 유효시간이 만료되면 이 메시지는 사라짐 */}
                     {errors.code && timeLeft !== 0 && (
@@ -318,14 +322,17 @@ const FindPassword = () => {
                         </p>
                     )}
                     {timeLeft !== 0 && showTimer && (
-                        <span className="absolute inset-y-12 end-3 text-red-500">
+                        <span className="absolute inset-y-12 end-3 text-errorTextColor mobile:text-sm">
                             {minutes}:{second}
                         </span>
                     )}
                 </div>
                 <button
-                    disabled={!isAuthenticationCodeRequested}
-                    className="w-full bg-colorPurple text-textColor rounded-lg h-[52px] mt-10 hover:bg-colorPurpleHover disabled:bg-buttonColor2 disabled:cursor-not-allowed font-bold"
+                    className={`w-full ${
+                        !isAuthenticationCodeRequested
+                            ? "bg-buttonColor2 text-customGray cursor-not-allowed"
+                            : "text-white bg-colorPurple"
+                    } text-textColor rounded-lg h-[52px] mt-10 font-bold mobile:text-sm pc:text-lg`}
                     type="submit"
                 >
                     다음

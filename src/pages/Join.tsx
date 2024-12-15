@@ -133,6 +133,7 @@ const Join = () => {
     }
 
     const isButtonDisabled = Object.values(watch()).some((value) => !value);
+    console.log("isButtonDisabled: ", isButtonDisabled);
 
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 
@@ -450,8 +451,11 @@ const Join = () => {
                     </div>
 
                     <button
-                        // disabled={isButtonDisabled}
-                        className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover font-bold mobile:text-sm tablet:text-sm pc:text-base"
+                        className={`w-full ${
+                            isButtonDisabled
+                                ? "bg-buttonColor2 text-customGray cursor-not-allowed"
+                                : "text-white bg-colorPurple"
+                        } text-white rounded-lg h-14 text-sm mt-8 font-bold mobile:text-sm tablet:text-sm pc:text-base`}
                         type="submit"
                     >
                         회원가입

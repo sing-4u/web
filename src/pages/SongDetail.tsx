@@ -168,9 +168,9 @@ const SongDetail = () => {
     const userName = user?.user?.name || fetchedUser?.name;
 
     const inputLabelClass =
-        "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2";
+        "w-[328px] h-[17px] font-medium text-[14px] leading-[16.71px] text-black mb-2 font-medium";
     const inputClass =
-        "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black md:w-[380px]";
+        "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black md:w-[380px] placeholder:mobile:text-sm placeholder:mobile:font-normal placeholder:tablet:text-sm placeholder:mobile:font-normal placholder:pc:text-base";
 
     const isOpened = user?.user?.isOpened || fetchedUser?.isOpened;
 
@@ -195,7 +195,7 @@ const SongDetail = () => {
                         className="hidden"
                     />
 
-                    <span className="font-bold text-lg mt-4">
+                    <span className="mobile:text-lg pc:text-xl font-bold text-lg mt-4">
                         {userName || "Loading...."}
                     </span>
                     <form
@@ -248,8 +248,12 @@ const SongDetail = () => {
                             )}
                         </div>
                         <div className="flex justify-center items-center gap-2 my-[22px]">
-                            <img src={TriangleFillRed} alt="warning" />
-                            <span className="font-pretendard text-sm">
+                            <img
+                                src={TriangleFillRed}
+                                alt="warning"
+                                className="mobile:w-4 mobile:h-4 tablet:w-4 tablet:h-4 pc:w-5 pc:h-5"
+                            />
+                            <span className="font-pretendard mobile:text-xs tablet:text-xs pc:text-sm">
                                 제출 후 수정이 불가능합니다.
                             </span>
                         </div>
@@ -258,10 +262,10 @@ const SongDetail = () => {
         flex items-center justify-center gap-2
         ${
             isButtonDisabled
-                ? "bg-gray-300"
-                : "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]"
+                ? "bg-buttonColor2 cursor-not-allowed text-customGray"
+                : "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0] text-white"
         }
-        text-white px-4 py-3 rounded-lg
+        px-4 py-3 rounded-lg
         hover:opacity-90
         transition-opacity
     `}
