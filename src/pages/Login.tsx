@@ -223,7 +223,7 @@ const Login = () => {
               className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
             />
           </div>
-          <div className="absolute w-[250px] h-[12px] top-[370px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
+          <div className="absolute w-[250px] h-[12px] top-[366px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
           </div>
           <div className="flex flex-col space-y-4 ">

@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import useUserData from "../hooks/useUserData";
 import { Navigate, useNavigate } from "react-router-dom";
+import CloseIcon from "../components/CloseIcon";
 interface DeleteAccountModalProps {
   closeModal: () => void;
 }
@@ -56,7 +57,10 @@ const DeleteAccountModal: React.FC<DeleteAccountModalProps> = ({
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white w-[327px] min-h-[556px] rounded-[10px] p-6 gap-10">
         <div className="flex justify-between items-center w-[279px] h-[21px] font-bold text-[18px] leading-[21.48px]">
-          회원 탈퇴 <button onClick={closeModal}>X</button>
+          회원 탈퇴{" "}
+          <div onClick={closeModal}>
+            <CloseIcon />
+          </div>
         </div>
         <div className="h-2">
           {errorMessage && (
