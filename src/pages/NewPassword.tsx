@@ -86,7 +86,7 @@ const NewPassword = () => {
                             placeholder="새 비밀번호"
                             className={`mb-2 ${getInputErrorClassName(
                                 errors.newPassword
-                            )}`}
+                            )} text-[16px]`}
                             {...register("newPassword", {
                                 required: "비밀번호를 입력해주세요.",
                                 pattern: {
@@ -123,7 +123,7 @@ const NewPassword = () => {
                             placeholder="새 비밀번호 확인"
                             className={`mb-2 ${getInputErrorClassName(
                                 errors.confirmPassword
-                            )}`}
+                            )} text-[16px]`}
                             {...register("confirmPassword", {
                                 required: "비밀번호를 입력해주세요.",
                                 validate: (value) =>

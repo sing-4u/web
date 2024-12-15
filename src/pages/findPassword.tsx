@@ -260,7 +260,7 @@ const FindPassword = () => {
                             errors.email ? `mb-2` : `mb-[22px]`
                         } ${getInputErrorClassName(
                             errors.email
-                        )} placeholder:mobile:text-sm mobile:text-sm`}
+                        )} placeholder:mobile:text-sm mobile:text-sm text-[16px]`}
                     />
                     {errors.email && (
                         <span className="text-red-500 text-sm mb-[22px]">
@@ -306,7 +306,7 @@ const FindPassword = () => {
                         placeholder="인증번호 6자리 입력"
                         className={`mb-2 ${getInputErrorClassName(
                             errors.code
-                        )} placeholder:mobile:text-sm mobile:text-sm`}
+                        )} placeholder:mobile:text-sm mobile:text-sm text-[16px]`}
                     />
                     {/* 유효시간이 만료되면 이 메시지는 사라짐 */}
                     {errors.code && timeLeft !== 0 && (
