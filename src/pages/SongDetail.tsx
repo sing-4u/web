@@ -180,7 +180,7 @@ const SongDetail = () => {
         <div className="w-full space-y-4">
             <Navbar />
             {isOpened ? (
-                <div className="relative flex flex-col w-full justify-center items-center mt-[22px] bg-blue-500">
+                <div className="relative flex flex-col w-full justify-center items-center mt-[22px]">
                     <div className="relative w-[90px] h-[90px] cursor-pointer mt-3">
                         <img
                             src={profileImage || ImgProfile}
@@ -200,7 +200,7 @@ const SongDetail = () => {
                     </span>
                     <form
                         onSubmit={handleSubmit(onSubmit)}
-                        className="flex flex-col mt-[22px] bg-red-400"
+                        className="flex flex-col mt-[22px]"
                     >
                         <div className="flex flex-col gap-1">
                             <label htmlFor="가수" className={inputLabelClass}>
