@@ -229,6 +229,9 @@ const FindPassword = () => {
         ? "재요청"
         : "인증번호 요청";
 
+    const inputClass =
+        "w-full h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black mobile:w-[328px] tablet:w-[328px] pc:w-[380px] placeholder:mobile:text-sm placeholder:mobile:font-normal placeholder:tablet:text-sm placeholder:mobile:font-normal placholder:pc:text-base";
+
     return (
         <div className="w-full relative">
             <NavbarWithoutLoginButton />
@@ -256,11 +259,11 @@ const FindPassword = () => {
                         })}
                         onKeyDown={handleEmailKeyPress}
                         placeholder="가입한 이메일 주소"
-                        className={`${
-                            errors.email ? `mb-2` : `mb-[22px]`
-                        } ${getInputErrorClassName(
+                        className={`${inputClass} ${
                             errors.email
-                        )} placeholder:mobile:text-sm mobile:text-sm text-[16px]`}
+                                ? "mb-2 border-errorTextColor"
+                                : "mb-[22px] border-customGray"
+                        }`}
                     />
                     {errors.email && (
                         <span className="text-red-500 text-sm mb-[22px]">
@@ -270,7 +273,7 @@ const FindPassword = () => {
                     <button
                         type="button"
                         disabled={!email || isRequesting}
-                        className={`absolute inset-y-11 end-3 text-sm rounded-[4px] px-2 py-2 h-[30px] flex flex-col justify-center disabled:text-textColor disabled:cursor-not-allowed ${
+                        className={`mobile:absolute mobile:inset-y-10 mobile:right-20 tablet:right-20 tablet:absolute tablet:inset-y-11 pc:end-8 pc:absolute pc:inset-y-11 flex items-center z-20 px-2 py-2 rounded-[4px] h-[30px] cursor-pointer rounded-e-md focus:outline-none disabled:text-textColor disabled:cursor-not-allowed ${
                             email !== ""
                                 ? "bg-black text-textColor"
                                 : "bg-customGray text-textColor"
@@ -304,9 +307,11 @@ const FindPassword = () => {
                             }
                         })}
                         placeholder="인증번호 6자리 입력"
-                        className={`mb-2 ${getInputErrorClassName(
+                        className={`${inputClass} ${
                             errors.code
-                        )} placeholder:mobile:text-sm mobile:text-sm text-[16px]`}
+                                ? "mb-2 border-errorTextColor"
+                                : "mb-[22px] border-customGray"
+                        }`}
                     />
                     {/* 유효시간이 만료되면 이 메시지는 사라짐 */}
                     {errors.code && timeLeft !== 0 && (
@@ -328,7 +333,7 @@ const FindPassword = () => {
                     )}
                 </div>
                 <button
-                    className={`w-full ${
+                    className={`mobile:w-[328px] tablet:w-[328px] pc:w-[380px] ${
                         !isAuthenticationCodeRequested
                             ? "bg-buttonColor2 text-customGray cursor-not-allowed"
                             : "text-white bg-colorPurple"
