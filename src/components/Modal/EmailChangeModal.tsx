@@ -141,7 +141,7 @@ const EmailChangeModal = ({
                                         required:
                                             "본인임을 인증하기 위해 비밀번호를 입력해주세요."
                                     })}
-                                    className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
+                                    className={`w-full h-[52px] border border-inputBorderColor ${
                                         errors.password
                                             ? "border-errorTextColor"
                                             : "border-customGray"
