@@ -2,18 +2,20 @@ interface ChangeButtonProps {
     isLoading: boolean;
     isValid: boolean;
     buttonBackgroundColor: string;
+    className?: string;
 }
 
 const ChangeButtonInModal = ({
     isLoading,
     isValid,
-    buttonBackgroundColor
+    buttonBackgroundColor,
+    className = ""
 }: ChangeButtonProps) => {
     return (
         <button
             type="submit"
             disabled={isValid}
-            className={`mobile:font-bold pc:font-bold mobile:text-[14px] pc:text-base tablet:font-bold mt-8 w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold ${
+            className={`mobile:font-bold pc:font-bold mobile:text-[14px] pc:text-base tablet:font-bold ${className}} w-full h-[52px] flex justify-center items-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-bold ${
                 isValid
                     ? "bg-gray-300 cursor-not-allowed"
                     : buttonBackgroundColor

@@ -117,9 +117,11 @@ const EmailChangeModal = ({
                                     : "border-customGray"
                             }
                       rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
-                          errors.email ? "" : "mb-[22px]"
-                      } pc:${errors.email ? "" : "mb-[30px]"}
+                      placeholder:pt-[14px] pl-[18px] ${
+                          provider === "GOOGLE" && "mb-2"
+                      } text-[16px] mobile:${
+                                errors.email ? "" : "mb-[22px]"
+                            } pc:${errors.email ? "" : "mb-[30px]"}
                       tablet:${errors.email ? "" : "mb-[22px]"}`}
                             placeholder="이메일 입력"
                         />
@@ -188,6 +190,7 @@ const EmailChangeModal = ({
                 isLoading={isLoading}
                 isValid={!isValid}
                 buttonBackgroundColor={buttonBackgroundColor}
+                className={provider === "GOOGLE" ? "" : "mt-8"}
             />
         </form>
     );
