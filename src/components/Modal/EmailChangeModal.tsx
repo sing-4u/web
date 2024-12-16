@@ -8,7 +8,6 @@ import { ModalContentProps } from "../../types";
 import { useEffect, useState } from "react";
 import { useModal } from "../../hooks/useModal";
 import axios from "axios";
-import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 import ErrorMessage from "../ErrorMessage";
 import { UserData } from "../../hooks/useUserData";
@@ -26,15 +25,8 @@ const EmailChangeModal = ({
     } = useForm({
         defaultValues: {
             email: "",
-            password: "",
-            confirmPassword: ""
+            password: ""
         }
-    });
-
-    const { isValid } = useFormValidation({
-        watch,
-        fields: ["email", "password"],
-        isLoading: false
     });
 
     const { closeModal } = useModal();
@@ -92,6 +84,9 @@ const EmailChangeModal = ({
     const { passwordState, handleToggle, handleEyeIconToggle } =
         usePasswordToggle();
 
+    const isButtonDisabled =
+        !watch("email") || (provider !== "GOOGLE" && !watch("password"));
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -111,7 +106,7 @@ const EmailChangeModal = ({
                                     message: "올바른 이메일 형식이 아닙니다."
                                 }
                             })}
-                            className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
+                            className={`w-full h-[52px] border border-inputBorderColor ${
                                 errors.email
                                     ? "border-errorTextColor"
                                     : "border-customGray"
@@ -188,7 +183,7 @@ const EmailChangeModal = ({
 
             <ChangeButtonInModal
                 isLoading={isLoading}
-                isValid={!isValid}
+                isValid={!isButtonDisabled}
                 buttonBackgroundColor={buttonBackgroundColor}
                 className={provider === "GOOGLE" ? "" : "mt-8"}
             />
