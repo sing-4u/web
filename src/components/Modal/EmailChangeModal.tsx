@@ -87,8 +87,7 @@ const EmailChangeModal = ({
 
     const isButtonDisabled = useFormValidation({
         watch,
-        fields: ["email", "password"],
-        provider
+        fields: provider === "GOOGLE" ? ["email"] : ["email", "password"]
     });
 
     return (
