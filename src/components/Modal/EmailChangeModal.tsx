@@ -132,14 +132,7 @@ const EmailChangeModal = ({
                 </label>
             </div>
 
-            {provider === "GOOGLE" ? (
-                <label className="text-sm text-[#000000] font-medium mobile:text-[14px] pc:text-base">
-                    <span>비밀번호</span>
-                    <div className="w-full h-[56px] flex items-center justify-center text-white rounded-lg bg-[#7b92c7] mt-2">
-                        SNS 간편 가입자는 비밀번호 없이 로그인 할 수 있습니다.
-                    </div>
-                </label>
-            ) : (
+            {provider !== "GOOGLE" && (
                 <div>
                     <label className="block mb-2 text-sm text-[#000000] font-medium mobile:text-[14px] pc:text-base">
                         비밀번호
@@ -156,11 +149,11 @@ const EmailChangeModal = ({
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-              rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:tablet:font-normal placeholder:leading-[24px]
-              placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
-                  errors.email ? "" : "mb-[22px]"
-              } pc:${errors.email ? "" : "mb-[30px]"}
-              tablet:${errors.email ? "" : "mb-[22px]"}`}
+                      rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:tablet:font-normal placeholder:leading-[24px]
+                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
+                          errors.email ? "" : "mb-[22px]"
+                      } pc:${errors.email ? "" : "mb-[30px]"}
+                      tablet:${errors.email ? "" : "mb-[22px]"}`}
                                     placeholder="비밀번호를 입력해주세요."
                                 />
 
