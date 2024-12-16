@@ -219,7 +219,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
+                                className={`w-full h-[52px] border border-inputBorderColor ${
                                     errors.confirmPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
