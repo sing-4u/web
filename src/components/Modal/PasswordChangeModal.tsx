@@ -24,10 +24,9 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
 
-    const { isValid } = useFormValidation({
+    const isButtonDisabled = useFormValidation({
         watch,
-        fields: ["oldPassword", "newPassword", "confirmPassword"],
-        isLoading: false
+        fields: ["oldPassword", "newPassword", "confirmPassword"]
     });
 
     const { closeModal } = useModal();
@@ -254,7 +253,7 @@ rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-norm
 
             <ChangeButtonInModal
                 isLoading={isLoading}
-                isValid={isValid}
+                isValid={!isButtonDisabled}
                 buttonBackgroundColor={buttonBackgroundColor}
             />
         </form>

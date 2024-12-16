@@ -11,6 +11,7 @@ import axios from "axios";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 import ErrorMessage from "../ErrorMessage";
 import { UserData } from "../../hooks/useUserData";
+import { useFormValidation } from "../../hooks/useFormValidaiton";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
@@ -84,8 +85,11 @@ const EmailChangeModal = ({
     const { passwordState, handleToggle, handleEyeIconToggle } =
         usePasswordToggle();
 
-    const isButtonDisabled =
-        !watch("email") || (provider !== "GOOGLE" && !watch("password"));
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: ["email", "password"],
+        provider
+    });
 
     return (
         <form

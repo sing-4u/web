@@ -16,6 +16,7 @@ import Tooltip from "../assets/tootip.svg";
 import { baseURL } from "../utils/apiUrl";
 import { jwtDecode } from "jwt-decode";
 import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
+import { useFormValidation } from "../hooks/useFormValidaiton";
 
 interface FormValues {
     name: string;
@@ -132,8 +133,10 @@ const Join = () => {
         return null;
     }
 
-    const isButtonDisabled = Object.values(watch()).some((value) => !value);
-    console.log("isButtonDisabled: ", isButtonDisabled);
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: ["email", "password", "name", "confirmPassword"]
+    });
 
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 

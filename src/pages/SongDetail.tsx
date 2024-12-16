@@ -17,6 +17,7 @@ import { useTitle } from "../hooks/useTitle";
 import Footer from "../components/Footer";
 import MypageProfile from "../components/MypageProfileL";
 import ImgProfile from "../assets/ImageProfileL.svg";
+import { useFormValidation } from "../hooks/useFormValidaiton";
 
 interface SongDetailForm {
     artist: string;
@@ -174,7 +175,10 @@ const SongDetail = () => {
 
     const isOpened = user?.user?.isOpened || fetchedUser?.isOpened;
 
-    const isButtonDisabled = !watch("artist") || !watch("title");
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: ["artist", "title"]
+    });
 
     return (
         <div className="w-full space-y-4">

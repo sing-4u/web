@@ -10,6 +10,7 @@ import Navbar from "../components/Navbar";
 import { useTitle } from "../hooks/useTitle";
 import Logo from "../components/Logo";
 import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
+import { useFormValidation } from "../hooks/useFormValidaiton";
 
 interface PasswordProps {
     newPassword: string;
@@ -61,7 +62,10 @@ const NewPassword = () => {
         }
     };
 
-    const isButtonDisabled = Object.values(watch()).some((value) => !value);
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: ["newPassword", "confirmPassword"]
+    });
 
     return (
         <div className="w-full relative">
