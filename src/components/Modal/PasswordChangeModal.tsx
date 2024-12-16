@@ -254,7 +254,7 @@ rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-norm
 
             <ChangeButtonInModal
                 isLoading={isLoading}
-                isValid={!isValid}
+                isValid={isValid}
                 buttonBackgroundColor={buttonBackgroundColor}
             />
         </form>
