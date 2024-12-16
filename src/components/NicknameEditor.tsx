@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { ToastContainer } from "./ToastContainer";
 
@@ -78,6 +78,7 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
             isEditing ? " bg-customGray" : "bg-black"
           } whitespace-nowrap`}
           onClick={handleNameChange}
+          disabled={!nickname}
         >
           {isEditing ? "완료" : "수정"}
         </button>
