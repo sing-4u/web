@@ -84,7 +84,6 @@ const EmailChangeModal = ({
                     }
                 }
             );
-            // console.log(response.data);
             setProvider(response.data.provider);
         };
         fetchUserData();
