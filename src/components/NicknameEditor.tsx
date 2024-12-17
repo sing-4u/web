@@ -16,6 +16,11 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
   clearErrors,
 }) => {
   const [isEditing, setIsEditing] = useState(false);
+  const [isButtonEnabled, setIsButtonEnabled] = useState(false);
+
+  useEffect(() => {
+    setIsButtonEnabled(nickname.length > 0);
+  }, [nickname]);
 
   const handleNameChange = async () => {
     if (isEditing) {
@@ -53,7 +58,8 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
     "w-[328px] h-[52px] rounded-[10px] border border-inputBorderColor py-3.5 px-[18px] focus:outline-none focus:border-[1px] focus:border-black md:w-[380px]";
 
   const changeButtonClass =
-    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] bg-black text-[#FFFFFF] md:right-4 md:w-[70px] md:h-[35px] md:text-[14px]";
+    "absolute right-3 w-[61px] h-[30px] rounded-[5px] py-[8px] px-[20px] font-bold text-[12px] leading-[14.32px] text-[#FFFFFF] md:right-4 md:w-[70px] md:h-[35px] md:text-[14px]";
+
   return (
     <div className="flex flex-col gap-y-2">
       <label htmlFor="nickname" className={inputLabelClass}>
@@ -75,10 +81,14 @@ const NicknameEditor: React.FC<NicknameEditorProps> = ({
         <button
           type="button"
           className={`${changeButtonClass} ${
-            isEditing ? " bg-customGray" : "bg-black"
+            isEditing
+              ? isButtonEnabled
+                ? "bg-black"
+                : "bg-customGray"
+              : "bg-black"
           } whitespace-nowrap`}
           onClick={handleNameChange}
-          disabled={!nickname}
+          disabled={isEditing && !isButtonEnabled}
         >
           {isEditing ? "완료" : "수정"}
         </button>
