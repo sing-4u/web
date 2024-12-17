@@ -243,9 +243,11 @@ const Mypage = () => {
       {isModalOpen && (
         <DeleteAccountModal closeModal={() => setIsModalOpen(false)} />
       )}
-      <div className="w-full mobile:mr-8">
-        <Footer />
-      </div>
+      {!isModalOpen && (
+        <div className="w-full mobile:mr-8">
+          <Footer />
+        </div>
+      )}
     </div>
   );
 };
