@@ -306,10 +306,12 @@ const SongDetail = () => {
                         {userName || "Loading...."}
                     </span>
 
-                    <section className="w-[379px] h-[136px] bg-[#f5f5f5] mt-[38px] flex justify-center items-center text-center rounded-lg">
-                        현재 아티스트가 신청곡을 받고 있지 않습니다. <br />
-                        다음 신청 기간을 기다려 주세요.
-                    </section>
+                    <div className="mobile:px-6 w-full flex justify-center">
+                        <section className="w-[379px] h-[136px] bg-[#f5f5f5] mt-[38px] flex justify-center items-center text-center rounded-lg">
+                            현재 아티스트가 신청곡을 받고 있지 않습니다. <br />
+                            다음 신청 기간을 기다려 주세요.
+                        </section>
+                    </div>
                 </div>
             )}
 
