@@ -6,9 +6,9 @@ import usePasswordToggle from "../hooks/usePasswordToggle";
 import getInputErrorClassName from "../utils/className";
 import axiosInstance from "../utils/axiosInstance";
 import { ToastContainer } from "../components/ToastContainer";
-import Navbar from "../components/Navbar";
 import { useTitle } from "../hooks/useTitle";
 import Logo from "../components/Logo";
+import { useFormValidation } from "../hooks/useFormValidaiton";
 
 interface PasswordProps {
     newPassword: string;
@@ -60,7 +60,10 @@ const NewPassword = () => {
         }
     };
 
-    const isButtonDisabled = Object.values(watch()).some((value) => !value);
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: ["newPassword", "confirmPassword"]
+    });
 
     return (
         <form

@@ -1,6 +1,5 @@
 import { useForm } from "react-hook-form";
 import axiosInstance from "../../utils/axiosInstance";
-import getInputErrorClassName from "../../utils/className";
 import usePasswordToggle from "../../hooks/usePasswordToggle";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
@@ -22,12 +21,6 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
         setError
     } = useForm({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
-    });
-
-    const { isValid } = useFormValidation({
-        watch,
-        fields: ["oldPassword", "newPassword", "confirmPassword"],
-        isLoading: false
     });
 
     const { closeModal } = useModal();
@@ -87,6 +80,11 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
         handleEyeIconToggle: handleConfirmEyeIconToggle
     } = usePasswordToggle();
 
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: ["oldPassword", "newPassword", "confirmPassword"]
+    });
+
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
@@ -112,7 +110,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
+                                className={`w-full h-[52px] border border-inputBorderColor] ${
                                     errors.oldPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -169,7 +167,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                className={`w-full h-[52px] border border-inputBorderColor ${
                                     errors.newPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -219,7 +217,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
+                                className={`w-full h-[52px] border border-inputBorderColor ${
                                     errors.confirmPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -254,7 +252,7 @@ rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-norm
 
             <ChangeButtonInModal
                 isLoading={isLoading}
-                isValid={!isValid}
+                isValid={isButtonDisabled}
                 buttonBackgroundColor={buttonBackgroundColor}
             />
         </form>
