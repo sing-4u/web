@@ -8,7 +8,10 @@ interface UseFormValidationProps<T extends FieldValues> {
 
 export const useFormValidation = <T extends FieldValues>({
     watch,
-    fields
+    fields,
+    isLoading = false
 }: UseFormValidationProps<T>) => {
-    return Object.values(watch(fields)).some((value) => !value);
+    const isFormFilled = watch(fields).every((field) => field !== "");
+
+    return { isValid: !(isLoading || !isFormFilled) };
 };

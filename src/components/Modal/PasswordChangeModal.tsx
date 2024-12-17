@@ -24,9 +24,10 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
         defaultValues: { oldPassword: "", newPassword: "", confirmPassword: "" }
     });
 
-    const isButtonDisabled = useFormValidation({
+    const { isValid } = useFormValidation({
         watch,
-        fields: ["oldPassword", "newPassword", "confirmPassword"]
+        fields: ["oldPassword", "newPassword", "confirmPassword"],
+        isLoading: false
     });
 
     const { closeModal } = useModal();
@@ -111,7 +112,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor ${
+                                className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
                                     errors.oldPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -218,7 +219,7 @@ const PasswordChangeModal: React.FC<ModalContentProps<unknown>> = ({
                                         }
                                     }
                                 })}
-                                className={`w-full h-[52px] border border-inputBorderColor ${
+                                className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
                                     errors.confirmPassword
                                         ? "border-errorTextColor"
                                         : "border-customGray"
@@ -253,7 +254,7 @@ rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-norm
 
             <ChangeButtonInModal
                 isLoading={isLoading}
-                isValid={!isButtonDisabled}
+                isValid={!isValid}
                 buttonBackgroundColor={buttonBackgroundColor}
             />
         </form>
