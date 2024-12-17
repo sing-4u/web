@@ -66,9 +66,7 @@ const Checkbox = ({
                     alt=""
                     className="w-5 h-5 mr-2 cursor-pointer"
                 />
-                <span className="text-sm leading-none mobile:font-normal mobile:text-[14px] tablet:text-[14px] pc:text-base">
-                    {label}
-                </span>
+                <span className="text-sm leading-none font-bold">{label}</span>
             </label>
 
             <button
@@ -77,11 +75,7 @@ const Checkbox = ({
                 className="bg-transparent border-none cursor-pointer p-0"
                 aria-label={`${label} 상세 정보 보기`}
             >
-                <img
-                    src={ChevronRight}
-                    alt=""
-                    className="mobile:w-[20px] mobile:h-[20px] tablet:w-[20px] tablet:h-[20px] pc:w-6 pc:h-6"
-                />
+                <img src={ChevronRight} alt="" className="w-5 h-5" />
             </button>
         </div>
     );

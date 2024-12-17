@@ -99,6 +99,7 @@ export default function EmailInputModal<T extends SongData>({
 
     // 이메일이 비어있는 경우 버튼 비활성화
     const isButtonDisabled = !email.trim();
+    console.log(isButtonDisabled);
     return (
         <div>
             <button

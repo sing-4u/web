@@ -226,11 +226,14 @@ const Login = () => {
           <div className="absolute w-[250px] h-[12px] top-[366px] left-[63px] text-center font-normal text-[10px] leading-[11.93px] text-customGray">
             또는
           </div>
+          <div
+            className={`relative w-[327px] top-[365px]  ${
+              errors.email ? "mb-4" : "mb-0"
+            }`}
+          ></div>
           <div className="flex flex-col space-y-4 ">
             <div
-              className={`relative w-[327px] top-[365px]  ${
-                errors.email ? "mb-4" : "mb-0"
-              }`}
+              className="relative w-[327px] top-[365px]"
             >
               <input
                 className={`w-[327px] h-[52px] border border-inputBorderColor box-border text-[#AAAAA] ${

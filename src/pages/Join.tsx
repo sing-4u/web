@@ -16,7 +16,6 @@ import Tooltip from "../assets/tootip.svg";
 import { baseURL } from "../utils/apiUrl";
 import { jwtDecode } from "jwt-decode";
 import NavbarWithoutLoginButton from "../components/NavBarWithoutLoginButton";
-import { useFormValidation } from "../hooks/useFormValidaiton";
 
 interface FormValues {
     name: string;
@@ -133,10 +132,7 @@ const Join = () => {
         return null;
     }
 
-    const isButtonDisabled = useFormValidation({
-        watch,
-        fields: ["email", "password", "name", "confirmPassword"]
-    });
+    const isButtonDisabled = Object.values(watch()).some((value) => !value);
 
     const isAllChecked = Object.values(checkboxes).every((box) => box);
 
@@ -238,13 +234,13 @@ const Join = () => {
                             className="absolute -top-2 left-1/2 -translate-x-1/2 -translate-y-full z-50 transition-all duration-300 animate-fadeIn"
                         />
                     </div>
-                    <div className="flex items-center mobile:mt-[30px] mobile:mb-[26px] tablet:mt-[30px] tablet:mb-[26px] pc:my-10">
+                    <div className="flex items-center my-10">
                         <span className="w-full border-b border-[#f3f3f3]"></span>
                     </div>
 
                     <div className="space-y-4">
                         <div className="flex flex-col">
-                            <label className="text-sm flex flex-col mobile:text-sm pc:text-base text-[#000000] font-medium">
+                            <label className="text-sm flex flex-col">
                                 닉네임
                                 <input
                                     type="text"
@@ -261,8 +257,8 @@ const Join = () => {
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-                  rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px] mt-2 mobile:mb-[6px] tablet:mb-[6px] pc:mb-[14px]`}
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px] mt-2`}
                                     placeholder="별명"
                                 />
                             </label>
@@ -274,7 +270,7 @@ const Join = () => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label className="text-sm flex flex-col mobile:text-sm pc:text-base text-[#000000] font-medium">
+                            <label className="text-sm flex flex-col">
                                 이메일
                                 <input
                                     type="email"
@@ -286,13 +282,13 @@ const Join = () => {
                                                 "올바른 이메일 형식이 아닙니다."
                                         }
                                     })}
-                                    className={`w-full h-[52px] border border-inputBorderColor ${
+                                    className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
                                         errors.email
                                             ? "border-errorTextColor"
                                             : "border-customGray"
                                     }
-                  rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px] mt-2 mobile:mb-[6px] tablet:mb-[6px] pc:mb-[14px]`}
+                  rounded-[10px] text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px] mt-2`}
                                     placeholder="abc@email.com"
                                 />
                             </label>
@@ -304,10 +300,7 @@ const Join = () => {
                             )}
                         </div>
                         <div className="flex flex-col">
-                            <label
-                                htmlFor="password"
-                                className="text-sm mobile:text-sm pc:text-base text-[#000000] font-medium"
-                            >
+                            <label htmlFor="password" className="text-sm">
                                 비밀번호
                                 <div className="relative top-2">
                                     <input
@@ -327,8 +320,8 @@ const Join = () => {
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                  rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                         placeholder="영문, 숫자를 포함한 8자 이상의 비밀번호"
                                     />
 
@@ -351,7 +344,7 @@ const Join = () => {
                         <div className="flex flex-col">
                             <label
                                 htmlFor="confirmPassword"
-                                className="text-sm mt-2 mobile:text-sm pc:text-base text-[#000000] font-medium"
+                                className="text-sm mt-2"
                             >
                                 비밀번호 확인
                                 <div className="relative top-2">
@@ -365,13 +358,13 @@ const Join = () => {
                                                 value === watchPassword ||
                                                 "비밀번호가 일치하지 않습니다."
                                         })}
-                                        className={`w-full h-[52px] border border-inputBorderColor ${
-                                            errors.confirmPassword
+                                        className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAA] ${
+                                            errors.password
                                                 ? "border-errorTextColor"
                                                 : "border-customGray"
                                         }
-                  rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px]`}
+                  rounded-lg text-left placeholder:text-[14px] placeholder:leading-[24px]
+                  placeholder:pt-[14px] pl-[18px] text-[16px]`}
                                         placeholder="비밀번호 확인"
                                     />
 
@@ -392,10 +385,8 @@ const Join = () => {
                         </div>
                     </div>
 
-                    <div className="mobile:mt-[22px] tablet:mt-[22px] pc:mt-[30px]">
-                        <div className="mobile:text-sm tablet:text-sm pc:text-base font-normal mobile:mb-[13px] tablet:mb-[13px] pc:mb-[16.38px]">
-                            약관동의
-                        </div>
+                    <div className="space-y-4 mt-[30px]">
+                        <div className="text-sm font-bold">약관동의</div>
                         <div
                             className="flex items-center space-x-2 cursor-pointer"
                             role="checkbox"
@@ -417,9 +408,7 @@ const Join = () => {
                                 alt=""
                                 className="w-5 h-5"
                             />
-                            <span className="mobile:text-sm tablet:text-sm pc:text-base font-bold">
-                                전체동의
-                            </span>
+                            <span className="text-sm font-bold">전체동의</span>
                         </div>
 
                         <div className="w-full border-t border-gray-200 my-4"></div>
@@ -454,11 +443,8 @@ const Join = () => {
                     </div>
 
                     <button
-                        className={`w-full ${
-                            isButtonDisabled
-                                ? "bg-buttonColor2 text-customGray cursor-not-allowed"
-                                : "text-white bg-colorPurple"
-                        } text-white rounded-lg h-14 text-sm mt-8 font-bold mobile:text-sm tablet:text-sm pc:text-base`}
+                        disabled={isButtonDisabled}
+                        className="w-full bg-colorPurple disabled:bg-gray-300 disabled:cursor-not-allowed text-white rounded-lg h-14 text-sm mt-8 hover:bg-colorPurpleHover font-bold"
                         type="submit"
                     >
                         회원가입
