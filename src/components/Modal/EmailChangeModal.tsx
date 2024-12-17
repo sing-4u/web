@@ -5,16 +5,18 @@ import axiosInstance from "../../utils/axiosInstance";
 import { useToast } from "../../hooks/useToast";
 import { ToastContainer } from "../ToastContainer";
 import { ModalContentProps } from "../../types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useModal } from "../../hooks/useModal";
 import axios from "axios";
-import { useFormValidation } from "../../hooks/useFormValidaiton";
 import ChangeButtonInModal from "./Button/ChangeButtonInModal";
 import ErrorMessage from "../ErrorMessage";
+import { UserData } from "../../hooks/useUserData";
+import { useFormValidation } from "../../hooks/useFormValidaiton";
 
 const EmailChangeModal = ({
     buttonBackgroundColor
 }: ModalContentProps<unknown>) => {
+    const [provider, setProvider] = useState("");
     const {
         register,
         handleSubmit,
@@ -24,15 +26,8 @@ const EmailChangeModal = ({
     } = useForm({
         defaultValues: {
             email: "",
-            password: "",
-            confirmPassword: ""
+            password: ""
         }
-    });
-
-    const { isValid } = useFormValidation({
-        watch,
-        fields: ["email", "password"],
-        isLoading: false
     });
 
     const { closeModal } = useModal();
@@ -70,8 +65,30 @@ const EmailChangeModal = ({
         }
     };
 
+    useEffect(() => {
+        const fetchUserData = async () => {
+            const response = await axios.get<UserData>(
+                `${import.meta.env.VITE_API_URL}/users/me`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "accessToken"
+                        )}`
+                    }
+                }
+            );
+            setProvider(response.data.provider);
+        };
+        fetchUserData();
+    }, []);
+
     const { passwordState, handleToggle, handleEyeIconToggle } =
         usePasswordToggle();
+
+    const isButtonDisabled = useFormValidation({
+        watch,
+        fields: provider === "GOOGLE" ? ["email"] : ["email", "password"]
+    });
 
     return (
         <form
@@ -92,15 +109,17 @@ const EmailChangeModal = ({
                                     message: "올바른 이메일 형식이 아닙니다."
                                 }
                             })}
-                            className={`w-full h-[52px] border border-inputBorderColor text-[#AAAAAA] ${
+                            className={`w-full h-[52px] border border-inputBorderColor ${
                                 errors.email
                                     ? "border-errorTextColor"
                                     : "border-customGray"
                             }
                       rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:tablet:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:leading-[24px]
-                      placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
-                          errors.email ? "" : "mb-[22px]"
-                      } pc:${errors.email ? "" : "mb-[30px]"}
+                      placeholder:pt-[14px] pl-[18px] ${
+                          provider === "GOOGLE" && "mb-2"
+                      } text-[16px] mobile:${
+                                errors.email ? "" : "mb-[22px]"
+                            } pc:${errors.email ? "" : "mb-[30px]"}
                       tablet:${errors.email ? "" : "mb-[22px]"}`}
                             placeholder="이메일 입력"
                         />
@@ -113,60 +132,63 @@ const EmailChangeModal = ({
                 </label>
             </div>
 
-            <div>
-                <label className="block mb-2 text-sm text-[#000000] font-medium mobile:text-[14px] pc:text-base">
-                    비밀번호
-                    <div className="flex flex-col">
-                        <div className="relative top-2">
-                            <input
-                                type={passwordState.type}
-                                {...register("password", {
-                                    required:
-                                        "본인임을 인증하기 위해 비밀번호를 입력해주세요."
-                                })}
-                                className={`w-full h-[52px] border border-inputBorderColor text-inputTextColor ${
-                                    errors.password
-                                        ? "border-errorTextColor"
-                                        : "border-customGray"
-                                }
+            {provider !== "GOOGLE" && (
+                <div>
+                    <label className="block mb-2 text-sm text-[#000000] font-medium mobile:text-[14px] pc:text-base">
+                        비밀번호
+                        <div className="flex flex-col">
+                            <div className="relative top-2">
+                                <input
+                                    type={passwordState.type}
+                                    {...register("password", {
+                                        required:
+                                            "본인임을 인증하기 위해 비밀번호를 입력해주세요."
+                                    })}
+                                    className={`w-full h-[52px] border border-inputBorderColor ${
+                                        errors.password
+                                            ? "border-errorTextColor"
+                                            : "border-customGray"
+                                    }
                       rounded-lg text-left placeholder:mobile:text-[14px] placeholder:mobile:font-normal placeholder:pc:text-base placeholder:pc:font-normal placeholder:tablet:font-normal placeholder:leading-[24px]
                       placeholder:pt-[14px] pl-[18px] text-[16px] mobile:${
                           errors.email ? "" : "mb-[22px]"
                       } pc:${errors.email ? "" : "mb-[30px]"}
                       tablet:${errors.email ? "" : "mb-[22px]"}`}
-                                placeholder="비밀번호를 입력해주세요."
-                            />
-
-                            <button
-                                type="button"
-                                disabled={isLoading}
-                                className={`w-5 h-5 absolute right-4 transform -translate-y-1/2 ${
-                                    errors.password
-                                        ? "mobile:top-1/2 pc:top-1/2 tablet:top-1/2"
-                                        : "mobile:bottom-7 pc:bottom-9 tablet:bottom-7"
-                                }`}
-                                onClick={handleToggle}
-                            >
-                                <img
-                                    src={handleEyeIconToggle()}
-                                    alt="toggle password visibility"
-                                    className="h-5 w-5"
+                                    placeholder="비밀번호를 입력해주세요."
                                 />
-                            </button>
+
+                                <button
+                                    type="button"
+                                    disabled={isLoading}
+                                    className={`w-5 h-5 absolute right-4 transform -translate-y-1/2 ${
+                                        errors.password
+                                            ? "mobile:top-1/2 pc:top-1/2 tablet:top-1/2"
+                                            : "mobile:bottom-7 pc:bottom-9 tablet:bottom-7"
+                                    }`}
+                                    onClick={handleToggle}
+                                >
+                                    <img
+                                        src={handleEyeIconToggle()}
+                                        alt="toggle password visibility"
+                                        className="h-5 w-5"
+                                    />
+                                </button>
+                            </div>
+                            {errors.password && (
+                                <p className="mt-4 text-errorTextColor font-normal mobile:text-xs pc:text-[14px]">
+                                    {errors?.password.message}
+                                </p>
+                            )}
                         </div>
-                        {errors.password && (
-                            <p className="mt-4 text-errorTextColor font-normal mobile:text-xs pc:text-[14px]">
-                                {errors?.password.message}
-                            </p>
-                        )}
-                    </div>
-                </label>
-            </div>
+                    </label>
+                </div>
+            )}
 
             <ChangeButtonInModal
                 isLoading={isLoading}
-                isValid={!isValid}
+                isValid={!isButtonDisabled}
                 buttonBackgroundColor={buttonBackgroundColor}
+                className={provider === "GOOGLE" ? "" : "mt-8"}
             />
         </form>
     );
