@@ -19,8 +19,6 @@ export const SongRequestFailModal = <T extends BaseModalData>({
     data
 }: SongRequestFailModalProps<T>) => {
     const songToShow = data?.existingRequest;
-    console.log("songToShow: ", songToShow);
-
     return (
         <>
             <div className="text-center font-[12px] mb-6">
@@ -33,24 +31,24 @@ export const SongRequestFailModal = <T extends BaseModalData>({
                         신청곡
                     </div>
                     <div className="px-3 py-2">
-                        <div className="flex justify-between border-b-[0.5px] border-[#f4f4f4]">
+                        <div className="flex justify-between items-center border-b-[0.5px] border-[#f4f4f4]">
                             <span className="font-bold text-customGray mobile:text-xs pc:text-[14px] pc:mb-2 pc:mt-2 mobile:mb-2 mobile:mt-2 tablet:mb-2 tablet:mt-2">
                                 가수
                             </span>
-                            <span className="font-bold">
+                            <span className="font-bold mobile:text-xs tablet:text-xs pc:text-[14px]">
                                 {songToShow?.artist}
                             </span>
                         </div>
 
-                        <div className="flex justify-between border-b-[0.5px] border-[#f4f4f4]">
+                        <div className="flex justify-between items-center border-b-[0.5px] border-[#f4f4f4]">
                             <span className="font-bold text-customGray mobile:text-xs pc:text-[14px] pc:mb-2 pc:mt-2 mobile:mb-2 mobile:mt-2 tablet:mb-2 tablet:mt-2">
                                 노래제목
                             </span>
-                            <span className="font-bold">
+                            <span className="font-bold mobile:text-xs tablet:text-xs pc:text-[14px]">
                                 {songToShow?.title}
                             </span>
                         </div>
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                             <span className="font-bold text-customGray mobile:text-xs pc:text-[14px] pc:mb-2 pc:mt-2 mobile:mb-2 mobile:mt-2 tablet:mb-2 tablet:mt-2">
                                 신청 이메일
                             </span>

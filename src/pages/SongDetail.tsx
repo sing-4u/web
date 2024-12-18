@@ -152,7 +152,6 @@ const SongDetail = () => {
                     };
                     window.addEventListener("popstate", handlePopState);
 
-                    // Cleanup listener when modal closes
                     const cleanup = () => {
                         window.removeEventListener("popstate", handlePopState);
                         resetFields();

@@ -79,14 +79,17 @@ export default function EmailInputModal<T extends SongData>({
                     axios.isAxiosError(error) &&
                     error.response?.status === 409
                 ) {
+                    const { detail } = error.response.data;
                     openModal({
                         title: "중복 신청",
                         type: ModalType.ERROR,
                         Content: SongRequestFailModal,
                         data: {
-                            artist: modalData?.artist,
-                            title: modalData?.title,
-                            email
+                            existingRequest: {
+                                artist: detail.artist,
+                                title: detail.title,
+                                email: detail.email
+                            }
                         },
                         buttonBackgroundColor:
                             "bg-gradient-to-br from-[#7B92C7] via-[#7846DD] to-[#BB7FA0]",
